@@ -1,0 +1,16 @@
+/* CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved */
+/*
+ * nous_keys_builtin.h — Free-tier API keys compiled into the binary
+ *
+ * Copy this file to nous_keys_builtin.h and fill in real keys.
+ * nous_keys_builtin.h is gitignored — never commit it.
+ */
+
+#ifndef NOUS_KEYS_BUILTIN_H
+#define NOUS_KEYS_BUILTIN_H
+
+#define NOUS_KEY_GEMINI    "your-gemini-api-key-here"
+#define NOUS_KEY_DEEPSEEK  "your-deepseek-api-key-here"
+#define NOUS_KEY_MISTRAL   "your-mistral-api-key-here"
+
+#endif

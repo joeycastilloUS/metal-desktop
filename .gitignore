@@ -1,0 +1,8 @@
+*.exe
+*.o
+*.obj
+metal-desktop
+src/nous_keys_builtin.h
+triples.key
+desktop.conf
+be/debug/

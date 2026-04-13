@@ -1,0 +1,12 @@
+# NOUS Desktop Configuration
+# Copy to desktop.conf and edit.
+
+# Relay connection (NTRP0001 wire protocol)
+relay_host=localhost
+relay_port=8081
+
+# Pre-shared key file (32-byte raw binary or 64-char hex)
+psk_file=triples.key
+
+# HTTP server listen port
+listen_port=5050

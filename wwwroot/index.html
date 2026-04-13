@@ -1,0 +1,188 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>metal — Desktop</title>
+  <link rel="stylesheet" href="lib/xterm.css">
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <!-- Auth gate — full-page overlay, blocks metal Desktop until authenticated -->
+  <div id="auth-gate">
+    <div id="auth-gate-inner">
+      <div id="auth-title">N O U S</div>
+      <div id="auth-form">
+        <input type="text" id="auth-user" placeholder="user" autocomplete="username" spellcheck="false">
+        <input type="text" id="auth-totp" placeholder="TOTP code" autocomplete="one-time-code" spellcheck="false" maxlength="6">
+        <button id="auth-login-btn">LOGIN</button>
+        <div id="auth-divider">Not registered?</div>
+        <button id="auth-register-btn">REGISTER</button>
+        <span id="auth-error"></span>
+      </div>
+      <div id="auth-qr-view" class="hidden">
+        <canvas id="auth-qr-canvas"></canvas>
+        <div id="auth-qr-label">Scan with authenticator app</div>
+        <input type="text" id="auth-qr-totp" placeholder="Enter TOTP to verify" autocomplete="one-time-code" spellcheck="false" maxlength="6">
+        <button id="auth-qr-verify-btn">VERIFY</button>
+        <span id="auth-qr-error"></span>
+      </div>
+      <div id="auth-footer">
+        <div class="auth-creator">Created by Joseph M. Castillo</div>
+        <div class="auth-creator-detail">American Citizen &middot; Born Jan 7, 1975 &middot; Fullerton, California, The United States of America</div>
+        <div class="auth-companies">
+          <a href="https://www.acmedev.com" target="_blank">AcmeDev</a>
+          <span class="auth-dot">&middot;</span>
+          <a href="https://www.ai-pantheon.ai" target="_blank">ai-pantheon</a>
+          <span class="auth-dot">&middot;</span>
+          <a href="https://www.kastilsystems.com" target="_blank">kASTIL</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="cockpit">
+    <div id="tabs">
+      <button class="tab active" data-tab="loop">DISCOVER</button>
+      <button class="tab" data-tab="store">REMEMBER</button>
+    </div>
+    <div id="panels">
+      <!-- Loop view — three column layout -->
+      <div id="loop-view" class="tab-content active">
+        <div id="loop-main">
+          <!-- COL 1: THINKING — always visible -->
+          <div id="loop-driver">
+            <div class="driver-header">
+              <span class="driver-label">THINKING</span>
+              <select id="engine-select" title="default engine for advise/summarize"></select>
+              <span class="track-badge" id="search-badge"></span>
+            </div>
+            <div class="driver-body" id="search-body">
+              <span class="track-empty">waiting...</span>
+            </div>
+          </div>
+          <!-- COL 2: LEARNING (8 skill tiles) -->
+          <div id="loop-mid">
+            <!-- LANGUAGE → UNDERSTAND → READ → LEARN → REASON → ACQUIRE → MEMORY → CATALOG -->
+          </div>
+          <!-- COL 3: DATA ACCESS -->
+          <div id="loop-right">
+            <!-- All DAP tiles built dynamically -->
+          </div>
+        </div>
+        <!-- Global hint bar (visible when set) -->
+        <div id="global-hint-bar" class="hidden">
+          <span id="global-hint-label">HINT</span>
+          <span id="global-hint-text"></span>
+          <button id="global-hint-clear" title="clear hint">&times;</button>
+        </div>
+        <!-- Status bar -->
+        <div id="loop-status">
+          <span id="sense-display"></span>
+          <span id="daily-display"></span>
+        </div>
+        <!-- Input -->
+        <div id="cmd-menu" class="hidden"></div>
+        <div id="loop-input-bar">
+          <input type="text" id="loop-input" placeholder="anything goes..." autocomplete="off" spellcheck="false">
+          <button id="loop-send">GO!</button>
+        </div>
+      </div>
+      <!-- Terminal view -->
+      <div id="terminal-view" class="tab-content">
+        <div id="terminal-header">
+          <span class="title">TERMINAL</span>
+          <span id="terminal-status" class="badge">CONNECTING</span>
+        </div>
+        <div id="terminal-container"></div>
+      </div>
+      <!-- Trace view -->
+      <div id="trace-view" class="tab-content">
+        <div id="trace-header">
+          <span class="title">TRACE</span>
+          <span id="trace-target" class="badge">--</span>
+          <span id="trace-status" class="badge">DISCONNECTED</span>
+          <span id="trace-count" class="badge">0</span>
+        </div>
+        <div id="trace-filters">
+          <button class="trace-filter active" data-comp="all">ALL</button>
+          <button class="trace-filter" data-comp="net">NET</button>
+          <button class="trace-filter" data-comp="route">ROUTE</button>
+          <button class="trace-filter" data-comp="auth">AUTH</button>
+          <button class="trace-filter" data-comp="store">STORE</button>
+          <button class="trace-filter" data-comp="crypt">CRYPT</button>
+          <button class="trace-filter" data-comp="relay">RELAY</button>
+          <button class="trace-filter" data-comp="identity">IDENTITY</button>
+          <button class="trace-filter" data-comp="mesh">MESH</button>
+          <button class="trace-filter" data-comp="pulse">PULSE</button>
+        </div>
+        <div id="trace-log"></div>
+      </div>
+      <!-- Store view -->
+      <div id="store-view" class="tab-content">
+        <div id="store-header">
+          <span class="title">REMEMBER</span>
+          <button id="store-collapse-all" class="store-header-btn" title="collapse all units">&#9644; ALL</button>
+          <button id="store-expand-all" class="store-header-btn" title="expand all units">&#9776; ALL</button>
+          <button id="store-refresh" class="store-refresh-btn">REFRESH</button>
+          <span id="store-status" class="badge">--</span>
+        </div>
+        <div id="store-filter-bar">
+          <input type="text" id="store-filter" placeholder="filter triples..." autocomplete="off" spellcheck="false">
+        </div>
+        <div id="store-sections"></div>
+      </div>
+      <!-- Architecture view -->
+      <div id="arch-view" class="tab-content">
+        <div id="schematic">
+          <div id="schematic-header">
+            <span class="title">ARCHITECTURE</span>
+            <span id="view-mode" class="badge">TREE</span>
+          </div>
+          <svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div id="detail-pane">
+          <div id="detail-header">Select a node</div>
+          <pre id="detail-content"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Response viewer overlay -->
+  <div id="response-viewer" class="hidden">
+    <div id="response-viewer-inner">
+      <div id="response-viewer-title">RESPONSE: <span id="response-viewer-name"></span></div>
+      <pre id="response-viewer-text"></pre>
+      <div id="response-viewer-buttons">
+        <button id="response-copy">COPY</button>
+        <button id="response-close">CLOSE</button>
+      </div>
+    </div>
+  </div>
+  <!-- Hint editor overlay -->
+  <div id="hint-editor" class="hidden">
+    <div id="hint-editor-inner">
+      <div id="hint-editor-title">HINT: <span id="hint-provider-name"></span></div>
+      <textarea id="hint-text" placeholder="system hint injected with every request to this provider..."></textarea>
+      <div id="hint-buttons">
+        <button id="hint-save">SAVE</button>
+        <button id="hint-clear">CLEAR</button>
+        <button id="hint-cancel">CANCEL</button>
+      </div>
+    </div>
+  </div>
+  <div id="bottom-ticker" class="dap-ticker bottom-ticker">
+    <div class="ticker-track" id="bottom-ticker-track"></div>
+  </div>
+
+  <script src="lib/xterm.js"></script>
+  <script src="lib/addon-attach.js"></script>
+  <script src="lib/addon-fit.js"></script>
+  <script src="tree.js"></script>
+  <script src="terminal.js"></script>
+  <script src="loop.js"></script>
+  <script src="trace.js"></script>
+  <script src="store.js"></script>
+  <script src="desktop.js"></script>
+</body>
+</html>
