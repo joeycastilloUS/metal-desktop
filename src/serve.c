@@ -927,8 +927,139 @@ static void handle_relay_register(int conn_id, const char *json)
     const char *qr_size_s = wire_find(triples, tc, "qr_size");
     const char *totp_uri = wire_find(triples, tc, "totp_uri");
     const char *message = wire_find(triples, tc, "message");
+    const char *challenge = wire_find(triples, tc, "challenge");
+    const char *method = wire_find(triples, tc, "method");
 
     /* Build response JSON */
+    char *resp_json = (char *)malloc(MAX_JSON);
+    if (!resp_json) return;
+
+    char esc_uri[4096], esc_qr[65536], esc_msg[512], esc_chal[128];
+    json_escape(totp_uri ? totp_uri : "", esc_uri, sizeof(esc_uri));
+    json_escape(qr_data ? qr_data : "", esc_qr, sizeof(esc_qr));
+    json_escape(message ? message : "", esc_msg, sizeof(esc_msg));
+    json_escape(challenge ? challenge : "", esc_chal, sizeof(esc_chal));
+
+    snprintf(resp_json, MAX_JSON,
+        "{\"type\":\"relay_register_result\",\"status\":\"%s\","
+        "\"user\":\"%s\",\"totp_uri\":\"%s\","
+        "\"qr_size\":%s,\"qr_data\":\"%s\",\"message\":\"%s\","
+        "\"challenge\":\"%s\",\"method\":\"%s\"}",
+        status ? status : "error", user, esc_uri,
+        qr_size_s ? qr_size_s : "0", esc_qr, esc_msg,
+        esc_chal, method ? method : "");
+    send_event(conn_id, resp_json);
+    free(resp_json);
+}
+
+/* ── relay_verify_register — send verify-register via relay ── */
+static void handle_relay_verify_register(int conn_id, const char *json)
+{
+    char user[128], cf_token[256], method[32];
+    json_get_str(json, "user", user, sizeof(user));
+    json_get_str(json, "cf_token", cf_token, sizeof(cf_token));
+    json_get_str(json, "method", method, sizeof(method));
+
+    if (!g_psk_loaded || !g_relay_host[0]) {
+        send_event(conn_id, "{\"type\":\"relay_verify_result\",\"status\":\"error\","
+                   "\"message\":\"no relay config\"}");
+        return;
+    }
+
+    /* Build wire triples */
+    WireTriple req[4];
+    int nreq = 0;
+    req[nreq++] = (WireTriple){"verify-register", "action", "none"};
+    req[nreq++] = (WireTriple){user, "entity", "none"};
+    if (cf_token[0])
+        req[nreq++] = (WireTriple){cf_token, "cf-token", "none"};
+    if (method[0])
+        req[nreq++] = (WireTriple){method, "method", "none"};
+
+    /* Pack, encrypt, send — same pattern as relay_register */
+    uint8_t wire_buf[WIRE_BUF_SIZE];
+    int packed = wire_pack(req, nreq, wire_buf, WIRE_BUF_SIZE);
+    if (packed <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_verify_result\",\"status\":\"error\","
+                   "\"message\":\"pack failed\"}");
+        return;
+    }
+
+    uint8_t enc_buf[WIRE_BUF_SIZE];
+    uint8_t nonce[12];
+    crypt_fill_random(nonce, 12);
+    uint8_t tag[16];
+    enc_buf[0] = 0xCA;
+    memcpy(enc_buf + 1, nonce, 12);
+    aes256gcm_encrypt(g_cockpit_key, nonce,
+                      wire_buf, (size_t)packed,
+                      enc_buf + 13, tag);
+    memcpy(enc_buf + 13 + packed, tag, 16);
+    int enc_len = 1 + 12 + packed + 16;
+
+    SOCKET rs = wire_connect(g_relay_host, g_relay_port);
+    if (rs == INVALID_SOCKET) {
+        send_event(conn_id, "{\"type\":\"relay_verify_result\",\"status\":\"error\","
+                   "\"message\":\"relay unreachable\"}");
+        return;
+    }
+
+#ifdef _WIN32
+    DWORD rtv = 30000;  /* 30s — CF API calls take time */
+    setsockopt(rs, SOL_SOCKET, SO_RCVTIMEO, (char *)&rtv, sizeof(rtv));
+#endif
+
+    wire_send(rs, enc_buf, enc_len);
+    shutdown(rs, SD_SEND);
+
+    uint8_t resp_buf[WIRE_BUF_SIZE];
+    int resp_len = 0;
+    for (;;) {
+        int n = recv(rs, (char *)resp_buf + resp_len,
+                     WIRE_BUF_SIZE - resp_len, 0);
+        if (n <= 0) break;
+        resp_len += n;
+        if (resp_len >= WIRE_BUF_SIZE) break;
+    }
+    wire_close(rs);
+
+    if (resp_len <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_verify_result\",\"status\":\"error\","
+                   "\"message\":\"no response\"}");
+        return;
+    }
+
+    /* Decrypt */
+    uint8_t dec_buf[WIRE_BUF_SIZE];
+    int dec_len = resp_len;
+    if (resp_buf[0] == 0xCA && resp_len > 29) {
+        uint8_t *rnonce = resp_buf + 1;
+        uint8_t *rtag = resp_buf + resp_len - 16;
+        int ct_len = resp_len - 29;
+        if (aes256gcm_decrypt(g_cockpit_key, rnonce,
+                              resp_buf + 13, (size_t)ct_len,
+                              rtag, dec_buf) == 0) {
+            dec_len = ct_len;
+        } else {
+            send_event(conn_id, "{\"type\":\"relay_verify_result\",\"status\":\"error\","
+                       "\"message\":\"decrypt failed\"}");
+            return;
+        }
+    } else {
+        memcpy(dec_buf, resp_buf, (size_t)resp_len);
+    }
+
+    WireTriple triples[32];
+    char parse_buf[WIRE_BUF_SIZE];
+    int tc = wire_unpack(dec_buf, dec_len, triples, 32, parse_buf, WIRE_BUF_SIZE);
+
+    const char *status = wire_find(triples, tc, "status");
+    const char *qr_data = wire_find(triples, tc, "qr_data");
+    const char *qr_size_s = wire_find(triples, tc, "qr_size");
+    const char *totp_uri = wire_find(triples, tc, "totp_uri");
+    const char *message = wire_find(triples, tc, "message");
+    const char *role = wire_find(triples, tc, "role");
+
     char *resp_json = (char *)malloc(MAX_JSON);
     if (!resp_json) return;
 
@@ -938,7 +1069,237 @@ static void handle_relay_register(int conn_id, const char *json)
     json_escape(message ? message : "", esc_msg, sizeof(esc_msg));
 
     snprintf(resp_json, MAX_JSON,
-        "{\"type\":\"relay_register_result\",\"status\":\"%s\","
+        "{\"type\":\"relay_verify_result\",\"status\":\"%s\","
+        "\"user\":\"%s\",\"totp_uri\":\"%s\","
+        "\"qr_size\":%s,\"qr_data\":\"%s\","
+        "\"role\":\"%s\",\"message\":\"%s\"}",
+        status ? status : "error", user, esc_uri,
+        qr_size_s ? qr_size_s : "0", esc_qr,
+        role ? role : "", esc_msg);
+    send_event(conn_id, resp_json);
+    free(resp_json);
+}
+
+/* ── relay_reset_totp — request TOTP reset (step 1: get challenge) ── */
+static void handle_relay_reset_totp(int conn_id, const char *json)
+{
+    char user[128];
+    json_get_str(json, "user", user, sizeof(user));
+
+    if (!g_psk_loaded || !g_relay_host[0]) {
+        send_event(conn_id, "{\"type\":\"relay_reset_result\",\"status\":\"error\","
+                   "\"message\":\"no relay config\"}");
+        return;
+    }
+
+    WireTriple req[2];
+    int nreq = 0;
+    req[nreq++] = (WireTriple){"reset-totp", "action", "none"};
+    req[nreq++] = (WireTriple){user, "entity", "none"};
+
+    uint8_t wire_buf[WIRE_BUF_SIZE];
+    int packed = wire_pack(req, nreq, wire_buf, WIRE_BUF_SIZE);
+    if (packed <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_reset_result\",\"status\":\"error\","
+                   "\"message\":\"pack failed\"}");
+        return;
+    }
+
+    uint8_t enc_buf[WIRE_BUF_SIZE];
+    uint8_t nonce[12];
+    crypt_fill_random(nonce, 12);
+    uint8_t tag[16];
+    enc_buf[0] = 0xCA;
+    memcpy(enc_buf + 1, nonce, 12);
+    aes256gcm_encrypt(g_cockpit_key, nonce,
+                      wire_buf, (size_t)packed,
+                      enc_buf + 13, tag);
+    memcpy(enc_buf + 13 + packed, tag, 16);
+    int enc_len = 1 + 12 + packed + 16;
+
+    SOCKET rs = wire_connect(g_relay_host, g_relay_port);
+    if (rs == INVALID_SOCKET) {
+        send_event(conn_id, "{\"type\":\"relay_reset_result\",\"status\":\"error\","
+                   "\"message\":\"relay unreachable\"}");
+        return;
+    }
+
+    wire_send(rs, enc_buf, enc_len);
+    shutdown(rs, SD_SEND);
+
+    uint8_t resp_buf[WIRE_BUF_SIZE];
+    int resp_len = 0;
+    for (;;) {
+        int n = recv(rs, (char *)resp_buf + resp_len,
+                     WIRE_BUF_SIZE - resp_len, 0);
+        if (n <= 0) break;
+        resp_len += n;
+        if (resp_len >= WIRE_BUF_SIZE) break;
+    }
+    wire_close(rs);
+
+    if (resp_len <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_reset_result\",\"status\":\"error\","
+                   "\"message\":\"no response\"}");
+        return;
+    }
+
+    uint8_t dec_buf[WIRE_BUF_SIZE];
+    int dec_len = resp_len;
+    if (resp_buf[0] == 0xCA && resp_len > 29) {
+        uint8_t *rnonce = resp_buf + 1;
+        uint8_t *rtag = resp_buf + resp_len - 16;
+        int ct_len = resp_len - 29;
+        if (aes256gcm_decrypt(g_cockpit_key, rnonce,
+                              resp_buf + 13, (size_t)ct_len,
+                              rtag, dec_buf) == 0) {
+            dec_len = ct_len;
+        } else {
+            send_event(conn_id, "{\"type\":\"relay_reset_result\",\"status\":\"error\","
+                       "\"message\":\"decrypt failed\"}");
+            return;
+        }
+    } else {
+        memcpy(dec_buf, resp_buf, (size_t)resp_len);
+    }
+
+    WireTriple triples[32];
+    char parse_buf[WIRE_BUF_SIZE];
+    int tc = wire_unpack(dec_buf, dec_len, triples, 32, parse_buf, WIRE_BUF_SIZE);
+
+    const char *status = wire_find(triples, tc, "status");
+    const char *challenge = wire_find(triples, tc, "challenge");
+    const char *method = wire_find(triples, tc, "method");
+    const char *message = wire_find(triples, tc, "message");
+
+    char esc_chal[128], esc_msg[512];
+    json_escape(challenge ? challenge : "", esc_chal, sizeof(esc_chal));
+    json_escape(message ? message : "", esc_msg, sizeof(esc_msg));
+
+    char resp_json[2048];
+    snprintf(resp_json, sizeof(resp_json),
+        "{\"type\":\"relay_reset_result\",\"status\":\"%s\","
+        "\"user\":\"%s\",\"challenge\":\"%s\","
+        "\"method\":\"%s\",\"message\":\"%s\"}",
+        status ? status : "error", user, esc_chal,
+        method ? method : "", esc_msg);
+    send_event(conn_id, resp_json);
+}
+
+/* ── relay_verify_reset — verify domain + issue new TOTP (step 2) ── */
+static void handle_relay_verify_reset(int conn_id, const char *json)
+{
+    char user[128], cf_token[256], method[32];
+    json_get_str(json, "user", user, sizeof(user));
+    json_get_str(json, "cf_token", cf_token, sizeof(cf_token));
+    json_get_str(json, "method", method, sizeof(method));
+
+    if (!g_psk_loaded || !g_relay_host[0]) {
+        send_event(conn_id, "{\"type\":\"relay_verify_reset_result\",\"status\":\"error\","
+                   "\"message\":\"no relay config\"}");
+        return;
+    }
+
+    WireTriple req[4];
+    int nreq = 0;
+    req[nreq++] = (WireTriple){"verify-reset", "action", "none"};
+    req[nreq++] = (WireTriple){user, "entity", "none"};
+    if (cf_token[0])
+        req[nreq++] = (WireTriple){cf_token, "cf-token", "none"};
+    if (method[0])
+        req[nreq++] = (WireTriple){method, "method", "none"};
+
+    uint8_t wire_buf[WIRE_BUF_SIZE];
+    int packed = wire_pack(req, nreq, wire_buf, WIRE_BUF_SIZE);
+    if (packed <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_verify_reset_result\",\"status\":\"error\","
+                   "\"message\":\"pack failed\"}");
+        return;
+    }
+
+    uint8_t enc_buf[WIRE_BUF_SIZE];
+    uint8_t nonce[12];
+    crypt_fill_random(nonce, 12);
+    uint8_t tag[16];
+    enc_buf[0] = 0xCA;
+    memcpy(enc_buf + 1, nonce, 12);
+    aes256gcm_encrypt(g_cockpit_key, nonce,
+                      wire_buf, (size_t)packed,
+                      enc_buf + 13, tag);
+    memcpy(enc_buf + 13 + packed, tag, 16);
+    int enc_len = 1 + 12 + packed + 16;
+
+    SOCKET rs = wire_connect(g_relay_host, g_relay_port);
+    if (rs == INVALID_SOCKET) {
+        send_event(conn_id, "{\"type\":\"relay_verify_reset_result\",\"status\":\"error\","
+                   "\"message\":\"relay unreachable\"}");
+        return;
+    }
+
+#ifdef _WIN32
+    DWORD rtv = 30000;
+    setsockopt(rs, SOL_SOCKET, SO_RCVTIMEO, (char *)&rtv, sizeof(rtv));
+#endif
+
+    wire_send(rs, enc_buf, enc_len);
+    shutdown(rs, SD_SEND);
+
+    uint8_t resp_buf[WIRE_BUF_SIZE];
+    int resp_len = 0;
+    for (;;) {
+        int n = recv(rs, (char *)resp_buf + resp_len,
+                     WIRE_BUF_SIZE - resp_len, 0);
+        if (n <= 0) break;
+        resp_len += n;
+        if (resp_len >= WIRE_BUF_SIZE) break;
+    }
+    wire_close(rs);
+
+    if (resp_len <= 0) {
+        send_event(conn_id, "{\"type\":\"relay_verify_reset_result\",\"status\":\"error\","
+                   "\"message\":\"no response\"}");
+        return;
+    }
+
+    uint8_t dec_buf[WIRE_BUF_SIZE];
+    int dec_len = resp_len;
+    if (resp_buf[0] == 0xCA && resp_len > 29) {
+        uint8_t *rnonce = resp_buf + 1;
+        uint8_t *rtag = resp_buf + resp_len - 16;
+        int ct_len = resp_len - 29;
+        if (aes256gcm_decrypt(g_cockpit_key, rnonce,
+                              resp_buf + 13, (size_t)ct_len,
+                              rtag, dec_buf) == 0) {
+            dec_len = ct_len;
+        } else {
+            send_event(conn_id, "{\"type\":\"relay_verify_reset_result\",\"status\":\"error\","
+                       "\"message\":\"decrypt failed\"}");
+            return;
+        }
+    } else {
+        memcpy(dec_buf, resp_buf, (size_t)resp_len);
+    }
+
+    WireTriple triples[32];
+    char parse_buf[WIRE_BUF_SIZE];
+    int tc = wire_unpack(dec_buf, dec_len, triples, 32, parse_buf, WIRE_BUF_SIZE);
+
+    const char *status = wire_find(triples, tc, "status");
+    const char *qr_data = wire_find(triples, tc, "qr_data");
+    const char *qr_size_s = wire_find(triples, tc, "qr_size");
+    const char *totp_uri = wire_find(triples, tc, "totp_uri");
+    const char *message = wire_find(triples, tc, "message");
+
+    char *resp_json = (char *)malloc(MAX_JSON);
+    if (!resp_json) return;
+
+    char esc_uri[4096], esc_qr[65536], esc_msg[512];
+    json_escape(totp_uri ? totp_uri : "", esc_uri, sizeof(esc_uri));
+    json_escape(qr_data ? qr_data : "", esc_qr, sizeof(esc_qr));
+    json_escape(message ? message : "", esc_msg, sizeof(esc_msg));
+
+    snprintf(resp_json, MAX_JSON,
+        "{\"type\":\"relay_verify_reset_result\",\"status\":\"%s\","
         "\"user\":\"%s\",\"totp_uri\":\"%s\","
         "\"qr_size\":%s,\"qr_data\":\"%s\",\"message\":\"%s\"}",
         status ? status : "error", user, esc_uri,
@@ -2702,6 +3063,12 @@ static void route_ws_message(int conn_id, const char *msg, int len)
         handle_relay_auth(conn_id, msg);
     } else if (strcmp(type, "relay_register") == 0) {
         handle_relay_register(conn_id, msg);
+    } else if (strcmp(type, "relay_verify_register") == 0) {
+        handle_relay_verify_register(conn_id, msg);
+    } else if (strcmp(type, "relay_reset_totp") == 0) {
+        handle_relay_reset_totp(conn_id, msg);
+    } else if (strcmp(type, "relay_verify_reset") == 0) {
+        handle_relay_verify_reset(conn_id, msg);
     } else if (strcmp(type, "task") == 0) {
         handle_task(conn_id, msg);
     } else if (strcmp(type, "judge") == 0) {

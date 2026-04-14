@@ -800,7 +800,7 @@ const LoopController = (() => {
     }
 
     // Route auth events to AuthGate
-    if (msg.type === 'relay_auth_result' || msg.type === 'relay_register_result') {
+    if (msg.type === 'relay_auth_result' || msg.type === 'relay_register_result' || msg.type === 'relay_verify_result' || msg.type === 'relay_reset_result' || msg.type === 'relay_verify_reset_result') {
       if (window.AuthGate) window.AuthGate.handleEvent(msg);
       return;
     }

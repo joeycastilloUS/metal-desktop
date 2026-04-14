@@ -1635,6 +1635,128 @@ html, body {
 }
 
 /* QR view */
+#auth-reset-link {
+  font-size: 11px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+#auth-reset-link a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+#auth-reset-link a:hover {
+  color: var(--accent-blue);
+}
+
+#auth-challenge-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#auth-challenge-view.hidden { display: none; }
+
+#auth-challenge-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+#auth-challenge-token-box {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-blue);
+  word-break: break-all;
+  text-align: center;
+  width: 100%;
+  user-select: all;
+}
+
+#auth-challenge-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.auth-method-radio {
+  font-size: 12px;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auth-method-radio code {
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.auth-method-radio input[type="radio"] {
+  accent-color: var(--accent-blue);
+}
+
+#auth-wk-instructions {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.5;
+}
+
+#auth-wk-instructions code {
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+}
+
+#auth-cf-instructions {
+  width: 100%;
+}
+
+#auth-cf-instructions.hidden { display: none; }
+
+#auth-cf-token {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+}
+
+#auth-cf-token:focus { border-color: var(--accent-blue); }
+
+#auth-verify-domain-btn {
+  background: var(--accent-blue);
+  color: #0a0a0f;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#auth-verify-domain-btn:hover { opacity: 0.9; }
+#auth-verify-domain-btn:disabled { opacity: 0.5; cursor: default; }
+
+#auth-challenge-error {
+  color: var(--accent-red, #ff4444);
+  font-size: 12px;
+  text-align: center;
+}
+
 #auth-qr-view {
   width: 100%;
   display: flex;

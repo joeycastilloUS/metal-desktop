@@ -19,7 +19,27 @@
         <button id="auth-login-btn">LOGIN</button>
         <div id="auth-divider">Not registered?</div>
         <button id="auth-register-btn">REGISTER</button>
+        <div id="auth-reset-link"><a href="#" id="auth-reset-totp-link">Reset TOTP</a></div>
         <span id="auth-error"></span>
+      </div>
+      <div id="auth-challenge-view" class="hidden">
+        <div id="auth-challenge-label">Verify domain ownership</div>
+        <div id="auth-challenge-token-box">
+          <span id="auth-challenge-token"></span>
+        </div>
+        <div id="auth-challenge-methods">
+          <label class="auth-method-radio"><input type="radio" name="auth-method" value="wellknown" checked> Place file at <code>.well-known/metal-verify</code></label>
+          <label class="auth-method-radio"><input type="radio" name="auth-method" value="cloudflare"> Cloudflare API token</label>
+        </div>
+        <div id="auth-wk-instructions">
+          Place the token above as the <strong>sole content</strong> of<br>
+          <code>https://&lt;your-domain&gt;/.well-known/metal-verify</code>
+        </div>
+        <div id="auth-cf-instructions" class="hidden">
+          <input type="text" id="auth-cf-token" placeholder="Cloudflare API token" spellcheck="false" autocomplete="off">
+        </div>
+        <button id="auth-verify-domain-btn">VERIFY DOMAIN</button>
+        <span id="auth-challenge-error"></span>
       </div>
       <div id="auth-qr-view" class="hidden">
         <canvas id="auth-qr-canvas"></canvas>
