@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Inspect: roll back FQDN, restore TOTP-only auth</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:#ccc;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid #6FC3DF;padding:12px 24px;z-index:100}
+  nav .brand{color:#6FC3DF;font-weight:700;font-size:1.2rem}
+  .container{max-width:900px;margin:0 auto;padding:32px 24px}
+  h1{color:#6FC3DF;font-size:1.8rem;margin-bottom:8px}
+  .subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+  h2{color:#6FC3DF;font-size:1.3rem;margin:32px 0 12px;border-bottom:1px solid #333;padding-bottom:6px}
+  h3{color:#6FC3DF;font-size:1.05rem;margin:20px 0 8px}
+  .card{background:#1A1A1A;border-radius:8px;padding:18px 22px;margin:12px 0}
+  code{background:#222;color:#6FC3DF;padding:2px 6px;border-radius:3px;font-size:.9em}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #333;vertical-align:top}
+  th{color:#6FC3DF;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+  .good{color:#22c55e;font-weight:700}
+  .warn{color:#fbbf24;font-weight:700}
+  .dead{color:#ef4444;font-weight:700}
+  .summary{background:#1a2a1a;border:1px solid #3a5a3a;border-radius:8px;padding:14px 22px;margin:16px 0;color:#7dba7d;font-weight:600;text-align:center}
+  .footer{margin-top:48px;padding-top:16px;border-top:1px solid #222;color:#555;font-size:.8rem}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span></nav>
+<div class="container">
+
+<h1>Inspect: roll back FQDN, restore TOTP-only auth</h1>
+<p class="subtitle">metal-desktop + nous (relay). What FQDN was, where it landed, and how to back it out so plain TOTP works again.</p>
+
+<h2>TL;DR</h2>
+<div class="card">
+  <ul>
+    <li><strong>Pre-FQDN known-good states identified:</strong>
+      <ul>
+        <li>nous-desktop (UI) @ <code>f8f192d</code> -- 2026-04-07 "~s relay DNS default shipped"</li>
+        <li>nous (relay) @ <code>facfbfc</code> -- 2026-04-09 (parent of <code>e1a376b</code> "Board 6.1 register challenge + FQDN validation")</li>
+      </ul>
+    </li>
+    <li><strong>FQDN was added in 7 commits</strong> across nous-desktop + nous between 2026-04-07 and 2026-05-11; multiple bug-fix follow-ups suggest it was hard to land cleanly.</li>
+    <li><strong>metal-desktop has no pre-FQDN commit</strong> -- it was rebranded from nous-desktop AFTER FQDN landed, so the entire metal-desktop history is FQDN-era.</li>
+    <li><strong>Public relay <code>relay.3-nous.net:8080</code> is dead</strong> (HTTP 000 even though DNS still resolves). Rollback doesn't help with that; you'll still need a local relay binary regardless.</li>
+    <li><strong>Recommended strategy:</strong> surgical strip (Strategy B below), not hard-reset, because there are real improvements in the months after FQDN (catalog -&gt; prime rename, TLS 1.3 hardening, QR fixes, CF identity bug fixes) that we don't want to lose.</li>
+  </ul>
+</div>
+
+<h2>What FQDN added (the thing to remove)</h2>
+<div class="card">
+  <p>The pre-FQDN flow: <strong>user enters username + TOTP code</strong> -&gt; relay verifies TOTP against stored secret -&gt; ok.</p>
+  <p>Register pre-FQDN: <strong>user picks username</strong> -&gt; relay returns QR code -&gt; user scans in Authenticator -&gt; user enters TOTP -&gt; verified.</p>
+  <p>Post-FQDN, register added a domain-ownership-proof step between username and QR:</p>
+  <ol>
+    <li>Pick username.</li>
+    <li>Choose verification method: <strong>.well-known/metal-verify</strong> (place file at domain) OR <strong>Cloudflare API token</strong> (relay queries CF on your behalf).</li>
+    <li>Relay returns a challenge token. You publish it to your domain.</li>
+    <li>Click "Verify Domain". Relay does the lookup (DNS via <code>-lresolv</code> + HTTP fetch, or CF API).</li>
+    <li>If verified -&gt; relay returns QR -&gt; scan + TOTP -&gt; bound to your domain.</li>
+  </ol>
+  <p>Same model added to <em>reset-totp</em> (re-verify domain to rotate TOTP secret) and <em>auth lockdown</em> (lock account after auth so registration can't be hijacked).</p>
+</div>
+
+<h2>FQDN commit trail</h2>
+<table>
+  <tr><th>Date</th><th>Repo</th><th>Commit</th><th>What</th></tr>
+  <tr><td>2026-04-07</td><td>nous-desktop</td><td><code class="good">f8f192d</code></td><td>~s relay DNS default shipped (PRE-FQDN reference state)</td></tr>
+  <tr><td>2026-04-07</td><td>nous-desktop</td><td><code>c2a22df</code></td><td>~p TOTP lockdown + FQDN identity (planned)</td></tr>
+  <tr><td>2026-04-09</td><td>nous</td><td><code class="good">facfbfc</code></td><td>(PRE-FQDN relay state)</td></tr>
+  <tr><td>2026-04-09</td><td>nous</td><td><code>e1a376b</code></td><td>Board 6.1: register challenge + auth lockdown + FQDN validation</td></tr>
+  <tr><td>2026-04-09</td><td>nous</td><td><code>a104768</code></td><td>Board 6.5: verify-register handler (CF identity)</td></tr>
+  <tr><td>2026-04-09</td><td>nous</td><td><code>f0562c9</code></td><td>Board 6.6: reset-totp + verify-reset (CF re-verification)</td></tr>
+  <tr><td>2026-04-10</td><td>nous-desktop</td><td><code>9db7e34</code></td><td>~b Board 5: auth lockdown + FQDN validation + http client (UI side)</td></tr>
+  <tr><td>2026-04-11</td><td>nous</td><td><code>5ae81bc</code></td><td>Board 7.1: relay forward verify-register + reset-totp + verify-reset</td></tr>
+  <tr><td>2026-04-14</td><td>metal-desktop</td><td><code>7078166</code></td><td>Initial commit -- rebrand from nous-desktop (already POST-FQDN)</td></tr>
+  <tr><td>2026-04-14</td><td>metal-desktop</td><td><code>fd8957c</code></td><td>Board 73 item 4: end-to-end auth test via relay</td></tr>
+  <tr><td>--</td><td>nous</td><td><code>da9f0dd</code></td><td>.well-known/metal-verify dual-method domain verification</td></tr>
+  <tr><td>--</td><td>nous</td><td><code>72df49a</code> <code>30b345f</code></td><td>~t / ~f BUG 9 + 10: QR EC_M + mktime TZ drift</td></tr>
+</table>
+
+<h2>FQDN footprint in current code</h2>
+<table>
+  <tr><th>File</th><th>FQDN ref count</th><th>Action</th></tr>
+  <tr><td><code>metal-desktop/wwwroot/desktop.js</code></td><td>7 keyword hits (verify-domain, relay_register, cf_token, well-known etc.)</td><td>Strip multi-step register UI; reduce to user-&gt;QR-&gt;TOTP. Keep TOTP login path.</td></tr>
+  <tr><td><code>metal-desktop/src/serve.c</code></td><td>36 keyword hits</td><td>Remove WS handlers: <code>relay_verify_register</code>, <code>relay_verify_reset</code>, CF token routing. Keep <code>relay_auth</code> + simple <code>relay_register</code>.</td></tr>
+  <tr><td><code>metal-desktop/wwwroot/index.html</code></td><td>(check)</td><td>Remove domain-verify form fields, .well-known instructions, CF token input.</td></tr>
+  <tr><td><code>nous/comms/skill/relay/relay_server.c</code></td><td>6 explicit "FQDN" keyword hits + verify-register/reset/well-known handlers (~500-800 lines incl. DNS + CF + cert verify)</td><td>Strip verify-register/reset handlers, .well-known route, CF API client, FQDN validation guards. Keep TOTP register (immediate QR) + TOTP login.</td></tr>
+</table>
+
+<h2>Two rollback strategies</h2>
+
+<h3>Strategy A: Hard-reset to pre-FQDN commits</h3>
+<div class="card">
+  <p><strong>How:</strong> <code>git checkout f8f192d</code> in nous-desktop (for the UI); <code>git checkout facfbfc</code> in nous (for the relay). Cherry-pick desired post-FQDN improvements one-by-one if needed.</p>
+  <p><strong>Cost:</strong> Re-rebrand work to match metal-desktop conventions. Lose <strong>every improvement since 2026-04-09</strong> -- including catalog-&gt;prime rename, TLS 1.3 hardening, QR EC_M fixes, mktime TZ fixes, .well-known dual-method (which we want to <em>remove</em> but the FILE got other improvements too), 22-provider config refreshes, etc.</p>
+  <p><strong>When to pick this:</strong> if FQDN's removal is too entangled to do surgically, or if you want to start from a known-clean baseline.</p>
+</div>
+
+<h3>Strategy B: Surgical strip (recommended)</h3>
+<div class="card">
+  <p><strong>How:</strong> Keep current HEAD on both repos. Identify and remove only the FQDN-specific code paths:</p>
+  <ol>
+    <li><strong>metal-desktop/wwwroot/index.html</strong> -- delete the domain-verification UI sections (auth-challenge-view, wkInstructions, cfInstructions, cfTokenInput).</li>
+    <li><strong>metal-desktop/wwwroot/desktop.js</strong> -- remove <code>verifyDomainBtn</code> handler, <code>methodRadios</code> toggle, the multi-step register flow. Register becomes: send <code>relay_register {user}</code> -&gt; receive QR -&gt; scan -&gt; TOTP -&gt; verify.</li>
+    <li><strong>metal-desktop/src/serve.c</strong> -- remove WS handlers for <code>relay_verify_register</code>, <code>relay_verify_reset</code>, <code>relay_reset_totp</code>. Pass <code>relay_auth</code> + <code>relay_register</code> straight through to relay.</li>
+    <li><strong>nous/comms/skill/relay/relay_server.c</strong> -- remove FQDN-validation gate on register, remove verify-register/reset/well-known route handlers, remove CF API client. Keep TOTP register (immediate QR) + login.</li>
+    <li><strong>nous-desktop CLAUDE.md docs</strong> -- update "FQDN identity / domain ownership" text to "TOTP only".</li>
+  </ol>
+  <p><strong>Cost:</strong> Careful manual editing. Estimate: ~3-5 pts on desktop side, ~5-8 pts on relay side. Need to test that TOTP register/login round-trip works after.</p>
+  <p><strong>Benefit:</strong> keeps all post-FQDN improvements (catalog-&gt;prime, TLS, bug fixes). Smaller code surface (FQDN gone). Same TOTP UX as pre-FQDN.</p>
+</div>
+
+<h2>The relay-binary problem (independent of rollback)</h2>
+<div class="card">
+  <p>Even with FQDN removed, you still need a relay running for TOTP. Current state:</p>
+  <ul>
+    <li><strong>Public relay at <code>relay.3-nous.net:8080</code> is dead</strong> (HTTP 000; DNS resolves to 35.236.92.148 but port 8080 doesn't respond).</li>
+    <li><strong>No Windows build of relay_server</strong>. The existing <code>build_linux.sh</code> requires <code>-lresolv</code> (Linux DNS) and references WSL paths.</li>
+    <li><strong>No production-relay Make target</strong> in <code>nous/comms/Makefile</code> -- only test binaries.</li>
+  </ul>
+  <p>So before ANY desktop session works, the relay needs to be (a) built for Windows, (b) running locally on <code>localhost:8081</code>, (c) PSK matched with desktop's <code>triples.key</code>. That's a separate piece of work whose cost is independent of the FQDN rollback.</p>
+</div>
+
+<h2>Recommended sequence</h2>
+<div class="card">
+  <ol>
+    <li><strong>Decide A vs B.</strong> Recommend B (surgical).</li>
+    <li><strong>~p the rollback as a board.</strong> Sized items for desktop-side strip + relay-side strip + Windows relay build + smoke test. Estimate ~21 pts (one board).</li>
+    <li><strong>~e</strong> and <strong>~b</strong> through the board. Items in order: relay Windows build (unblocks everything), strip FQDN from relay, strip from desktop, smoke register + login round-trip on localhost.</li>
+    <li><strong>~s</strong> on each repo separately (metal-desktop + nous). GitHub PRs would be ideal but you generally ship to main directly here.</li>
+  </ol>
+</div>
+
+<div class="summary">Pre-FQDN refs: nous-desktop f8f192d, nous facfbfc &middot; FQDN added in 7 commits &middot; surgical strip is the right strategy &middot; relay still needs a Windows build before any TOTP works</div>
+
+<div class="footer">v0 &middot; 2026-05-11 &middot; Be &middot; metal console &middot; inspect on metal-desktop</div>
+</div>
+</body>
+</html>

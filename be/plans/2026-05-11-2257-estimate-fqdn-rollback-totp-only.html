@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Estimate: Board 6 -- Roll back FQDN, restore TOTP-only</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:#ccc;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid #6FC3DF;padding:12px 24px;z-index:100}
+  nav .brand{color:#6FC3DF;font-weight:700;font-size:1.2rem}
+  .container{max-width:800px;margin:0 auto;padding:32px 24px}
+  h1{color:#6FC3DF;font-size:1.8rem;margin-bottom:8px}
+  .subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+  h2{color:#6FC3DF;font-size:1.3rem;margin:32px 0 12px;border-bottom:1px solid #333;padding-bottom:6px}
+  .card{background:#1A1A1A;border-radius:8px;padding:18px 22px;margin:12px 0}
+  code{background:#222;color:#6FC3DF;padding:2px 6px;border-radius:3px;font-size:.9em}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #333;vertical-align:top}
+  th{color:#6FC3DF;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+  .pts{color:#6FC3DF;font-weight:700;font-size:1.1em}
+  .total{background:#1A2A1A;border-radius:8px;padding:14px 22px;margin:16px 0;color:#7dba7d;font-weight:600;text-align:center}
+  .footer{margin-top:48px;padding-top:16px;border-top:1px solid #222;color:#555;font-size:.8rem}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span></nav>
+<div class="container">
+
+<h1>Estimate: Board 6 -- Roll back FQDN, restore TOTP-only</h1>
+<p class="subtitle">17 pts. 5 items. Cross-repo (metal-desktop + nous).</p>
+
+<h2>Board 6 Details</h2>
+<div class="card">
+<table>
+  <tr><th>#</th><th>Triple</th><th>Cmd</th><th class="pts">Pts</th><th>Why</th></tr>
+  <tr>
+    <td>1</td>
+    <td>{FQDN handlers + .well-known + CF API + DNS lookup, remove from, nous/comms/skill/relay/relay_server.c}</td>
+    <td>~u</td>
+    <td class="pts">5</td>
+    <td>Largest piece. Strip ~500-800 lines: verify-register WS handler, verify-reset handler, .well-known HTTP route, CF API client, FQDN validation gate. Keep TOTP register (immediate QR) + login. Must not break TLS / prime / crypt code that runs alongside.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>{Windows build target, add to, nous/comms/Makefile or build_win.bat}</td>
+    <td>~a</td>
+    <td class="pts">3</td>
+    <td>gcc + MinGW + <code>ws2_32 winhttp bcrypt</code>. Without FQDN there's no <code>-lresolv</code> dependency. Should compile cleanly. Output: <code>relay_server.exe</code>.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>{domain-verify UI + multi-step register, remove from, metal-desktop wwwroot}</td>
+    <td>~u</td>
+    <td class="pts">3</td>
+    <td>Strip from <code>index.html</code> (auth-challenge-view, wkInstructions, cfInstructions, cfTokenInput) and <code>desktop.js</code> (verifyDomainBtn handler, methodRadios, multi-step flow). Register flow simplifies to: enter user -&gt; click Register -&gt; QR appears -&gt; enter TOTP -&gt; verified.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>{FQDN WS handlers, remove from, metal-desktop/src/serve.c}</td>
+    <td>~u</td>
+    <td class="pts">3</td>
+    <td>Remove <code>relay_verify_register</code>, <code>relay_verify_reset</code>, <code>relay_reset_totp</code> dispatch from the WS message router. Keep <code>relay_auth</code>, <code>relay_register</code>. ~30-50 lines.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>{relay + desktop register + login round-trip, smoke test, on localhost}</td>
+    <td>~t</td>
+    <td class="pts">3</td>
+    <td>Kill the running desktop (PID 1218). Rebuild both. Start <code>relay_server.exe</code> on <code>localhost:8081</code> with PSK. Start <code>metal-desktop.exe</code> on <code>localhost:5050</code>. Open browser, register a test user, scan QR, enter TOTP, confirm cockpit unlocks. Send a free-AI prompt to verify provider fan-out still works.</td>
+  </tr>
+</table>
+<div class="total">Total: 17 pts &middot; 5 Ready &middot; 0 Done &middot; new Board 6 in metal-desktop/be/board.md</div>
+</div>
+
+<h2>Dependencies</h2>
+<div class="card">
+  <ul>
+    <li>Item 1 blocks 2 (Windows build needs the stripped source to compile cleanly).</li>
+    <li>Items 3 + 4 are independent of 1 + 2 (desktop strip can ship parallel to relay strip).</li>
+    <li>Item 5 (smoke) is last -- requires 1, 2, 3, 4 all done.</li>
+  </ul>
+</div>
+
+<h2>Risks</h2>
+<div class="card">
+  <ul>
+    <li><strong>Surgical strip on relay misses something.</strong> If a non-FQDN handler accidentally calls into FQDN code, build breaks. Mitigation: grep for unused symbols after each removal pass; <code>gcc -Wall -Wextra</code> warnings flag dead code.</li>
+    <li><strong>Windows build hits unexpected platform issue.</strong> Even without DNS resolver, the relay uses sockets + crypto + threading. Sockets are <code>ws2_32</code> (already-handled in metal-desktop). Threading: relay uses <code>pthread</code> on Linux -- need MinGW <code>-lpthread</code> or rewrite to Win32 threads. Could be 1-2 hrs of yak-shaving.</li>
+    <li><strong>PSK mismatch between desktop and relay.</strong> Both need to load the same key from <code>triples.key</code>. The default location and format must match. Verify in smoke (item 5).</li>
+    <li><strong>Joey already has FQDN-bound TOTP secrets in the relay store.</strong> Rolling back drops the FQDN binding but the TOTP secret remains. Joey should be able to log in with existing secrets; or wipe the store and re-register fresh. Either way works; document in smoke report.</li>
+  </ul>
+</div>
+
+<div class="footer">v0 &middot; 2026-05-11 &middot; Be &middot; metal-desktop</div>
+</div>
+</body>
+</html>

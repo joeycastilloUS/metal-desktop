@@ -4,6 +4,27 @@ Source: Migrated from nous-desktop. Boards 1-5 archived. Boards 6-7 absorbed int
 
 ---
 
+## Board 6 — Roll back FQDN, restore TOTP-only (17 pts)
+
+Source: be/builds/2026-05-11-2255-inspect-fqdn-rollback.html → be/plans/2026-05-11-2257-plan-fqdn-rollback-totp-only.html → be/plans/2026-05-11-2257-estimate-fqdn-rollback-totp-only.html
+
+Surgical strip of FQDN-identity code so plain TOTP register + login works again. Cross-repo (metal-desktop + nous). Includes Windows build of relay_server.
+
+### Backlog
+
+### Ready
+- {FQDN handlers + .well-known + CF API + DNS lookup, remove from, nous/comms/skill/relay/relay_server.c} · 5 · ~u
+- {Windows build target, add to, nous/comms/Makefile or build_win.bat} · 3 · ~a
+- {domain-verify UI + multi-step register, remove from, metal-desktop wwwroot} · 3 · ~u
+- {FQDN WS handlers, remove from, metal-desktop/src/serve.c} · 3 · ~u
+- {relay + desktop register + login round-trip, smoke test, on localhost} · 3 · ~t
+
+### In Progress
+
+### Done
+
+---
+
 # Archive — Completed Boards (from nous-desktop)
 
 ## Board 1 — Free Keys Foundation (18 pts) ✅

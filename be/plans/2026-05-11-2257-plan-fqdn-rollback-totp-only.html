@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Plan: Roll back FQDN, restore TOTP-only</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:#ccc;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid #6FC3DF;padding:12px 24px;z-index:100}
+  nav .brand{color:#6FC3DF;font-weight:700;font-size:1.2rem}
+  .container{max-width:800px;margin:0 auto;padding:32px 24px}
+  h1{color:#6FC3DF;font-size:1.8rem;margin-bottom:8px}
+  .subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+  h2{color:#6FC3DF;font-size:1.3rem;margin:32px 0 12px;border-bottom:1px solid #333;padding-bottom:6px}
+  .card{background:#1A1A1A;border-radius:8px;padding:18px 22px;margin:12px 0}
+  code{background:#222;color:#6FC3DF;padding:2px 6px;border-radius:3px;font-size:.9em}
+  .banner{background:#1a2a1a;border:1px solid #3a5a3a;border-radius:8px;padding:10px 18px;margin:16px 0;color:#7dba7d;font-weight:600;text-align:center}
+  .footer{margin-top:48px;padding-top:16px;border-top:1px solid #222;color:#555;font-size:.8rem}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span></nav>
+<div class="container">
+
+<h1>Plan: Roll back FQDN, restore TOTP-only</h1>
+<p class="subtitle">Surgical strip of FQDN code across metal-desktop + nous/relay_server.c so plain TOTP register + login works again.</p>
+
+<div class="banner">Plan -- Awaiting Approval</div>
+
+<h2>Intent</h2>
+<div class="card">
+  <p>Joey wants to play with metal-desktop again. The current auth gate requires FQDN-identity (prove domain ownership via <code>.well-known/metal-verify</code> or Cloudflare API token) before he can register or log in. The pre-FQDN flow was simpler -- pick a username, get a QR, scan in Authenticator, enter TOTP. That worked. We're restoring that simpler flow.</p>
+  <p>Reference inspect: <code>be/builds/2026-05-11-2255-inspect-fqdn-rollback.html</code>.</p>
+</div>
+
+<h2>Scope</h2>
+<div class="card">
+  <h3>In</h3>
+  <ul>
+    <li><strong>Strip FQDN from <code>nous/comms/skill/relay/relay_server.c</code></strong> -- remove <code>verify-register</code>, <code>verify-reset</code>, <code>.well-known</code> route handlers, CF API client, FQDN validation gate on register. Keep TOTP register (immediate QR) + TOTP login.</li>
+    <li><strong>Strip FQDN from <code>metal-desktop</code></strong> -- remove the multi-step register UI (domain verify view, methodRadios, CF token input, .well-known instructions). Register UI becomes: enter username -&gt; click Register -&gt; show QR -&gt; enter TOTP -&gt; verified.</li>
+    <li><strong>Build relay for Windows</strong> -- writeups Makefile target for the relay server. Without FQDN, no <code>-lresolv</code> needed; the build becomes straightforward gcc with <code>ws2_32 winhttp bcrypt</code>.</li>
+    <li><strong>Smoke test</strong> -- run relay locally, register a test user via the desktop UI, complete TOTP enrollment, log in, confirm cockpit unlocks.</li>
+  </ul>
+  <h3>Out</h3>
+  <ul>
+    <li>Hard-resetting to pre-FQDN commits (Strategy A from inspect). Losing the catalog-&gt;prime rename, TLS hardening, and bug fixes since FQDN landed is not worth it.</li>
+    <li>Re-enabling the public <code>relay.3-nous.net:8080</code> -- dead, separate concern.</li>
+    <li>Deploying the relay anywhere besides localhost. This rollback gets us to "local single-machine usable"; cloud deploy is a future board.</li>
+    <li>Backporting any post-FQDN improvements that <em>depend on</em> the FQDN scaffolding (if any). The strip needs to be carefully written to keep TLS, prime rename, etc. intact.</li>
+  </ul>
+</div>
+
+<h2>Approach</h2>
+<div class="card">
+  <ol>
+    <li><strong>Strip relay first.</strong> The relay's FQDN handlers are the system-level gate. Removing them simplifies the dependency tree (no DNS lookups -&gt; no <code>-lresolv</code>). Easier Windows build after.</li>
+    <li><strong>Add Windows Make target</strong> for the relay -- adapts <code>build_linux.sh</code> to gcc on MinGW with the right link flags. The relay was Linux-only because of <code>-lresolv</code>; without FQDN that goes away.</li>
+    <li><strong>Strip desktop UI.</strong> Remove the multi-step register screens. desktop.js shrinks. serve.c WS handlers reduce.</li>
+    <li><strong>Smoke locally.</strong> Start relay on localhost:8081 with a PSK, point desktop's <code>desktop.conf</code> at it, register a test user, complete TOTP, log in.</li>
+  </ol>
+</div>
+
+<h2>Phases</h2>
+<div class="card">
+  <ol>
+    <li><strong>Relay strip</strong> (nous/comms/skill/relay/relay_server.c) -- remove FQDN handlers, validation, CF/DNS code paths.</li>
+    <li><strong>Relay Windows build</strong> -- new Makefile target or build_win.bat.</li>
+    <li><strong>Desktop strip</strong> (wwwroot/desktop.js + wwwroot/index.html + src/serve.c) -- remove domain-verify UI, simplify register flow.</li>
+    <li><strong>Smoke</strong> -- end-to-end register + login on localhost.</li>
+  </ol>
+</div>
+
+<h2>Constraints</h2>
+<div class="card">
+  <ul>
+    <li>Two repos affected: <code>joeycastilloUS/metal-desktop</code> + <code>kastil-systems/nous</code>. Each ships its own commits.</li>
+    <li>PSK must match between desktop's <code>desktop.conf</code> (or compiled-in default) and the relay's expected key. <code>triples.key</code> file in metal-desktop's root.</li>
+    <li>TOTP secrets persist in the relay's state file (per-user). Existing users in the relay's store will keep working (their TOTP secret is still valid).</li>
+    <li>Keep TLS 1.3 hardening, catalog-&gt;prime rename, QR EC_M fix, mktime TZ fix. These landed AFTER FQDN; they stay.</li>
+    <li>Don't break the running metal-desktop server we launched earlier today. It's PID 1218 on neo, can be killed before smoke.</li>
+  </ul>
+</div>
+
+<h2>Definition of Done</h2>
+<div class="card">
+  <p>&check; Plan saved &middot; &check; Estimate to follow &middot; &check; Pushed to remote</p>
+</div>
+
+<div class="footer">v0 &middot; 2026-05-11 &middot; Be &middot; metal-desktop</div>
+</div>
+</body>
+</html>
