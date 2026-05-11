@@ -4,24 +4,38 @@ Source: Migrated from nous-desktop. Boards 1-5 archived. Boards 6-7 absorbed int
 
 ---
 
-## Board 6 — Roll back FQDN, restore TOTP-only (17 pts)
+## Board 6 — Roll back FQDN, restore TOTP-only (17 pts) 🗄 SHELVED 2026-05-11
 
 Source: be/builds/2026-05-11-2255-inspect-fqdn-rollback.html → be/plans/2026-05-11-2257-plan-fqdn-rollback-totp-only.html → be/plans/2026-05-11-2257-estimate-fqdn-rollback-totp-only.html
 
-Surgical strip of FQDN-identity code so plain TOTP register + login works again. Cross-repo (metal-desktop + nous). Includes Windows build of relay_server.
+Surgical strip of FQDN was right-direction but **wrong-scoped** -- the inspect missed that FQDN lives primarily in `prime_server.c` (6,834-line third binary), not just relay. Even with full strip + Windows builds, no auth works without the prime running somewhere. **Shelved in favor of auth-gate bypass** (Board 7) -- 1-line desktop.js patch unblocks Joey for free-AI playing today; deferred relay/prime strip until store/loop features are actually wanted.
 
 ### Backlog
 
 ### Ready
-- {FQDN handlers + .well-known + CF API + DNS lookup, remove from, nous/comms/skill/relay/relay_server.c} · 5 · ~u
-- {Windows build target, add to, nous/comms/Makefile or build_win.bat} · 3 · ~a
-- {domain-verify UI + multi-step register, remove from, metal-desktop wwwroot} · 3 · ~u
-- {FQDN WS handlers, remove from, metal-desktop/src/serve.c} · 3 · ~u
-- {relay + desktop register + login round-trip, smoke test, on localhost} · 3 · ~t
 
 ### In Progress
 
 ### Done
+
+(none -- board shelved before pulling any items)
+
+---
+
+## Board 7 — Auth-gate bypass (1 pt)
+
+Source: be/builds/2026-05-11-2255-inspect-fqdn-rollback.html (the same inspect; Board 6 lessons applied)
+
+Quick path: short-circuit the desktop's auth gate so the cockpit is visible immediately. Free-AI provider fan-out works (direct HTTPS, no relay/prime needed). Anything that touches relay/prime (register, login, store, intelligence loop) silently fails. Old auth logic preserved as `initAuthGate_OFF()` for one-line revert when prime gets stood up.
+
+### Backlog
+
+### Ready
+
+### In Progress
+
+### Done
+- {auth gate, bypass in, metal-desktop/wwwroot/desktop.js} · 1 · ~f ✅
 
 ---
 

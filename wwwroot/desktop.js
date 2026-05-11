@@ -12,10 +12,24 @@
 
   // --- Auth Gate ---
   // Block metal Desktop until authenticated. Waits for loop WS to be ready.
+  // BYPASS (2026-05-11 / Board 6 sup): the FQDN+TOTP backend (prime + relay)
+  // isn't deployed locally, so the gate has nothing to talk to. Short-circuit
+  // it -- show the cockpit immediately. Free-AI providers work via direct
+  // HTTPS; relay/prime-dependent features (store, intelligence loop, real
+  // register/login) will fail visibly. Revert this block to restore auth.
   var authGate = document.getElementById('auth-gate');
-  var authAuthenticated = false;
+  var authAuthenticated = true;
 
   function initAuthGate() {
+    var gate = document.getElementById('auth-gate');
+    var cockpit = document.getElementById('cockpit');
+    if (gate) gate.style.display = 'none';
+    if (cockpit) cockpit.style.display = '';
+    window.AuthGate = { handleEvent: function() {} };
+    return;
+  }
+
+  function initAuthGate_OFF() {
     var gate = document.getElementById('auth-gate');
     var cockpit = document.getElementById('cockpit');
     var loginBtn = document.getElementById('auth-login-btn');
