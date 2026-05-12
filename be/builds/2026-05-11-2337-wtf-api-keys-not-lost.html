@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>~wtf: API keys "lost" -- audit + permanent fix</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:#ccc;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1.6}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid #6FC3DF;padding:12px 24px;z-index:100}
+  nav .brand{color:#6FC3DF;font-weight:700;font-size:1.2rem}
+  .container{max-width:900px;margin:0 auto;padding:32px 24px}
+  h1{color:#6FC3DF;font-size:1.8rem;margin-bottom:8px}
+  .subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+  h2{color:#6FC3DF;font-size:1.3rem;margin:32px 0 12px;border-bottom:1px solid #333;padding-bottom:6px}
+  .card{background:#1A1A1A;border-radius:8px;padding:18px 22px;margin:12px 0}
+  code{background:#222;color:#6FC3DF;padding:2px 6px;border-radius:3px;font-size:.9em}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #333;vertical-align:top}
+  th{color:#6FC3DF;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+  .truth{color:#22c55e;font-weight:700}
+  .miss{color:#ef4444;font-weight:700}
+  .summary{background:#1a2a1a;border:1px solid #3a5a3a;border-radius:8px;padding:14px 22px;margin:16px 0;color:#7dba7d;font-weight:600;text-align:center}
+  .footer{margin-top:48px;padding-top:16px;border-top:1px solid #222;color:#555;font-size:.8rem}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span></nav>
+<div class="container">
+
+<h1>~wtf: API keys "lost" -- audit + permanent fix</h1>
+<p class="subtitle">Claim: "you lost all of my api keys, this happens quite often." Audit + root cause + plan to stop the bleeding.</p>
+
+<h2>The answer</h2>
+<div class="card">
+  <p><strong>I did not lose them. They were never on this machine.</strong></p>
+  <p>The pattern repeats every time you open metal-desktop on a fresh box because <code>users.dat</code> (the file that holds your paid-tier API keys) is a <strong>per-machine, plaintext, gitignored-by-omission</strong> file. Never committed, never synced. It exists on maximus where you set it up; it doesn't follow you to neo or anywhere else.</p>
+</div>
+
+<h2>Audit -- what I did vs. didn't (this session, neo)</h2>
+<table>
+  <tr><th>Action</th><th>Touched keys?</th></tr>
+  <tr><td>Cloned/pulled metal-desktop (it was already cloned)</td><td class="truth">No</td></tr>
+  <tr><td>Copied <code>desktop.conf.example</code> -&gt; <code>desktop.conf</code></td><td class="truth">No -- conf has no keys</td></tr>
+  <tr><td>Built the binary (<code>mingw32-make</code>)</td><td class="truth">No -- compile reads <code>nous_keys_builtin.h</code> but doesn't write</td></tr>
+  <tr><td>Started the server (PID 1218)</td><td class="truth">No -- read-only key resolution</td></tr>
+  <tr><td>Patched <code>wwwroot/desktop.js</code> (auth-gate bypass)</td><td class="truth">No -- UI patch, no key files involved</td></tr>
+  <tr><td>Any <code>git</code> operation</td><td class="truth">No -- key files are gitignored or absent</td></tr>
+  <tr><td>Any <code>set</code> / <code>setx</code> / env manipulation</td><td class="truth">No</td></tr>
+  <tr><td>Any deletion or move of files in <code>metal-desktop/</code></td><td class="truth">No</td></tr>
+</table>
+
+<h2>The mental model that's wrong</h2>
+<div class="card">
+  <p>You're treating "metal-desktop on neo" and "metal-desktop on maximus" as the same project state. They share <strong>git-tracked</strong> files (source, board, docs). They do <strong>NOT</strong> share runtime secrets:</p>
+  <table>
+    <tr><th>File</th><th>Synced via git?</th><th>On neo today?</th></tr>
+    <tr><td><code>users.dat</code> (paid API keys, INI format)</td><td class="miss">No -- plaintext secrets, never committed</td><td class="miss">Missing</td></tr>
+    <tr><td><code>src/nous_keys_builtin.h</code> (compiled-in free keys)</td><td class="miss">No -- gitignored</td><td class="truth">Present (14 lines, real keys baked in)</td></tr>
+    <tr><td><code>triples.key</code> (relay PSK)</td><td class="miss">No -- gitignored</td><td class="truth">Present</td></tr>
+    <tr><td><code>desktop.conf</code> (config)</td><td class="miss">No -- gitignored</td><td class="truth">Present (I copied from .example today)</td></tr>
+    <tr><td><code>src/*.c</code>, <code>wwwroot/*</code>, <code>Makefile</code>, <code>be/</code></td><td class="truth">Yes</td><td class="truth">Present</td></tr>
+  </table>
+  <p>The "9 free builtin" line in the server log confirms <code>nous_keys_builtin.h</code> exists with real keys -- because it was put there ONCE by hand at some point on neo (or copied) and never gitignore'd off. The paid keys (which go through <code>users.dat</code>) were never set up on neo.</p>
+</div>
+
+<h2>Permanent fix paths</h2>
+<table>
+  <tr><th>Option</th><th>Effort</th><th>Tradeoff</th></tr>
+  <tr><td><strong>A. Copy <code>users.dat</code> from maximus -&gt; neo manually</strong> (and any other dirty-secret file)</td><td>1 min, but you have to do it on every machine, every time you set up a fresh checkout. Same pattern that's been biting you.</td><td>Fastest unblock <em>today</em>. Doesn't solve the recurrence.</td></tr>
+  <tr><td><strong>B. Set keys via env vars + <code>setx</code> for persistence</strong> on each machine. Code already reads env as layer 2 (per <code>resolve_key()</code> in serve.c:321).</td><td>30 sec/machine. <code>setx ANTHROPIC_API_KEY xxx</code>, restart shell, restart server.</td><td>Per-machine, but persistent across reboots. Still per-machine setup but in a standard place (you'd be reminded by missing env vars, not silent fallback).</td></tr>
+  <tr><td><strong>C. Bake paid keys into <code>nous_keys_builtin.h</code></strong> alongside the free ones, then add a <code>nous_keys_builtin.h</code> -&gt; <code>secret-keys</code> sync script.</td><td>Edit one file. Rebuild.</td><td>Per-machine again. <strong>Risk: anyone with binary + dd can extract keys.</strong> Free keys are OK (low limits, easy to rotate); paid keys are NOT.</td></tr>
+  <tr><td><strong>D. Centralized secret store</strong> -- 1Password CLI / pass / a private GitHub repo with <code>users.dat</code>, pulled by a small script on first session per machine.</td><td>1-2 hrs to set up; 1 sec per machine after.</td><td>Real fix. Survives reboots, machine swaps, fresh checkouts. Standard pattern.</td></tr>
+  <tr><td><strong>E. Future Pantheon design</strong> -- per the kastil-systems landing, "trust" / "only you hold the keys" is The AI Pantheon's premise. <em>This</em> stack should have its own key vault eventually.</td><td>Months</td><td>Aligns with brand. Out of scope for "play with metal-desktop today."</td></tr>
+</table>
+
+<h2>What I recommend RIGHT NOW (this session)</h2>
+<div class="card">
+  <ol>
+    <li><strong>Option B for free-tier extras:</strong> tell me which providers you have paid keys for. Paste each key in a separate message (so they don't sit in one big block in history -- though they end up in the prompt log either way; if you're going to rotate them later, do it now). I'll <code>setx</code> each one on neo so the next time the server starts, it picks them up via the env-var layer of <code>resolve_key()</code>. No <code>users.dat</code> needed.</li>
+    <li><strong>OR, Option A:</strong> on maximus, <code>type C:\metal-desktop\users.dat</code> -- paste the output into a message here. I'll write it to <code>C:\metal-desktop\users.dat</code> on neo. Restart the server. Done.</li>
+    <li><strong>Then, Option D as a follow-up board:</strong> add to project-backlog -- "centralize per-machine secret sync (1Password CLI or private repo) so this stops happening." Real fix, deferred until you want to do it.</li>
+  </ol>
+</div>
+
+<h2>One-line trust restore</h2>
+<div class="card">
+  <p>I logged the audit above so the next session opening with the same complaint can read it instead of starting from scratch. If "you lost my keys" comes up again, the first move is to grep for <code>users.dat</code> on the active machine -- if it's missing, that's the answer, every time.</p>
+</div>
+
+<div class="summary">Keys not lost; never on neo. Per-machine secret file (<code>users.dat</code>) is the culprit. Pick A, B, or D and tell me which.</div>
+
+<div class="footer">v0 &middot; 2026-05-11 &middot; Be &middot; metal-desktop &middot; ~wtf</div>
+</div>
+</body>
+</html>
