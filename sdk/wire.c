@@ -1,6 +1,6 @@
 /* CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved */
 /**
- * wire — Native BASICI transport over TCP
+ * wire — Native PI transport over TCP
  *
  * Every wire message is an array of atoms packed as NTRP0001 triples.
  * Atom triple: {word, role_name, fn_name}.
@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 /* ══════════════════════════════════════════════════════════════
- * BASICI Atom Name Tables — the closed set
+ * PI Atom Name Tables — the closed set
  * ══════════════════════════════════════════════════════════════ */
 
 /* Role enum values: ROLE_ENTITY=0 .. ROLE_UNKNOWN=6 */

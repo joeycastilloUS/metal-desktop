@@ -1,6 +1,6 @@
 /* CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved */
 /**
- * wire — Native BASICI transport over TCP
+ * wire — Native PI transport over TCP
  *
  * Every wire message is an array of atoms — the same decomposed form
  * that understand() produces. Packed as NTRP0001 triples: {word, role, fn}.
@@ -56,7 +56,7 @@ typedef struct {
 } WireTriple;
 
 /* ══════════════════════════════════════════════════════════════
- * BASICI Atom Layer — the language on the wire
+ * PI Atom Layer — the language on the wire
  * ══════════════════════════════════════════════════════════════ */
 
 /* ── Role names ── */
