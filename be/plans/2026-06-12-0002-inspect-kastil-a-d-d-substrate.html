@@ -1,0 +1,126 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~i — kastil-systems a-d-d (global shared substrate)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #ccc; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: baseline;
+        background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 1.2rem; }
+  nav .pub { color: #666; font-size: 0.72rem; font-weight: 400; }
+  .container { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+  h1 { color: #6FC3DF; font-size: 1.6rem; margin-bottom: 6px; }
+  h2 { color: #6FC3DF; font-size: 1.15rem; margin: 32px 0 12px; border-bottom: 1px solid #222; padding-bottom: 6px; }
+  h3 { color: #9ad8ec; font-size: 0.98rem; margin: 20px 0 8px; }
+  .sub { color: #777; margin-bottom: 8px; }
+  .card { background: #1A1A1A; border: 1px solid #222; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0 8px 22px; } li { margin: 4px 0; }
+  code { background: #000; color: #9ad8ec; padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+  pre { background: #000; border: 1px solid #222; border-radius: 6px; padding: 12px 16px; overflow-x: auto;
+        color: #9ad8ec; font-size: 0.82rem; line-height: 1.45; margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #222; vertical-align: top; }
+  th { color: #6FC3DF; }
+  .tag { display: inline-block; background: #06222b; color: #6FC3DF; border: 1px solid #14505f;
+         border-radius: 4px; padding: 1px 7px; font-size: 0.72rem; margin-left: 6px; }
+  .dod li { list-style: none; margin-left: -22px; }
+  .ok { color: #5fc16f; } .na { color: #888; } .warn { color: #d8a13a; }
+  .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #222; color: #555; font-size: 0.78rem; text-align: center; }
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span><span class="pub">Published 2026-06-12 00:02 MPST</span></nav>
+<div class="container">
+
+<h1>~i — kastil-systems a-d-d <span class="tag">inspect</span></h1>
+<p class="sub">The global shared architecture substrate. Cloned live from <code>kastil-systems/a-d-d</code> (pushed 2026-06-10) to <code>C:\kastil-a-d-d</code>. Read in service of implementing the tilde system inside metal desktop edition.</p>
+
+<h2>What It Is</h2>
+<div class="card">
+<p><strong>Architecture Driven Development (ADD)</strong> — the single source of truth for all kASTIL Systems architecture. The human owns the design (CLAUDE.md files, <code>skill.json</code> manifests, folder structure); Claude implements <em>exactly</em> what the spec says and never invents APIs. Architecture flows from this repo into code trees via <code>go.bat</code> sync — <strong>a-d-d/ always wins on conflict.</strong></p>
+<p>Strict three-level hierarchy: <strong>intent</strong> (WHY — a deployable goal) → <strong>purpose</strong> (WHAT FOR — a capability) → <strong>skill</strong> (HOW — a focused pure-C library that composes upward). Claude's working scope is set by the directory it launches in (global / intent / purpose / skill).</p>
+</div>
+
+<h2>Structure</h2>
+<table>
+<tr><th>Path</th><th>What it holds</th></tr>
+<tr><td><code>GLOBAL.md</code></td><td>Universal rules: hierarchy, scope, workflow, board-status protocol, auto-board rule, trade-secret notices, the 6 foundational principles.</td></tr>
+<tr><td><code>CLAUDE.md</code></td><td>Code-organization canon: "everything is a triple", skill-based structure, foundational principles.</td></tr>
+<tr><td><code>the-last-test/</code></td><td><strong>Intent</strong> — For-Rent browser-test cloud service. Purposes: <code>inspect</code> / <code>meter</code> / <code>plan</code> / <code>serve</code>. Home of the <code>~tlt</code> verb spec.</td></tr>
+<tr><td><code>jack-rabbit/</code></td><td><strong>Intent</strong> — always-ahead landscape engine; the original For-Rent pattern. Serves <code>/p/&lt;project&gt;/next.json</code>. Mirrors inspect/meter/plan/serve.</td></tr>
+<tr><td><code>nous/</code></td><td><strong>Intent</strong> — one intelligence, many senses. 7 purposes: receive, intelligence, memory, directory, search, action, comms (+ security, user). The mesh/wire/signals/crypt substrate.</td></tr>
+<tr><td><code>tgt/</code></td><td>Build targets per hardware: <code>console/win</code> (PI-language REPL, zones, soft-keys), <code>cloud-run</code>, <code>rt</code> (bare-metal disk image), <code>phone</code> (biRT).</td></tr>
+<tr><td><code>_projects/</code></td><td>Project-specific architecture nested as intent/purpose (currently <code>the-family-trust</code>).</td></tr>
+<tr><td><code>_credentialing/ _history/ _marketing/</code></td><td>Non-code architecture: credentialing campaign, Pantheon philosophy, market positioning.</td></tr>
+<tr><td><code>go.bat</code></td><td>Sync+launch orchestrator: robocopies <code>.md</code> + <code>skill.json</code> into the code tree, sets scope, launches Claude with the right permissions and an ADD orientation prompt.</td></tr>
+<tr><td><code>SOVEREIGN-EXECUTION.md.proposed</code></td><td>Proposed principle (awaiting Rule-10 approval): operator Ed25519 key = root of trust anywhere code runs.</td></tr>
+</table>
+
+<h2>the-last-test (tlt) — the tilde/test discipline</h2>
+<div class="card">
+<p>tlt is the second For-Rent service and the cleanest reference for how a tilde becomes a <em>cloud-dispatched, sealed, metered</em> operation. The load-bearing contract is the <strong>verb distinction, locked 2026-06-07</strong> (<code>the-last-test/CLAUDE.md</code>):</p>
+<ul>
+<li><code>~t</code> — the existing <strong>local</strong> browser-test tilde. Runs on the operator's box. No cloud, no meter. Unchanged.</li>
+<li><code>~tlt</code> — the <strong>next-level</strong> verb for this For-Rent service. Cloud-dispatched, returns a sealed <code>RunResult</code>, fires a <code>MeterEvent</code>, emits a Signal. Anchored in <strong>kernel Quote #30</strong>.</li>
+</ul>
+<p>Two sibling verbs; the operator picks per call. The four purposes draw hard boundaries — <code>plan</code> decides what runs, <code>serve</code> executes, <code>meter</code> counts, <code>inspect</code> observes — and <strong>none of them crosses another's job.</strong> That separation is the pattern worth stealing for a desktop tilde dispatcher.</p>
+<pre>POST /serve/run -> plan/queue -> plan/ready --[pass]--> serve/exec -> serve/seal -> meter/tally -> Signal
+                                          \--[fail]--> plan/hide -> 200 {"status":"hide"}</pre>
+</div>
+
+<h2>Where the tilde system is actually specified</h2>
+<div class="card">
+<p><strong>Key finding: the tilde system is not centralized in a single a-d-d spec.</strong> It is distributed:</p>
+<ul>
+<li><strong>Verb semantics</strong> live in the <em>kernel</em> CLAUDE.md (the metal repo), referenced from a-d-d as "kernel Quote #30" and "kernel § …". a-d-d points <em>at</em> the kernel; it does not restate it.</li>
+<li><strong>Distribution mechanism</strong> — <code>nous/comms/skill/signals/CLAUDE.md</code> defines Sealed-IDS Signals that carry tilde-completion events from emitters (metal.ce, metal.de) to listeners (jack-rabbit, tlt). The Signal struct carries <code>char cmd[16]</code> — the tilde, e.g. <code>"~b"</code>.</li>
+<li><strong>Live state</strong> — <code>GLOBAL.md</code> board-status protocol: <code>status.json</code> schema v1 with <code>currentTilde</code>, <code>itemTriple</code>, <code>boardId</code>, <code>phase</code>, written atomically (<code>.tmp</code>+rename). The <strong>auto-board rule</strong> says every <code>~b</code> and <code>~l</code> re-renders the live board and pops it.</li>
+<li><strong>Reference renderer</strong> — <code>metal/be/tools/render-board-view.py</code> is named as the canonical implementation other intents copy.</li>
+</ul>
+<p>So for metal.de: the verb table comes from the kernel; the <em>wire-level contract</em> (Signal struct + status.json) comes from a-d-d. Both are needed to implement tildes that interoperate with the rest of the Pantheon.</p>
+</div>
+
+<h2>Stack &amp; Patterns Found</h2>
+<table>
+<tr><th>Pattern</th><th>Rule</th></tr>
+<tr><td>Pure C</td><td><code>-std=c11</code>, zero third-party deps, roll-your-own everything (SHA-256, mesh, crypto). Static single-binary output.</td></tr>
+<tr><td>skill.json manifest</td><td>One skill per dir under <code>skill/</code>: <code>{name, deps[], sources[], headers[]}</code>. Explicit deps, no fat, name == directory.</td></tr>
+<tr><td>Trade-secret headers</td><td>Mandatory first line on every source file, comment-syntax by extension. <code>.json</code>/binaries skip. Every repo root has a <code>NOTICE</code>.</td></tr>
+<tr><td>Sealed-IDS records</td><td>Every operational record (MeterEvent, RunResult, Signal) is a sealed v2 X25519 envelope, Ed25519-signed by the service FQDN, appended to the operator's MH-VAULT V1, mirrored to mesh.</td></tr>
+<tr><td>go.bat sync</td><td>a-d-d → code tree before each session; a-d-d wins. "Build from a-d-d, never from context." Missing spec → stop and tell the human.</td></tr>
+<tr><td>Board-status protocol</td><td><code>status.json</code> v1, atomic write, renderer falls back to idle on malformed JSON.</td></tr>
+<tr><td>Foundational principles</td><td>Bare metal · Roll your own · Shared memory · Optimize at every roll-up · Iterate to find the target · Done is production. (The last two are the metal kernel's Rules 6 &amp; 9, verbatim upstream.)</td></tr>
+</table>
+
+<h2>Open Questions</h2>
+<div class="card">
+<ul>
+<li><strong>Quote #30 / "kernel CLAUDE.md"</strong> — referenced repeatedly but not present in a-d-d. The canonical verb semantics live in the metal kernel. Implementing tildes in metal.de means reading <em>both</em> repos; confirm which is authoritative when they drift.</li>
+<li><strong>Sealed-IDS v3.1 record kinds</strong> (<code>tlt-run-record</code>, <code>pattern-execution-record</code>) are referenced but the v3.1 spec isn't in a-d-d — likely under <code>nous/security/</code>. Need it before metal.de can emit conformant Signals.</li>
+<li><strong>render-board-view.py</strong> is named as the reference but lives in metal-console. metal.de either vendors it or writes a C-native renderer honoring the same status.json contract.</li>
+<li><strong>SOVEREIGN-EXECUTION.md.proposed</strong> is still <code>.proposed</code> — if/when approved it changes how every edition signs execution. Track its status before building the auth path.</li>
+<li><strong>"Learned routing" / Pure Intent / biRT</strong> — referenced in the metal kernel's canon table but not documented as standalone subsystems in a-d-d. Clarify whether tildes-as-.pi is a target for metal.de or kernel-only today.</li>
+</ul>
+</div>
+
+<h2 class="dod">Definition of Done</h2>
+<ul class="dod">
+<li><span class="na">◐</span> Code committed — <span class="na">pending (this report + sibling ~i~i committed together)</span></li>
+<li><span class="ok">✓</span> HTML report saved — <code>be/plans/2026-06-12-0002-inspect-kastil-a-d-d-substrate.html</code></li>
+<li><span class="na">◐</span> Index updated — pending in the commit step</li>
+<li><span class="na">◐</span> Pushed to remote — pending</li>
+<li><span class="ok">✓</span> No prior work damaged — read-only inspect; no source touched</li>
+<li><span class="na">N/A</span> Shipped to production — inspect artifact, no deployable change</li>
+<li><span class="ok">✓</span> Trade-secret header present — first line per GLOBAL.md</li>
+<li><span class="ok">✓</span> Pubdate top-right — nav shows local publication time</li>
+</ul>
+
+<div class="footer">v0 · r7 · 2026-06-12 · metal Desktop · ~i kastil-systems a-d-d substrate</div>
+</div>
+</body>
+</html>

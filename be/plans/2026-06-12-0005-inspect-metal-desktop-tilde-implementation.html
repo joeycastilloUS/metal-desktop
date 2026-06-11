@@ -1,0 +1,177 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~i~i — implementing the tilde system in metal desktop</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #ccc; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: baseline;
+        background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 1.2rem; }
+  nav .pub { color: #666; font-size: 0.72rem; font-weight: 400; }
+  .container { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+  h1 { color: #6FC3DF; font-size: 1.6rem; margin-bottom: 6px; }
+  h2 { color: #6FC3DF; font-size: 1.15rem; margin: 32px 0 12px; border-bottom: 1px solid #222; padding-bottom: 6px; }
+  h3 { color: #9ad8ec; font-size: 0.98rem; margin: 20px 0 8px; }
+  .sub { color: #777; margin-bottom: 8px; }
+  .card { background: #1A1A1A; border: 1px solid #222; border-radius: 6px; padding: 16px 20px; margin: 14px 0; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0 8px 22px; } li { margin: 4px 0; }
+  code { background: #000; color: #9ad8ec; padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+  pre { background: #000; border: 1px solid #222; border-radius: 6px; padding: 12px 16px; overflow-x: auto;
+        color: #9ad8ec; font-size: 0.82rem; line-height: 1.45; margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #222; vertical-align: top; }
+  th { color: #6FC3DF; }
+  .tag { display: inline-block; background: #06222b; color: #6FC3DF; border: 1px solid #14505f;
+         border-radius: 4px; padding: 1px 7px; font-size: 0.72rem; margin-left: 6px; }
+  .dod li { list-style: none; margin-left: -22px; }
+  .ok { color: #5fc16f; } .na { color: #888; } .warn { color: #d8a13a; } .no { color: #d05a5a; }
+  .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #222; color: #555; font-size: 0.78rem; text-align: center; }
+  .pill { font-size: 0.72rem; padding: 1px 7px; border-radius: 4px; }
+  .pill.y { background: #0d2a14; color: #5fc16f; border: 1px solid #1f5e2e; }
+  .pill.n { background: #2a0d0d; color: #d05a5a; border: 1px solid #5e1f1f; }
+  .pill.p { background: #2a230d; color: #d8a13a; border: 1px solid #5e4f1f; }
+</style>
+</head>
+<body>
+<nav><span class="brand">Be</span><span class="pub">Published 2026-06-12 00:05 MPST</span></nav>
+<div class="container">
+
+<h1>~i~i — tilde system in metal desktop <span class="tag">deep inspect</span></h1>
+<p class="sub">Second-order inspect: metal desktop edition (<code>C:\metal-desktop</code>) read against the a-d-d substrate (sibling <code>~i</code>), to scope implementing the tilde system here <em>more effectively and accurately</em> than a first pass would. Goal: a real dispatcher, not slash-command theater.</p>
+
+<h2>What It Is</h2>
+<div class="card">
+<p>metal desktop is the browser cockpit of the metal product family — a <strong>pure-C HTTP + WebSocket server</strong> serving <code>http://localhost:5050</code>, rebranded from NOUS Desktop. Single-threaded <code>select()</code> event loop, cross-platform (winsock2 / POSIX), zero frameworks. Its strength today is <strong>provider fan-out</strong>: one question to many LLMs in parallel, then judge/summarize across the answers. Backend traffic rides the relay via the <strong>NTRP0001</strong> wire protocol; provider calls go direct HTTPS.</p>
+<p>Build: <code>make</code> (links ws2_32 / winhttp / bcrypt on Windows, pthread on Linux) → <code>metal-desktop.exe</code>. Config in <code>desktop.conf</code> (<code>relay_host</code>, <code>relay_port</code>, <code>psk_file</code>, <code>listen_port=5050</code>).</p>
+<p class="warn">Launch note: <code>metal-desktop.exe</code> is blocked from Claude's sub-shell by the WDAC Application Control policy (same gate that blocks gcc). It must be started from Joey's interactive terminal — see "How to launch" at the foot of this report.</p>
+</div>
+
+<h2>Server Architecture — <code>src/serve.c</code> (3270 lines)</h2>
+<p class="sub">Twelve sections per CLAUDE.md. The one that matters for tildes is the message router.</p>
+<table>
+<tr><th>Section</th><th>Role</th></tr>
+<tr><td>globals / constants / structs</td><td><code>MAX_CLIENTS</code>, <code>Client</code>, <code>Provider</code>, <code>ProviderResult</code>, provider table.</td></tr>
+<tr><td>provider loading</td><td><code>load_relay_config()</code>, <code>load_providers()</code>, API-key resolution from env / local store.</td></tr>
+<tr><td>WebSocket framing</td><td>RFC 6455 encode/decode, SHA1+base64 handshake.</td></tr>
+<tr><td>HTTP server</td><td>HTTP/1.1 parse, WS upgrade, static file serve, a few API endpoints.</td></tr>
+<tr><td>relay auth/register</td><td>FQDN identity, TOTP handshake, Cloudflare token verify, registration.</td></tr>
+<tr><td>provider fan-out</td><td><code>handle_task()</code>, per-provider request bodies (Anthropic/OpenAI/Gemini), parse responses.</td></tr>
+<tr><td>judge / summarize</td><td>Providers rank each other; consensus/outlier summary; cost tracking.</td></tr>
+<tr><td>hints / store</td><td>Per-provider + global system hints; triple-store ops.</td></tr>
+<tr><td><strong>message router</strong></td><td><strong><code>route_ws_message()</code> @ serve.c:3056</strong> — the single command dispatcher. This is the seam.</td></tr>
+<tr><td>event loop</td><td><code>serve_run()</code> select loop; calls <code>route_ws_message()</code> @ serve.c:3246.</td></tr>
+</table>
+
+<h3>The dispatcher today — <code>route_ws_message()</code> @ serve.c:3056</h3>
+<pre>json_get_str(msg, "type", type, ...);
+if      (type=="relay_auth")            handle_relay_auth(...)
+else if (type=="relay_register")        handle_relay_register(...)
+else if (type=="relay_verify_register") ...
+else if (type=="relay_reset_totp")      ...
+else if (type=="relay_verify_reset")    ...
+else if (type=="task")                  handle_task(...)      // fan-out to providers
+else if (type=="judge")                 handle_judge(...)
+else if (type=="store")                 handle_store(...)
+else if (type=="set_hint" | "set_global_hint" | "set_disabled" | "get_hints") ...
+else if (type=="summarize")             handle_summarize(...)
+else if (type=="new")                   /* reset loop state */
+/* terminal, set_route, reconsider -- TODO */</pre>
+<p>Fourteen message types, all provider/auth/store oriented. The trailing <code>TODO</code> is the only hint of an unfinished surface. <strong>There is no tilde here.</strong></p>
+
+<h2>Front-end — <code>wwwroot/</code></h2>
+<table>
+<tr><td><code>index.html</code></td><td>Auth-gate overlay + 5 tabs: DISCOVER / REMEMBER / TERMINAL / TRACE / ARCHITECTURE.</td></tr>
+<tr><td><code>loop.js</code></td><td>DISCOVER tab. Defines <strong>slash</strong> commands (autocomplete only): <code>/judge /summarize /reconsider /hint /new</code>.</td></tr>
+<tr><td><code>terminal.js</code></td><td>xterm.js wrapper over a <code>/ws/terminal</code> socket — present, but the <code>terminal</code> message type is in the router's TODO, so it's not wired server-side.</td></tr>
+<tr><td><code>store.js / trace.js / tree.js</code></td><td>REMEMBER (triple viewer) / TRACE (diagnostic log) / ARCHITECTURE (schema tree).</td></tr>
+</table>
+<p>Input flow: user types in DISCOVER → on Enter the text is sent as <code>{"type":"task","content":"…"}</code>. A leading <code>/</code> only triggers a client-side autocomplete menu; the slash word is <strong>not</strong> parsed into a distinct message — it travels inside the task string. So even the slash commands aren't dispatched; they're cosmetic.</p>
+
+<h2>Tilde support today — none</h2>
+<div class="card">
+<table>
+<tr><th>Surface</th><th>Tilde-capable?</th><th>Note</th></tr>
+<tr><td>Server router (serve.c:3056)</td><td><span class="pill n">NO</span></td><td>No <code>~</code> branch; no <code>tilde</code> type.</td></tr>
+<tr><td>Front-end parser (loop.js)</td><td><span class="pill n">NO</span></td><td>Slash autocomplete only; no <code>~</code> handling.</td></tr>
+<tr><td>Terminal (terminal.js + /ws/terminal)</td><td><span class="pill p">PARTIAL</span></td><td>xterm UI exists; <code>terminal</code> message type is router-TODO.</td></tr>
+<tr><td>Provider fan-out / judge / store</td><td><span class="pill y">YES</span></td><td>Solid and shippable — the reusable engine.</td></tr>
+</table>
+<p>The honest framing: metal.de is an excellent <em>provider-judgment cockpit</em> with <em>zero</em> workflow-command capability. The tilde system lives only in Claude Code + the Be kernel — it has never been a protocol feature here.</p>
+</div>
+
+<h2>be/ state — where this project actually stands</h2>
+<div class="card">
+<p>metal.de keeps its <strong>own</strong> board (<code>be/board.md</code>), distinct from metal-console's P-boards. History:</p>
+<ul>
+<li><strong>Boards 1–5</strong> ✅ archived from nous-desktop — free-key foundation, provider wiring/sync, prime auth core.</li>
+<li><strong>Board 6</strong> 🗄 SHELVED (2026-05-11) — "roll back FQDN, restore TOTP-only." Shelved because the inspect mis-scoped it: FQDN lives mostly in <code>prime_server.c</code> (a 6,834-line third binary), and no auth works without a prime running.</li>
+<li><strong>Board 7</strong> ✅ DONE (1 pt) — auth-gate bypass: a one-line <code>desktop.js</code> patch makes the cockpit visible immediately. Free-AI fan-out works with no relay/prime; anything touching relay/prime (register, login, store, intelligence loop) silently fails. Old logic preserved as <code>initAuthGate_OFF()</code> for a one-line revert.</li>
+</ul>
+<p>Net: the cockpit is open and the provider loop runs free-standing. Auth/relay/store are dormant by design until a prime is stood up. <strong>No tilde work has ever been boarded here.</strong></p>
+</div>
+
+<h2>Gap Analysis — implementing tildes accurately</h2>
+<div class="card">
+<p>The seam is unambiguous: <strong><code>route_ws_message()</code> @ serve.c:3056</strong>. Add one branch and a sub-dispatcher; do not touch the provider engine.</p>
+<pre>else if (strcmp(type,"tilde")==0) route_tilde(conn_id, msg);
+
+// new: route_tilde() reads {cmd, args, context}
+//   "~i" -> handle_tilde_inspect()
+//   "~h" -> handle_tilde_help()      (read-only, cheap, proves the surface)
+//   "~l" -> handle_tilde_load()
+//   ... emit a board-status.json write + Signal on start/phase/end</pre>
+<p><strong>Message schema</strong> (front-end → server): <code>{"type":"tilde","cmd":"~i","args":"&lt;text&gt;","context":"&lt;path&gt;"}</code>. The front-end change is small: in <code>loop.js</code>, when input starts with <code>~</code>, send a <code>tilde</code> frame instead of folding it into <code>task</code>.</p>
+</div>
+
+<h3>Do it accurately — lessons carried from metal-console</h3>
+<table>
+<tr><th>Lesson (from the kernel / a-d-d)</th><th>How it applies here</th></tr>
+<tr><td><strong>Verb semantics are kernel-owned</strong></td><td>Don't re-invent the tilde table. Lazy-load <code>be/docs/commands.md</code> as the spec source; the cockpit routes, the kernel defines.</td></tr>
+<tr><td><strong>Honor the wire contract</strong></td><td>Emit the a-d-d <code>status.json</code> v1 (currentTilde / phase / atomic write) and the Signal <code>cmd[16]</code> struct so jack-rabbit / tlt can listen. This is what makes metal.de a real Pantheon emitter, not a toy.</td></tr>
+<tr><td><strong>Separation of duties (tlt pattern)</strong></td><td>plan decides · serve executes · meter counts · inspect observes. A desktop dispatcher should keep "route" separate from "execute" separate from "report" — mirror the four-purpose boundary.</td></tr>
+<tr><td><strong>Two-verb discipline (~t vs ~tlt)</strong></td><td>Local vs cloud is an explicit operator choice, per-call. metal.de should expose both rails, never silently pick.</td></tr>
+<tr><td><strong>Slash ≠ tilde</strong></td><td>The existing <code>/judge</code> etc. are provider-loop verbs; keep them. Tildes are workflow verbs. Don't conflate the two namespaces in one parser.</td></tr>
+<tr><td><strong>Pure-C, roll-your-own</strong></td><td>No template engine import. Reuse the inline HTML style these reports use; the Anthropic body builder already in serve.c is the LLM call path.</td></tr>
+</table>
+
+<h3>What's reusable vs what's missing</h3>
+<table>
+<tr><td><span class="pill y">REUSE</span></td><td>serve.c router seam · Anthropic/curl call path · WS framing/broadcast · triple store · the Be HTML report style · <code>be/docs/commands.md</code> as the verb spec.</td></tr>
+<tr><td><span class="pill n">MISSING</span></td><td>tilde dispatcher + handlers · board-status.json writer + C-native renderer (or vendor render-board-view.py) · Signal emitter (Sealed-IDS) · local file/git access for ~i/~b/~s · the front-end <code>~</code> parser branch.</td></tr>
+</table>
+
+<h3>Suggested first move (smallest proof)</h3>
+<p>Wire <strong><code>~h</code> end-to-end</strong> first: front-end sends <code>{"type":"tilde","cmd":"~h"}</code>; server returns the help grid as a WS event; cockpit renders it. Read-only, no file access, no Signal — it proves the seam, the schema, and the round-trip in ~40 LOC. Then add <code>~i</code> (read + HTML artifact), then a board-status write so the live board lights up. That sequencing matches the a-d-d auto-board rule without committing to the full agent-loop refactor up front.</p>
+
+<h2>Open Questions</h2>
+<div class="card">
+<ul>
+<li><strong>Dispatch model:</strong> does metal.de <em>execute</em> tildes natively (spawn gcc/git, write files) or <em>relay</em> them to a metal-console agent? Native = a real refactor toward an agent tool-use loop; relay = thinner, keeps the cockpit as a front-end to the existing kernel. This is the load-bearing <code>~d</code> decision before any <code>~b</code>.</li>
+<li><strong>Prime dependency:</strong> ~i/~h/~l are local and need no prime. ~s/~store/Signal need the relay+prime path that's currently dormant (Board 6/7). Which tildes are in-scope for a no-prime v1?</li>
+<li><strong>Renderer:</strong> vendor <code>render-board-view.py</code> (Python dev-tool, fast) or write the C-native renderer (pure-C purity, more work)? a-d-d allows either if the status.json contract holds.</li>
+<li><strong>Signal conformance:</strong> need the Sealed-IDS v3.1 record-kind spec (under <code>nous/security/</code>) before metal.de can emit Signals other nodes will accept.</li>
+<li><strong>WDAC:</strong> the launch + any native build/exec steps are blocked from Claude's shell on this box. Tilde handlers that shell out will hit the same wall under automation — design for hand-off or relay, not silent local exec.</li>
+</ul>
+</div>
+
+<h2 class="dod">Definition of Done</h2>
+<ul class="dod">
+<li><span class="na">◐</span> Code committed — pending (committed with the sibling ~i)</li>
+<li><span class="ok">✓</span> HTML report saved — <code>be/plans/2026-06-12-0005-inspect-metal-desktop-tilde-implementation.html</code></li>
+<li><span class="na">◐</span> Index updated — pending in commit step</li>
+<li><span class="na">◐</span> Pushed to remote — pending</li>
+<li><span class="ok">✓</span> No prior work damaged — read-only inspect; recon error (board mix-up) caught and corrected against ground truth</li>
+<li><span class="na">N/A</span> Shipped to production — inspect artifact, no deployable change</li>
+<li><span class="ok">✓</span> Trade-secret header present — first line per GLOBAL.md</li>
+<li><span class="ok">✓</span> Pubdate top-right — nav shows local publication time</li>
+</ul>
+
+<div class="footer">v0 · r7 · 2026-06-12 · metal Desktop · ~i~i tilde-system implementation scope</div>
+</div>
+</body>
+</html>
