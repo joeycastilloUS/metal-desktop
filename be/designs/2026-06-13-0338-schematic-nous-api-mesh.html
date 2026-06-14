@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schematic — nous.api over the Mesh</title>
+<style>
+  :root{ --bg:#111; --surface:#1A1A1A; --accent:#6FC3DF; --muted:#888; --line:#2a3a40; --gold:#d6b25e; --warn:#c87b54; }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:#ddd;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;line-height:1.5}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid var(--accent);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+  nav .brand{color:var(--accent);font-weight:bold;letter-spacing:1px}
+  nav .pub{color:var(--muted);font-size:12px}
+  .wrap{max-width:800px;margin:0 auto;padding:24px 18px 60px}
+  h1{color:var(--accent);font-weight:600;font-size:24px;margin:.2em 0}
+  h2{color:var(--accent);font-weight:500;font-size:15px;letter-spacing:.5px;text-transform:uppercase;margin:28px 0 6px;border-bottom:1px solid var(--line);padding-bottom:4px}
+  .sub{color:var(--muted);font-size:13px;margin-top:0}
+  .layer{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:10px 0}
+  .layer .tag{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .layer h3{margin:2px 0 8px;font-size:16px;color:#eee}
+  .boxes{display:flex;gap:10px;flex-wrap:wrap}
+  .box{flex:1;min-width:170px;background:#141b1e;border:1px solid var(--accent);border-radius:6px;padding:10px 12px}
+  .box.dim{border-color:#3a3a3a;opacity:.65}
+  .box.warn{border-color:var(--warn)}
+  .box .t{color:var(--accent);font-weight:600;font-size:14px}
+  .box.warn .t{color:var(--warn)}
+  .box .d{font-size:12px;color:#bbb;margin-top:4px}
+  .box code{color:var(--gold);font-size:11px}
+  .flow{text-align:center;color:var(--muted);font-size:12px;margin:6px 0;letter-spacing:.5px}
+  .flow b{color:var(--accent)}
+  .mesh .box{border-color:var(--gold)}
+  .mesh .box .t{color:var(--gold)}
+  .pill{display:inline-block;background:#0e1417;border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--muted);margin:2px 3px}
+  .side{background:#0e1417;border:1px dashed var(--accent);border-radius:6px;padding:8px 12px;font-size:12px;color:#bbb;margin-top:8px}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--accent);font-weight:500}
+  .ok{color:#7fc77f}.no{color:var(--warn)}
+  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:30px;padding-top:12px}
+  .note{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be · metal-desktop</span><span class="pub">Published 2026-06-13 03:38 PST</span></nav>
+<div class="wrap">
+
+<h1>nous.api over the Mesh — Schematic</h1>
+<p class="sub">Discussion draft (pre-<code>~d</code>). Usages in acmedev · Strategies in kastil-systems · Mesh untouched.</p>
+
+<!-- USERS -->
+<div class="layer">
+  <div class="tag">Demand</div>
+  <h3>Millions of users · 3rd-party apps · your own metal-de cockpit</h3>
+  <div class="note">joeycastillo.us/metal-de is just one consumer of the public APIs.</div>
+</div>
+<div class="flow">│ &nbsp; <b>HTTPS / JSON</b> &nbsp; ▼</div>
+
+<!-- USAGES -->
+<div class="layer">
+  <div class="tag">Usages — acmedev-platform-hq · Cloud Run (public, autoscale, managed HTTPS)</div>
+  <h3>The Products</h3>
+  <div class="boxes">
+    <div class="box"><div class="t">Fact Check API</div><div class="d">fan-out → judge → cross-model corroboration. Citations via deep-research model.</div></div>
+    <div class="box"><div class="t">Market Research API</div><div class="d">fan-out → summarize → consensus + outliers/contrarian takes.</div></div>
+  </div>
+  <div class="side">Thin pure-C <code>tgt/cloud-run</code> binaries (the-family-trust-api proves the pattern). They absorb the <b>user scale</b>; they hold no strategy logic — they call down.</div>
+</div>
+<div class="flow">│ &nbsp; <b>HTTPS, authenticated</b> &nbsp; (acmedev → kastil) &nbsp; ▼</div>
+
+<!-- STRATEGIES -->
+<div class="layer">
+  <div class="tag">Strategies — kastil-systems</div>
+  <h3>nous.api &nbsp;<span class="note">— the way you wield nous</span></h3>
+  <div class="boxes">
+    <div class="box"><div class="t">nous.api  (NEW target binary)</div>
+      <div class="d">Links existing skills, the a-d-d way — <b>no fork, no edit</b>:</div>
+      <div style="margin-top:6px">
+        <span class="pill">security/crypt + auth · <span class="ok">untouched</span></span>
+        <span class="pill">comms/wire + http</span>
+        <span class="pill">receive.c loop engine</span>
+      </div>
+      <div class="d" style="margin-top:6px">Strategies: fan-out, judge, summarize, deep-research, routing, store-reads. One question → 38 models → ranked/synthesized answer.</div>
+    </div>
+  </div>
+  <div class="boxes" style="margin-top:8px">
+    <div class="box dim"><div class="t">→ 38 models (direct HTTPS)</div><div class="d">Anthropic · OpenAI · Gemini · Grok · DeepSeek · Perplexity · Mistral. <b>No mesh hop</b> — the AI path bypasses relay/prime.</div></div>
+    <div class="box"><div class="t">→ local prime (loopback)</div><div class="d"><code>127.0.0.1:8080</code> wire/NTRP0001. Inside the firewall — never the public gate.</div></div>
+  </div>
+</div>
+<div class="flow">│ &nbsp; <b>wire / NTRP0001 · 0xCA AES-256-GCM</b> &nbsp; ▼</div>
+
+<!-- MESH -->
+<div class="layer mesh">
+  <div class="tag">The Mesh — kastil-systems VMs · <span class="ok">USE, NEVER TOUCH</span></div>
+  <h3>relay + prime — best-on-earth security</h3>
+  <div class="boxes">
+    <div class="box"><div class="t">relay · LA</div><div class="d"><code>35.236.10.94</code> · :8443 TOTP gate, :8080 forward. Opaque byte forwarder — can't decrypt.</div></div>
+    <div class="box"><div class="t">relay · HK</div><div class="d"><code>34.92.148.71</code></div></div>
+  </div>
+  <div class="boxes" style="margin-top:8px">
+    <div class="box"><div class="t">prime · Las Vegas</div><div class="d"><code>34.125.36.235</code> · :8080 catalog, :8888 mesh. Triple-store + identity + TOTP.</div></div>
+    <div class="box"><div class="t">prime · HK</div><div class="d"><code>34.92.19.3</code></div></div>
+    <div class="box warn"><div class="t">prime · Ashburn (elite)</div><div class="d">c2-standard-8 · 8 vCPU / 32 GB · <b>TERMINATED</b>. The heavy node — candidate home for nous.api under real load.</div></div>
+  </div>
+  <div class="side">Store = on-VM mmap triple store, AES-256-GCM at rest, Ed25519-sealed mesh roster. Ed25519/FQDN root of trust. <b>We link security as-is; we never modify it.</b></div>
+</div>
+
+<h2>Live capacity (sampled prime-LV, 2026-06-13)</h2>
+<table>
+  <tr><th>Node</th><th>Tier</th><th>RAM used / free</th><th>Disk</th><th>Load</th><th>Headroom for nous.api?</th></tr>
+  <tr><td>prime-LV</td><td>e2-micro 1 GB</td><td>347 MB / <b>622 MB free</b></td><td>3.4/20 GB</td><td>0.00 (idle)</td><td class="ok">Yes — moderate / co-resident</td></tr>
+  <tr><td>relay/prime ×4</td><td>e2-micro 1 GB</td><td>~featherweight (prime ~480 KB)</td><td>10–20 GB</td><td>~idle</td><td class="ok">Yes — moderate</td></tr>
+  <tr><td>elite Ashburn</td><td>c2-standard-8 32 GB</td><td>off</td><td>50 GB</td><td>—</td><td class="ok">Best for heavy fan-out — restart it</td></tr>
+</table>
+<p class="note">e2-micro is spec'd for "prime serve" only — fine for you/moderate load co-resident; for the strategy-load behind <i>millions</i>, nous.api wants the elite node (restart Ashburn) or its own Cloud Run binary. The product APIs autoscale on Cloud Run regardless.</p>
+
+<h2>The open decision (drives ~d)</h2>
+<p class="sub">Mesh stays put. Products live in acmedev Cloud Run. The only real fork is <b>where nous.api runs</b>:</p>
+<table>
+  <tr><th>Option</th><th>Where nous.api runs</th><th>Reaches mesh via</th><th>Best when</th></tr>
+  <tr><td><b>A · Co-resident</b></td><td>On the kastil e2-micros, next to prime</td><td>loopback 127.0.0.1 wire</td><td>spec-purest; you/moderate load</td></tr>
+  <tr><td><b>B · Elite node</b></td><td>Restart Ashburn c2-standard-8</td><td>loopback or intra-VPC wire</td><td>heavy fan-out, real strategy load</td></tr>
+  <tr><td><b>C · Cloud Run</b></td><td>kastil Cloud Run (enable Run)</td><td>relay :8443 gate (external)</td><td>autoscale next to consumers</td></tr>
+</table>
+
+<footer>
+  v0 · r9 · 2026-06-13 · metal-desktop · discussion schematic (not yet a committed design)
+</footer>
+</div>
+</body>
+</html>
