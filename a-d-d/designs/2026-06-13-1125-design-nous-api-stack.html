@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nous.api — architecture</title>
+<style>
+  :root{ --bg:#0c0e10; --surface:#15191c; --line:#222a2e; --accent:#6FC3DF; --muted:#8a949a;
+         --edge:#d6b25e; --gw:#9aa3a8; --prime:#5aa9d6; --trust:#5fbf7f; --prod:#b07fd6; }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:#dfe4e7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;line-height:1.5}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid var(--accent);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+  nav .brand{color:var(--accent);font-weight:bold;letter-spacing:1px}
+  nav .pub{color:var(--muted);font-size:12px}
+  .wrap{max-width:860px;margin:0 auto;padding:22px 18px 60px}
+  h1{color:#fff;font-weight:600;font-size:24px;margin:.1em 0}
+  .sub{color:var(--muted);font-size:14px;margin:.2em 0 0}
+  h2{color:var(--accent);font-weight:500;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:12px 0}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+  .layer{border:1px solid var(--line);border-radius:8px;padding:13px 15px;margin:9px 0;background:var(--surface)}
+  .layer .cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .layer h3{margin:3px 0 6px;font-size:17px}
+  .layer .meta{float:right;font-size:11px;color:var(--muted);font-weight:400}
+  .edge{border-color:var(--edge)} .edge h3{color:var(--edge)}
+  .gw{border-color:var(--gw)} .gw h3{color:#c4ccd0}
+  .prime{border-color:var(--prime)} .prime h3{color:var(--prime)}
+  .trust{border-color:var(--trust)} .trust h3{color:var(--trust)}
+  .prod{border-color:var(--prod)} .prod h3{color:var(--prod)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .chip{font-size:12px;padding:3px 9px;border-radius:5px;border:1px solid var(--line);background:#0e1316}
+  .chip.new{border-color:var(--edge);color:var(--edge)}
+  .chip.has{border-color:var(--trust);color:var(--trust)}
+  .chip.warn{border-color:#c87b54;color:#c87b54}
+  .flow{text-align:center;color:var(--muted);font-size:12px;margin:5px 0;letter-spacing:.5px}
+  .flow b{color:var(--accent)}
+  .d{font-size:13px;color:#c4cace;margin-top:4px}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent);font-weight:500}
+  code{color:var(--edge);font-size:12px}
+  .has-t{color:var(--trust)} .new-t{color:var(--edge)} .gap-t{color:#c87b54}
+  ul{margin:6px 0 6px 18px;padding:0} li{margin:3px 0;font-size:13px}
+  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:28px;padding-top:12px}
+  .note{font-size:12px;color:var(--muted)}
+  .dod{font-size:12px;color:var(--muted)} .dod b{color:#c4cace}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be · metal-desktop</span><span class="pub">Published 2026-06-13 11:25 PST</span></nav>
+<div class="wrap">
+
+<h1>nous.api — architecture</h1>
+<p class="sub">AI capability behind REST. C# edge ▸ nous wire ▸ pure-C prime skills. Keys sealed on the operator FQDN; the edge stays blind. Modeled on <b>switchboard</b>.</p>
+
+<div class="legend">
+  <span><i class="sw" style="background:var(--prod)"></i> products (acmedev · public)</span>
+  <span><i class="sw" style="background:var(--edge)"></i> untrusted edge (C#)</span>
+  <span><i class="sw" style="background:var(--gw)"></i> pure-C gateway (relay)</span>
+  <span><i class="sw" style="background:var(--prime)"></i> brains + secrets (prime skills)</span>
+  <span><i class="sw" style="background:var(--trust)"></i> trust anchor (operator FQDN)</span>
+</div>
+
+<!-- PRODUCTS -->
+<div class="layer prod">
+  <span class="meta">C# edges · Cloud Run · acmedev-platform-hq · autoscale · millions</span>
+  <div class="cap">Usages — the products</div>
+  <h3>Fact Check API &nbsp;·&nbsp; Market Research API</h3>
+  <div class="d">Thin C# edges (meraki-bridge pattern). Each is a <b>strategy</b> = a composition of nous.api verbs:</div>
+  <ul>
+    <li><b>Fact Check</b> = <code>ask</code> (fan-out) → <code>judge</code> (cross-model corroboration) → <code>reconsider</code> (adversarial re-exam).</li>
+    <li><b>Market Research</b> = <code>ask</code> (fan-out) → <code>summarize</code> (consensus + outliers). Depth comes from deep-research models <i>inside</i> the fan-out, not a scout pipeline.</li>
+  </ul>
+  <div class="note">They hold no brains and no secrets — they call nous.api. The scale lives here (stateless, autoscaling).</div>
+</div>
+<div class="flow">│ &nbsp;<b>HTTPS / JSON REST</b>&nbsp; ▼</div>
+
+<!-- EDGE -->
+<div class="layer edge">
+  <span class="meta">C# · Cloud Run · acmedev-platform-hq</span>
+  <div class="cap">Untrusted edge</div>
+  <h3>nous.api EDGE</h3>
+  <div class="d">Thin wrapper: REST ↔ nous wire. Relays the sealed blob. <b>No brains, no secrets, never serves the seal page.</b> Reuses the meraki-bridge pattern (env · <code>/healthz</code> · cloudbuild → Cloud Run).</div>
+  <div class="chips">
+    <span class="chip">POST /v1/ask</span><span class="chip">/v1/judge</span><span class="chip">/v1/summarize</span><span class="chip">/v1/reconsider</span><span class="chip">/knock</span><span class="chip">/healthz</span>
+  </div>
+</div>
+<div class="flow">│ &nbsp;<b>POST /relay + 0xCA wire (AES-256-GCM)</b>&nbsp; ▼</div>
+
+<!-- RELAY -->
+<div class="layer gw">
+  <span class="meta">pure C · kastil-systems · public :8080 / :8443</span>
+  <div class="cap">Pure-C gateway</div>
+  <h3>RELAY</h3>
+  <div class="d">Wire session auth · store-and-forward · <code>X-Nous-Dest</code> → a prime. The crypto boundary into the mesh — the edge holds a scoped key, never the master PSK. <span class="note">(exists: <code>comms/skill/relay/relay_server.c</code> — add the new verbs to the dispatcher.)</span></div>
+</div>
+<div class="flow">│ &nbsp;<b>encrypted wire (intra-mesh)</b>&nbsp; ▼</div>
+
+<!-- PRIME -->
+<div class="layer prime">
+  <span class="meta">pure C99 · all primes · "add to one = add to all"</span>
+  <div class="cap">Brains + secrets — prime skills</div>
+  <h3>nous.api orchestration skill</h3>
+  <div class="d">Maps wire verbs → strategy. Calls the capability skills in-process (shared address space, no IPC). Vendor keys unsealed in RAM only, injected into request headers at call time, never persisted, never sent to the edge.</div>
+  <table>
+    <tr><th>Skill</th><th>Purpose</th><th>Role in nous.api</th><th>Status</th></tr>
+    <tr><td><code>fanout</code></td><td>intelligence</td><td><b>AI access</b> — one question → 38 models in parallel (= <code>ask</code>)</td><td class="new-t">NEW — extract from serve.c</td></tr>
+    <tr><td><code>judge</code></td><td>intelligence</td><td>LLM-as-judge ranking (medals)</td><td class="new-t">NEW — extract from serve.c</td></tr>
+    <tr><td><code>summarize</code></td><td>intelligence</td><td>consensus / differences / outliers</td><td class="new-t">NEW — extract from serve.c</td></tr>
+    <tr><td><code>reconsider</code></td><td>intelligence</td><td>top-3 judge winners re-examine &amp; challenge</td><td class="new-t">NEW — extract from serve.c</td></tr>
+    <tr><td><code>providers</code></td><td>memory</td><td>the 38-model table — ONE source of truth (deep-research models live here)</td><td class="new-t">NEW — dedupe receive.c+serve.c</td></tr>
+    <tr><td><code>http</code></td><td>comms</td><td>outbound TLS to the vendors (no deps)</td><td class="has-t">EXISTS</td></tr>
+    <tr><td><code>seal</code> / <code>vault</code> / <code>self</code></td><td>security / user</td><td>sealed vendor keys, FQDN unseal, RAM-only</td><td class="has-t">EXISTS</td></tr>
+    <tr><td><code>wire</code> / <code>crypt</code> / <code>store</code> / <code>kts</code></td><td>comms / security / memory</td><td>0xCA transport, primitives, triple store</td><td class="has-t">EXISTS</td></tr>
+  </table>
+  <div class="note" style="margin-top:8px"><b>Scope:</b> nous.api verbs are <code>ask · judge · summarize · reconsider</code> only. Explicitly OUT — the BASICA dev-loop (<code>/ship /refactor /tron /troff /try</code>) and <code>/search</code> + <code>/learn</code> (power-search / web-acquire). Those stay engine-only. Depth = deep-research models in the fan-out, not a scout pipeline.</div>
+</div>
+
+<!-- TRUST -->
+<div class="layer trust">
+  <div class="cap">Trust chain — the FQDN does the work the edge can't</div>
+  <h3>Keys sealed to the operator, unsealed only in the prime</h3>
+  <div class="chips">
+    <span class="chip">operator owns FQDN (Cloudflare-verified)</span><span class="chip">→</span>
+    <span class="chip">pubkey published under FQDN (DNS TXT)</span><span class="chip">→</span>
+    <span class="chip">vendor keys sealed to pubkey (seal v2 · X25519)</span><span class="chip">→</span>
+    <span class="chip">edge relays opaque blob (blind)</span><span class="chip">→</span>
+    <span class="chip">prime unseals · keys in RAM only</span>
+  </div>
+  <div class="note" style="margin-top:8px">A fully-compromised Cloud Run edge is <b>blind to the vendor keys</b> and cannot subvert the sealing — it holds no key and never serves the page.</div>
+</div>
+
+<h2>Build &amp; deploy — reuse what's proven</h2>
+<table>
+  <tr><th>Piece</th><th>Pattern to copy</th><th>Source of truth</th></tr>
+  <tr><td>C# edges (nous.api, products)</td><td>meraki-bridge: .NET 8 minimal API, env config, <code>/healthz</code>, cloudbuild → Cloud Run</td><td><code>C:\argus\bridge</code></td></tr>
+  <tr><td>(alt) pure-C Cloud Run edge</td><td>alpine-gcc → musl static → buildah <code>FROM scratch</code> → Run, no Dockerfile</td><td><code>the-family-trust/api/cloudbuild.yaml</code></td></tr>
+  <tr><td>New prime skill</td><td>4 files (<code>skill.json</code> + <code>.h</code> verbs + <code>.c</code> + CLAUDE.md), wire into category Makefile, add dispatch branch</td><td><code>nous/comms/skill/relay/relay_server.c:1700</code></td></tr>
+  <tr><td>Sealed credentials</td><td><code>seal_file_v2</code> to FQDN pubkey, <code>self_open</code> unseal in RAM</td><td><code>nous/security/skill/seal</code></td></tr>
+</table>
+
+<h2>Where it runs — resolves the capacity question</h2>
+<ul>
+  <li><b>Brains run on the prime</b> — fanout/judge/summarize/reconsider are prime skills. "Add to one = add to all." No new VM for the logic.</li>
+  <li><b>Light / personal load</b> → the existing e2-micro primes (Las Vegas, Hong Kong) — ~620 MB free, idle today.</li>
+  <li><b>Heavy / product load</b> (fan-out holds many LLM responses + 38 outbound TLS calls) → <b>restart the elite Ashburn c2-standard-8</b> and route product fan-out there. That tier exists for exactly this.</li>
+  <li><b>Public scale</b> → absorbed by the stateless C# edges on Cloud Run (autoscale). The primes never see millions directly.</li>
+</ul>
+
+<h2>First moves (the gaps, in order)</h2>
+<ul>
+  <li><b>1 — `providers` skill:</b> promote the 38-model table to one authoritative source (kill the receive.c / serve.c duplication). Everything downstream enumerates from it.</li>
+  <li><b>2 — extract `fanout`:</b> lift the parallel multi-provider engine out of <code>serve.c</code> into a headless <code>intelligence/skill/fanout</code> ({skill.json,.h,.c}) callable without a browser. Then <code>judge</code>, <code>summarize</code>, <code>reconsider</code> the same way.</li>
+  <li><b>3 — nous.api verbs on the prime:</b> add <code>ask / judge / summarize / reconsider</code> branches to the relay dispatcher; request/response are NTRP triples.</li>
+  <li><b>4 — nous.api C# edge:</b> clone meraki-bridge, add <code>/v1/*</code> + <code>/relay</code>, blind pass-through to the relay. Deploy to acmedev.</li>
+  <li><b>5 — products:</b> two more thin edges (or routes) composing nous.api verbs into Fact Check / Market Research.</li>
+</ul>
+<div class="note">Smallest proof: <code>providers</code> + <code>fanout</code> as skills, one <code>ask</code> verb on the prime, one <code>POST /v1/ask</code> on the edge → a curl from outside returns a 38-model answer. That single thread proves the whole spine.</div>
+
+<h2>Stewardship — Rule 10</h2>
+<p class="note">This is a <b>proposal</b>. Nothing here is written to <code>a-d-d/</code> yet. On your approval, the new skill specs (providers, fanout, judge, summarize, reconsider, nous.api) get authored into <code>kastil-systems/a-d-d</code> first (architecture → tests → code), and the <code>receive</code> purpose spec gets backfilled to match what <code>receive.c</code> already does. Mesh security is linked as-is, never modified.</p>
+
+<footer>
+  <div class="dod"><b>DoD</b> — ✓ Inspected (a-d-d + switchboard + skill inventory, 5 agents) ✓ Modeled on switchboard ✓ Exists-vs-gap mapped ✓ Build/deploy patterns cited · ✗ Not committed to a-d-d (awaiting approval, Rule 10) · ✗ No code (design only)</div>
+  <div style="margin-top:8px">v0 · r9 · 2026-06-13 · metal-desktop · design proposal — nous.api stack</div>
+</footer>
+</div>
+</body>
+</html>
