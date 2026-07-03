@@ -1,0 +1,309 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design &mdash; metal.de &harr; metal.ce Parity</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .optional h2 { border-bottom-style: dashed; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; }
+  li { margin: 6px 0; font-size: 14px; }
+  p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; }
+  .warn { color: #f59e0b; font-weight: 600; }
+  .no { color: #ef5350; font-weight: 600; }
+  .banner { background: #06222b; border: 1px solid #14505f; color: #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; font-weight: 600; letter-spacing: 0.03em; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~d &mdash; metal.de &harr; metal.ce Parity</span>
+  <span class="pub">Published 2026-07-02 11:17 PT</span>
+</nav>
+<div class="container">
+
+<h1>Design &mdash; metal.de &harr; metal.ce Parity <span class="tag">foundational</span></h1>
+<p style="color:#999;">The Desktop Edition executes the full tilde contract natively &mdash; deterministic C at $0.00 where the work is deterministic, escalating to the Pantheon per tier &mdash; inside one fresh consolidated repo that absorbs both existing DE trees.</p>
+
+<div class="banner">DECISION (locked by Joey): the canonical DE is a FRESH CONSOLIDATED repo &mdash; <code>kastil-systems/metal-desktop</code> &mdash; absorbing (a) the biRT + Tier-0 pure-C engine from <code>C:\tools\metal-de</code> (kastil-systems/tools, r257) and (b) the clean rebrand shell from <code>C:\metal-desktop</code> (joeycastilloUS/metal-desktop, r9). This design designs against that.</div>
+
+<h2>1. Need</h2>
+<div class="section">
+  <p>The software factory that builds itself cannot run on a per-command LLM bill. CE proves the discipline works &mdash; 1468 revisions, 200 builds, 91 ships &mdash; but every tilde routes through Claude Code, so every deterministic step (re-reading the same recipe, walking the same 9-step skeleton) costs tokens and seconds. The receipt is exact: an LLM-driven <code>~unload</code> ran 47.9s / $0.146 and didn't finish; the pure-C Tier-0 version runs ~100ms / $0.00 and does. The 17-run analysis showed 100% of <code>~load</code> runs re-discovering the same static recipe. <strong>LLM is the exception, not the default</strong> &mdash; and the desktop is where the operator's learned .pi library pays off. What's missing is one canonical Desktop Edition that embodies the Be kernel natively: same tilde vocabulary, same chain reaction, same board/DoD/Signals contracts &mdash; executed by deterministic C, escalating to the Pantheon only where synthesis is genuinely needed. Today that capability is split across two half-built trees (the engine without the home, the home without the engine), and neither emits a Signal, writes board-status, or renders a report. Parity means DE becomes a full citizen of the discipline, not a sibling cockpit that watches it.</p>
+</div>
+
+<h2>2. Raw User Stories</h2>
+<div class="section">
+  <ul>
+    <li>As the operator, I want <code>~h ~l ~b ~ul</code> to execute on my desktop in ~100ms at $0.00, so the factory doesn't bill me for work that never changes.</li>
+    <li>As the operator, I want the exact same tilde vocabulary in DE as in CE (three forms, chains, verb semantics), so I never learn two systems and the structure never drifts.</li>
+    <li>As the operator, I want every DE tilde to write <code>board-status.json</code>, log telemetry, render a Be report, and emit a sealed Signal, so the live board and the Pantheon see DE work exactly as they see CE work.</li>
+    <li>As Joey, I want one canonical DE repo under <code>kastil-systems</code> with both histories absorbed, so the two-tree confusion ends today and every <code>via &lt;hash&gt;</code> board reference still resolves.</li>
+    <li>As a future operator on Mac or Linux, I want the cockpit, fan-out, and tilde engine to compile and run off-Windows, so DE honors Cross-Platform From Day One instead of hiding behind a WinHTTP stub.</li>
+    <li>As the kernel steward, I want DE to read <code>be/docs/commands.md</code> as the verb authority and route mechanically, so the tilde table is never forked into C.</li>
+    <li>As Joey, I want the architecture seeded in <code>kastil-systems/a-d-d/_projects/metal-desktop/</code> before code lands, so DE is built from spec, not from context.</li>
+  </ul>
+</div>
+
+<h2>3. Sourced Solution</h2>
+<div class="section">
+  <p>Mined in canon order: a-d-d architecture &rarr; nous C99 primitives + in-repo sdk &rarr; apps we've built &rarr; outside. Reuse beats invention; every candidate is sourced.</p>
+
+  <h3>(i) a-d-d architecture + canon</h3>
+  <table>
+    <tr><th>Source</th><th>What's there</th><th>Disposition</th></tr>
+    <tr><td>Tiered Execution Chain design<br><code>C:\metal\be\designs\2026-06-07-1547-design-tiered-execution-chain.html</code></td><td>The 4-tier model (0=pure C, 1=C+escalation, 2=LLM+primer, 3=synthesis), <code>tier: N</code> spec frontmatter, JSON ops protocol, <code>birt_dispatch</code>, multi-tilde chain parser, per-op escalation, escape route = one-line tier edit. Already <em>proven in code</em>: Tier-0 <code>~l</code> shipped in tools/metal-de (c8a51a9, 0 LLM calls) and Tier-0 <code>~ul</code> (443c5e5).</td><td><strong>REUSE</strong> &mdash; this IS the execution architecture. Absorb, don't redesign.</td></tr>
+    <tr><td>2026-06-12 inspect<br><code>be/plans/2026-06-12-0005-inspect-metal-desktop-tilde-implementation.html</code></td><td>The dispatcher seam <code>route_ws_message()</code> @ serve.c:3056; the <code>{type:"tilde",cmd,args,context}</code> frame schema; ~h-first sequencing (~40 LOC proof); slash &ne; tilde; kernel-owned verb semantics; the open-questions list this design closes.</td><td><strong>REUSE</strong> &mdash; the de-facto micro-design for the seam.</td></tr>
+    <tr><td>14-phase Full Metal DE master plan<br><code>C:\metal\be\plans\2026-05-29-0909-plan-buildout-master.html</code></td><td>P1 Terminal &rarr; P14 38-driver manifests, ~180 pts. P2 (.pi v0), P3 (be/ browser), P7 (biRT v1), P10 (a-d-d scaffold) map directly onto parity phases.</td><td><strong>MODEL</strong> &mdash; the parity plan absorbs its phases and re-sequences them; it does not replace the far-horizon items (P9 ALF, P13 biRT v3, P14 manifests).</td></tr>
+    <tr><td>Slot pattern<br><code>kastil-systems/a-d-d/patterns/PATTERNS.md</code></td><td>Slot/Pin/Bus &mdash; grow a running C binary by seating a self-contained skill in a conventional slot, wired one line, compiled in.</td><td><strong>APPLY</strong> &mdash; every tilde handler is a Slot seated in <code>route_tilde()</code>. Textbook use.</td></tr>
+    <tr><td>Trust pattern<br>(same catalog)</td><td>Hollow Edge / Sealed Core / Anchor Seal &mdash; secret-free edge over sealed core, secrets bound to operator FQDN.</td><td><strong>APPLY</strong> &mdash; DE's relationship to relay/prime secrets and the operator keystore is Trust-shaped.</td></tr>
+    <tr><td>Canon: Signals, Operator-Identity, Wire/Purcius, Language Boundary, Cross-Platform, Tildes-Are-.pi<br><code>C:\metal\be\docs\conventions.md</code></td><td>Sealed per-tilde Signal (emit is NOT optional per edition); FQDN = identity; wire-protocol-only into Purcius; C99-owned / C#-jackets-only; compat wrappers not #ifdef spaghetti; tilde specs are .pi punch cards.</td><td><strong>REUSE as constraints</strong> &mdash; these are the contracts parity is measured against.</td></tr>
+  </table>
+
+  <h3>(ii) nous C99 primitives + the in-repo sdk</h3>
+  <table>
+    <tr><th>Source</th><th>What's there</th><th>Disposition</th></tr>
+    <tr><td><code>sdk/wire.c</code> (in DE tree, 386 lines)</td><td>NTRP0001 triple transport, PI atom layer, 58 fns. The Purcius wire substrate, already vendored.</td><td><strong>REUSE</strong> &mdash; the only door into the substrate.</td></tr>
+    <tr><td><code>sdk/crypt.c</code> (in DE tree, 1705 lines)</td><td>AES-256-GCM, SHA-2, HMAC, PBKDF2, Ed25519, TOTP, RNG &mdash; no OpenSSL.</td><td><strong>REUSE</strong> &mdash; Signal seals, keystore, TOTP auth all compose from this.</td></tr>
+    <tr><td><code>sdk/http.c</code> (in DE tree, 353 lines)</td><td>Windows-only WinHTTP sync+SSE; Linux/Mac branch is an explicit stub returning -1 &mdash; fan-out/judge/summarize are Windows-only today.</td><td><strong>REWORK</strong> behind an <code>http_compat</code> named wrapper (per Cross-Platform canon). nous already filled the Linux stub once with tls13.c (metal-de Board 6, beee6aa) &mdash; lift that path.</td></tr>
+    <tr><td>nous <code>user/desktop</code> server (3399 lines)</td><td>The WS+HTTP cockpit server DE's serve.c descends from.</td><td><strong>ALREADY ABSORBED</strong> &mdash; serve.c is its descendant; nothing further to pull.</td></tr>
+    <tr><td>nous IDS memory store (compiled into CE's tlt today)</td><td>Sealed triple store, mmap'd facts, WAL, AES-GCM at rest.</td><td><strong>REUSE LATER</strong> &mdash; .pi spec storage + self-storage phase (master-plan P12), deliberately after parity v1.</td></tr>
+    <tr><td><code>src/relay_client.c</code> (in DE tree, 238 lines)</td><td>Clean generic <code>relay_request</code>/<code>store_query</code> extraction; the 5 in-server auth flows are ~600 lines of copy-paste that should sit on it.</td><td><strong>REUSE</strong> &mdash; the refactor target for the identity phase.</td></tr>
+  </table>
+
+  <h3>(iii) Apps we've built</h3>
+  <table>
+    <tr><th>Source</th><th>What's there</th><th>Disposition</th></tr>
+    <tr><td><code>C:\tools\metal-de</code> (kastil-systems/tools, r257)</td><td>The biRT engine: <code>birt_fs</code> (Read/Write/Edit/Grep/Glob, 46 assertions green), <code>birt_loop</code> (agent loop, budget rail, per-tilde driver routing, trace-everything), <code>birt_translator</code> (Anthropic tool-use emit/parse), <code>spawn/dir/pty_compat</code> wrappers, nous-trace.jsonl forensics, tight-loop cost controls, <strong>Tier-0 ~l and ~ul in pure C</strong>, kernel-tilde WS route (<code>{type:kernel_tilde}</code>, serve.c section 10e).</td><td><strong>ABSORB (a)</strong> &mdash; this is the engine. Subtree-split out of kastil-systems/tools with history.</td></tr>
+    <tr><td><code>C:\metal-desktop</code> (joeycastilloUS/metal-desktop, r9)</td><td>The clean rebrand shell: 22-provider parallel fan-out + judge/summarize/cost metering (the crown jewel), WS framing, cockpit wwwroot, users.dat keystore, desktop.conf, sdk/ vendored.</td><td><strong>ABSORB (b)</strong> &mdash; this is the home/shell. Its serve.c (newer provider table + rebrand) is the base; tools/metal-de's biRT wiring grafts in.</td></tr>
+    <tr><td>CE <code>be/tools</code> (metal-console)</td><td><code>render-board-view.py</code> (331KB, 12-tab metal-live), <code>watch.py</code>, open-board/pop launchers, telemetry 8-step protocol, pre-commit guards (check_ascii, kernel-size), Mercury sync.</td><td><strong>VENDOR</strong> the renderer + watcher + guards for v1 (the board-status.json / board.md contract is the boundary); C-ify later.</td></tr>
+    <tr><td>CE <code>tlt</code> + C# Playwright worker</td><td>intent &rarr; transpile &rarr; 14-op schema &rarr; Playwright, HMAC'd dom_sig cache, manifests, localhost serve for the Test tab. The sole sanctioned C# jacket.</td><td><strong>REUSE</strong> &mdash; DE's ~t binds to tlt (Tildes-Are-.pi canon: first binding is ~t&rarr;tlt). Later phase.</td></tr>
+    <tr><td>CE <code>auth/</code> Be Auth Gate + <code>src/sdk/security</code> FQDN layer + <code>src/handshake</code></td><td>TOTP RFC6238 + from-scratch QR, FQDN-keyed auth, CF token verify + zone lookup, first-launch handshake walkthrough.</td><td><strong>MODEL/REUSE</strong> for the identity phase; DE already has its own 5 relay-auth flows (dormant) to converge with.</td></tr>
+  </table>
+
+  <h3>(iv) Outside</h3>
+  <p><strong>Nothing new needed.</strong> The only outside artifacts already in the walls: vendored xterm.js (terminal tab &mdash; out of scope for parity v1, flagged in Pure Metal Test) and Microsoft.Playwright inside the sanctioned C# jacket (tlt phase). No new external dependency is introduced by this design.</p>
+
+  <p><strong>Proposed approach:</strong> Consolidate both trees into <code>kastil-systems/metal-desktop</code> with history. Keep the DE shell's server + provider engine + WS broadcast untouched; open the one seam the inspect named (<code>route_ws_message()</code> @ serve.c:3056) with a <code>route_tilde()</code> sub-dispatcher; seat the absorbed biRT Tiered Execution Chain behind it; build the four missing organs around it &mdash; board-status writer, report emitter, Signal emitter, telemetry writer &mdash; all composing from the sdk already in-tree. The only genuinely new C is those four organs plus the front-end <code>~</code> parser branch; everything else is absorption and wiring.</p>
+</div>
+
+<h2>4. Naming</h2>
+<div class="section">
+  <table>
+    <tr><th>Thing</th><th>Literal name</th><th>Why</th></tr>
+    <tr><td>The fresh consolidated repo</td><td><code>kastil-systems/metal-desktop</code></td><td>Right org (kASTIL builds it), right product name (metal, Desktop Edition). Matches CE's <code>kastil-systems/metal-console</code>.</td></tr>
+    <tr><td>The a-d-d spec</td><td><code>kastil-systems/a-d-d/_projects/metal-desktop/</code> + one-line <code>ARCHITECTURE.md</code> pointer at repo root</td><td>Easy-button placement: DE consumes kASTIL substrate, so the spec lives centrally. Seeded as <code>*.proposed</code>.</td></tr>
+    <tr><td>Tilde dispatcher (server seam)</td><td><code>route_tilde()</code> in serve.c</td><td>Routes tilde frames; sits beside <code>route_ws_message()</code>. Route &ne; execute.</td></tr>
+    <tr><td>Tier chooser / executor entry</td><td><code>birt_dispatch()</code> in <code>src/birt/birt_dispatch.c</code>; <code>tier0_exec()</code></td><td>Names carried verbatim from the Tiered Execution Chain design &mdash; do not rename shipped vocabulary.</td></tr>
+    <tr><td>Board-status writer</td><td><code>board_status.c</code></td><td>Writes <code>be/board-status.json</code> schema v1, atomic .tmp+rename. Says what it does.</td></tr>
+    <tr><td>Signal emitter</td><td><code>signal_emit.c</code></td><td>Seals one Signal per tilde (Ed25519 via crypt.c), queues to <code>be/signals-pending.jsonl</code> when the mesh is down.</td></tr>
+    <tr><td>Report emitter</td><td><code>report_emit.c</code></td><td>Renders the Be HTML template + DoD checklist to <code>be/&lt;kind&gt;/YYYY-MM-DD-HHMM-*.html</code> from C string templates.</td></tr>
+    <tr><td>Cross-platform HTTPS wrapper</td><td><code>http_compat</code></td><td>Per Cross-Platform canon: OS splits live behind named compat wrappers, joining <code>spawn/dir/pty_compat</code> already absorbed.</td></tr>
+    <tr><td>Front-end tilde frame</td><td><code>{"type":"tilde","cmd","args","context"}</code></td><td>Schema from the 2026-06-12 inspect, unchanged.</td></tr>
+  </table>
+  <p><strong>Collisions:</strong> (1) <code>metal-desktop</code> collides with the existing <code>joeycastilloUS/metal-desktop</code> &mdash; resolved by freezing the old repo with a MOVED redirect README (the exact convention CE just used, commit e43a97b). (2) <code>birt_dispatch</code> vs <code>birt_router</code> (tight-loop Ship 6): distinct and both keep their names &mdash; the router picks the <em>model</em> within an LLM run; the dispatcher picks the <em>tier</em> before any run. (3) Two divergent <code>serve.c</code> files exist; the consolidated repo keeps the name, takes the C:\metal-desktop version as base, and grafts tools/metal-de's section 10e + birt/ wiring in a named move commit. (4) tools/metal-de uses <code>{type:"kernel_tilde"}</code>; the consolidated frame is <code>{type:"tilde"}</code> per the inspect &mdash; one rename at graft time, noted in the spec.</p>
+</div>
+
+<h2>5. Shape</h2>
+<div class="section">
+  <p><strong>Minimum viable structure &mdash; reuse the router seam, the provider engine, and the WS broadcast; build the tilde organs around them:</strong></p>
+  <ul>
+    <li><strong>The repo skeleton</strong> &mdash; <code>src/</code> (serve.c base + graft), <code>src/birt/</code> (absorbed engine), <code>sdk/</code> (wire/crypt/http), <code>wwwroot/</code> (cockpit), <code>be/</code> (full CE-shape ledger: docs-pointer, board.md, board-status.json, builds/plans/designs/tests/ships/retros, tools/), <code>ARCHITECTURE.md</code> pointer, <code>NOTICE</code>, trade-secret headers, <code>version_gen.h</code> stamping, one Makefile + make.bat.</li>
+    <li><strong>route_tilde()</strong> &mdash; the one new branch at serve.c:3056. Reads the tilde frame, resolves the verb against the kernel-owned spec (lazy-loaded <code>be/docs/commands.md</code>, path in desktop.conf; never a forked table in C), hands to <code>birt_dispatch()</code>. Front-end: loop.js sends a tilde frame when input starts with <code>~</code>; slash commands stay a separate namespace.</li>
+    <li><strong>The Tiered Execution Chain</strong> (absorbed) &mdash; <code>birt_dispatch</code> reads <code>tier: N</code> from the .pi spec frontmatter; Tier 0 walks the JSON ops protocol via birt_fs + spawn_compat ($0.00); Tier 1 adds per-op escalation; Tiers 2/3 run the existing birt_loop with spec primer, budget rail, driver routing, and trace. Multi-tilde chaining per the tiered design (context + args).</li>
+    <li><strong>The four organs</strong> &mdash; <code>board_status.c</code> (atomic status writes start/phase/end, drives the live spinner), <code>report_emit.c</code> (Be-template HTML + DoD checklist + index update + pop-and-link), telemetry writer (telemetry.json 100-ring, commit-hash backfill), <code>signal_emit.c</code> (one sealed Signal per tilde; local queue when no relay; local telemetry always written &mdash; Signals are not an edition feature, they're the contract).</li>
+    <li><strong>Vendored view layer</strong> &mdash; render-board-view.py + watch.py + open-board, driven purely through the board.md / board-status.json contract, so the C-native renderer can replace it without touching any writer.</li>
+    <li><strong>Identity + auth</strong> &mdash; un-bypass the auth gate (one-line initAuthGate revert), FQDN handshake + CF token verify + TOTP composing from crypt.c, the 5 dormant relay flows refactored onto relay_client.c. Trust-shaped: hollow edge, sealed core, keys never leave the machine.</li>
+    <li><strong>Cross-platform floor</strong> &mdash; <code>http_compat</code> fills the Linux/Mac HTTPS stub; judge threading moves behind the existing thread pattern instead of <code>#ifdef _WIN32</code>-only; Win+Mac+Linux compile+smoke in the same ship cycle becomes a DoD gate.</li>
+  </ul>
+  <p><strong>Explicitly OUT of parity v1:</strong></p>
+  <ul>
+    <li>The mesh leg of prime-dependent tildes (~s Store publish, Signal drain, intelligence loop) &mdash; queued locally until a relay+prime is deployed (that stand-up is external to this repo). No-prime v1 is legitimate; silent failure is not &mdash; queue and say so.</li>
+    <li>C-native board renderer (v1 vendors Python behind the contract), terminal tab / <code>/ws/terminal</code>, xterm.js replacement.</li>
+    <li>ALF fold (master P9), biRT v3 (P13), 38 driver manifests (P14), IDS self-storage (P12) &mdash; master-plan far horizon, not parity.</li>
+    <li>MCP (currently-purged posture in CE; DE ships none).</li>
+    <li>Backlogged Chinese-provider cohort; new cockpit paradigms; silicon console.</li>
+  </ul>
+</div>
+
+<h2>6. First Move</h2>
+<div class="section">
+  <blockquote><strong>Seed the architecture: write <code>kastil-systems/a-d-d/_projects/metal-desktop/</code> as <code>*.proposed</code> &mdash; the DE spec (intent, parts, the four contracts: tilde frame schema, tier model, board-status/Signal/report shapes, consolidation map) &mdash; and put it in front of Joey for approval. Zero product code before the spec exists.</strong></blockquote>
+  <p><strong>Why this and not the ~40-LOC ~h proof:</strong> the ~h round-trip is the smallest <em>code</em> proof and it stays exactly where the inspect put it &mdash; but it becomes Phase 2's exit criterion, not the First Move. This design exists to end drift between two trees; building even 40 lines from context before the spec exists would violate the three rules that make DE trustworthy: Stewardship (a-d-d is human-owned, Claude proposes, Joey approves), flow-up-before-down (architecture &rarr; tests &rarr; code), and build-from-a-d-d-never-from-context. The factory's whole pitch is that the structure never drifts; the keystone project doesn't get to skip the keystone rule. The spec is also cheap &mdash; this design and the three deep-read reports are 90% of its content.</p>
+  <p><strong>These go into the plan:</strong> consolidation (subtree-split + history merge + MOVED freezes), the ~h native proof through <code>route_tilde()</code>, local no-prime tildes, the four organs + vendored view layer, the report chain, Signals local-queue, identity/auth, cross-platform floor, relay-dependent tildes, tlt/~t binding, and the full-parity gate with external production verification. Sequenced in the companion <code>~p</code>.</p>
+</div>
+
+<div class="optional">
+<h2>Choices + Consequences <span class="tag">earned</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Fork</th><th>Options</th><th>Pick + Reason</th></tr>
+    <tr>
+      <td>Consolidation mechanics &mdash; how the fresh repo absorbs two trees</td>
+      <td>(a) <strong>History merge:</strong> <code>git subtree split</code> (or filter-repo) extracts metal-de's history out of kastil-systems/tools; fresh repo merges both lines with <code>--allow-unrelated-histories</code> + named move commits. 2nd: every board <code>via &lt;hash&gt;</code> reference resolves inside the canonical repo; <code>git rev-list --count</code> honestly carries the ~266 revisions already earned. 3rd: two roots in the DAG &mdash; cosmetic, harmless.<br>(b) <strong>Clean start:</strong> copy files, r1, archives hold history. 2nd: pretty DAG. 3rd: rev counter lies (r1 for a system with 266 revs of history), audit trail splits across three repos forever.</td>
+      <td><strong>(a) History merge.</strong> Versioning canon says revision = commit count; carrying history keeps the count and the audit trail honest in one place.</td>
+    </tr>
+    <tr>
+      <td>Native vs relay execution (the inspect's load-bearing open question)</td>
+      <td>(a) <strong>Native + tiered:</strong> DE executes tilde mechanics itself in C, escalating per tier. 2nd: $0.00 happy path, no CE session required. 3rd: WDAC constrains shell-outs under automation &mdash; but DE's normal mode is launch-from-operator's-interactive-terminal, where spawn_compat is unconstrained.<br>(b) <strong>Relay to a metal-console agent:</strong> thin cockpit. 2nd: no C execution layer to build. 3rd: reintroduces the per-command LLM bill and a running-CE dependency &mdash; defeats the entire Need.</td>
+      <td><strong>(a) Native + tiered &mdash; CONFIRMED SETTLED.</strong> The tools/metal-de work already proved it in production code (Tier-0 ~l, 0 LLM calls, c8a51a9). The question was open on 2026-06-12; the engine answered it.</td>
+    </tr>
+    <tr>
+      <td>Board/report renderer: C-native vs vendored Python</td>
+      <td>(a) <strong>Vendor render-board-view.py + watch.py for v1.</strong> 2nd: metal-live parity immediately, 331KB of proven rendering for free. 3rd: a Python dependency inside a pure-C product &mdash; canon debt, install burden on fresh boxes.<br>(b) C-native renderer first. 2nd: pure. 3rd: weeks of rendering work before the operator sees a live board; parity everywhere else waits.</td>
+      <td><strong>(a) Vendor for v1.</strong> The board.md/board-status.json contract is the boundary (the inspect blessed either); the C renderer is boarded as explicit debt, not forgotten.</td>
+    </tr>
+    <tr>
+      <td>No-prime v1 scope</td>
+      <td>(a) <strong>Everything local ships full-chain; mesh legs queue loudly.</strong> Signals seal + queue to signals-pending.jsonl, telemetry always written, ~s does commit/push/report/DoD with Store/publish marked queued. 2nd: parity visible now, contract honored by queue. 3rd: queue drain is a real feature to test when prime lands.<br>(b) Hold Signals/auth until prime deploys. 2nd: purer. 3rd: parity hostage to infrastructure outside this repo; silent-failure culture creeps back.</td>
+      <td><strong>(a) Local-first, queue loudly.</strong> The Signals canon requires emission, not delivery; a DE that seals and queues is at parity, a DE that skips is not.</td>
+    </tr>
+    <tr>
+      <td>Kernel verb-spec source (never fork the table)</td>
+      <td>(a) <strong><code>kernel_docs</code> path in desktop.conf</strong>, default = sibling metal clone's <code>be/docs/</code>. 2nd: one source of truth, zero sync machinery. 3rd: fresh box needs the metal clone (the installer already provisions it).<br>(b) Vendored snapshot synced on ~load. 2nd: standalone. 3rd: a second copy that WILL drift &mdash; the exact disease tildes exist to kill.</td>
+      <td><strong>(a) Configured path.</strong> Kernel owns semantics; DE routes. One copy or none.</td>
+    </tr>
+  </table>
+</div>
+</div>
+
+<div class="optional">
+<h2>Escape Routes <span class="tag">earned</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Load-bearing choice</th><th>Reversal path</th></tr>
+    <tr><td>Fresh consolidated repo + history merge</td><td>Subtree split is non-destructive; both source trees stay frozen (not deleted) with MOVED READMEs. Until the first new commit lands on the merged repo, reversal is "delete it, keep working in the old trees" &mdash; free. <span class="warn">&#9888;</span> After new revisions accrue on top, un-merging means rewriting hashes &mdash; the one effectively-irreversible move. Accepted: both sources survive as frozen archives, so nothing is ever lost, only the merge itself is sticky.</td></tr>
+    <tr><td>Org home = kastil-systems</td><td>GitHub repo transfer is one operation, both directions; redirects preserved. Fully reversible.</td></tr>
+    <tr><td>Freezing/archiving the two old trees</td><td>GitHub archive flag is a toggle; MOVED README is one commit to revert. Fully reversible.</td></tr>
+    <tr><td>Vendored Python renderer</td><td>The writers only speak board.md + board-status.json; swap in the C renderer behind the same contract, delete the .py. No writer changes.</td></tr>
+    <tr><td>Auth-gate un-bypass</td><td><code>initAuthGate_OFF()</code> preserved (Board 7 pattern) &mdash; one-line revert in either direction.</td></tr>
+    <tr><td>Tier assignments per tilde</td><td>Per the tiered design: edit <code>tier: 0</code> &rarr; <code>tier: 2</code> in the spec frontmatter; no rebuild. One-line reversal.</td></tr>
+    <tr><td>a-d-d spec seed</td><td><code>*.proposed</code> until Joey approves &mdash; nothing canonical is written, so nothing needs reversing.</td></tr>
+  </table>
+</div>
+</div>
+
+<div class="optional">
+<h2>Pure Metal Test <span class="tag">earned</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Dependency</th><th>Role</th><th>Load-bearing?</th></tr>
+    <tr><td>relay + prime (dormant, undeployed)</td><td>Mesh leg: Store, Signal delivery, intelligence loop, TOTP relay flows.</td><td><strong>No for parity v1</strong> &mdash; local queue satisfies the emit contract; becomes load-bearing only for the relay-dependent phase.</td></tr>
+    <tr><td>Sealed-IDS v3.1 record-kind spec (nous/security, not yet pulled into DE)</td><td>The Signal record format other Pantheon nodes will accept.</td><td><strong>Yes for mesh interop</strong> &mdash; isolated behind one seal function in signal_emit.c so queued v1 Signals can be re-sealed if the spec moves. Named Unknown in the plan.</td></tr>
+    <tr><td>render-board-view.py + watch.py (Python)</td><td>metal-live board view, v1 only.</td><td><strong>Yes, temporarily</strong> &mdash; replaceable by design (contract boundary); C renderer boarded.</td></tr>
+    <tr><td>xterm.js (vendored third-party JS)</td><td>Terminal tab UI &mdash; out of scope v1, currently an orphan.</td><td><strong>No</strong> &mdash; nothing in parity v1 touches it; flagged for eventual roll-your-own.</td></tr>
+    <tr><td>C# Playwright worker (tlt sidecar)</td><td>Browser automation for ~t/tlt binding.</td><td><strong>Yes for the tlt phase</strong> &mdash; the sole canon-sanctioned foreign-API jacket (Language Boundary lock, 2026-06-20). Allowed by law, not debt.</td></tr>
+    <tr><td>Anthropic API (+ 21 other providers)</td><td>Tiers 1-3 escalation and the fan-out engine.</td><td><strong>Yes for LLM tiers</strong> &mdash; but Tier 0 runs with zero providers, and the driver layer already swaps models per run. Foreign edge, direct HTTPS per canon.</td></tr>
+    <tr><td>MinGW UCRT gcc (C:\tools\mingw64)</td><td>Windows build toolchain, WDAC-trusted path.</td><td><strong>No</strong> &mdash; any C99 compiler works; Makefile + make.bat both maintained.</td></tr>
+  </table>
+  <p><strong>Verdict:</strong> <span class="pass">&#10003; Passes with two flags</span> &mdash; the Python renderer (temporary by contract) and xterm.js (dormant). Everything else is our own C99, the sanctioned jacket, or the foreign-AI edge canon explicitly permits.</p>
+</div>
+</div>
+
+<h2>Definition of Done</h2>
+<div class="section">
+  <ul>
+    <li><span class="warn">&#9702;</span> Design committed &mdash; PENDING (artifact awaits operator approval; no commit per ~d~p contract for this run)</li>
+    <li><span class="warn">&#9702;</span> Commit hash in telemetry &mdash; PENDING (follows commit)</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/designs/2026-07-02-1117-design-metal-de-ce-parity.html</code></li>
+    <li><span class="warn">&#9702;</span> Index updated &mdash; PENDING (follows approval)</li>
+    <li><span class="warn">&#9702;</span> Pushed to remote &mdash; PENDING</li>
+    <li><span class="pass">&#10003;</span> No prior work damaged &mdash; read-and-write-new only; no source, board, or historical artifact touched</li>
+    <li><span class="pass">&#10003;</span> Six spine sections present (Need, Stories, Sourced Solution, Naming, Shape, First Move)</li>
+    <li><span class="pass">&#10003;</span> Solution sourced in order (a-d-d &rarr; nous/sdk &rarr; our apps &rarr; outside) before inventing; every candidate cited</li>
+    <li><span class="pass">&#10003;</span> Names literal; collisions flagged and resolved</li>
+    <li><span class="pass">&#10003;</span> Right-sized tools earned and present (Choices, Escape Routes, Pure Metal Test) &mdash; foundational design</li>
+    <li><span class="pass">&#10003;</span> First Move concrete and rule-honoring (spec-first per Stewardship / flow-up)</li>
+    <li><span class="pass">&#10003;</span> Trade-secret header first line; pubdate top-right</li>
+  </ul>
+</div>
+
+<h2>Comments &amp; Follow-up <span style="font-size:12px;color:#555;font-weight:400;">one thread per section &middot; comment, then run <code>~fu</code></span></h2>
+<div style="background:#1A1A1A;border:1px solid #222;border-radius:6px;padding:14px;margin-top:8px;">
+  <div id="lk-seen" style="font-size:12px;color:#22c55e;margin-bottom:8px;display:none;">&#10003; seen by metal</div>
+  <label style="font-size:13px;color:#888;">Your name <input id="lk-name" style="background:#0a0a0a;border:1px solid #333;color:#e0e0e0;padding:5px 8px;border-radius:4px;font-size:13px;margin-left:6px;"></label>
+  <div id="lk-threads" style="margin-top:10px;"></div>
+  <div id="lk-warn" style="display:none;color:#f59e0b;font-size:12px;margin-top:10px;border-top:1px solid #333;padding-top:8px;">Comments won't post from <strong>Firefox</strong> when the page is opened as a file. Open this artifact in <strong>Chrome or Brave</strong> and try again.</div>
+</div>
+<script>
+(function(){
+  var BRIDGE='https://gcp-bridge-692654781984.us-west1.run.app';
+  var TOKEN='5f06cb99-6cef-4474-932c-f943dd413c28';
+  var PHASES=[['page','General &mdash; the whole design'],['need','1. Need'],['stories','2. Raw User Stories'],['sourced','3. Sourced Solution'],['naming','4. Naming'],['shape','5. Shape'],['first-move','6. First Move'],['choices','Choices + Consequences'],['escape','Escape Routes'],['puremetal','Pure Metal Test']];
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  var root=document.getElementById('lk-threads'), nameEl=document.getElementById('lk-name'), lists={};
+  nameEl.value=localStorage.getItem('lk-name')||'';
+  nameEl.addEventListener('change',function(){localStorage.setItem('lk-name',(nameEl.value||'').trim());nameEl.style.borderColor='#333';});
+  PHASES.forEach(function(p){
+    var obj=p[0];
+    var det=document.createElement('details');
+    det.style.cssText='border:1px solid #2a2a2a;border-radius:6px;margin:6px 0;padding:0 10px;background:#141414;';
+    var sm=document.createElement('summary');
+    sm.style.cssText='cursor:pointer;padding:8px 0;color:#e0e0e0;font-size:13px;';
+    sm.innerHTML=p[1]+' <span id="lk-n-'+obj+'" style="color:#6FC3DF;"></span>';
+    det.appendChild(sm);
+    var list=document.createElement('div'); list.style.cssText='margin:6px 0;'; det.appendChild(list); lists[obj]=list;
+    var ta=document.createElement('textarea'); ta.rows=2;
+    ta.placeholder=(obj==='page'?'General comment':'Comment on '+p[1])+'... start with ~ for a tilde scoped here';
+    ta.style.cssText='width:100%;background:#0a0a0a;border:1px solid #333;color:#e0e0e0;padding:7px;border-radius:4px;font-size:13px;font-family:inherit;margin:4px 0;box-sizing:border-box;';
+    det.appendChild(ta);
+    var btn=document.createElement('button'); btn.textContent='Comment';
+    btn.style.cssText='background:#6FC3DF;color:#000;border:none;padding:6px 14px;border-radius:4px;font-weight:600;cursor:pointer;font-size:13px;margin-bottom:8px;';
+    btn.onclick=function(){post(obj,ta,btn);};
+    det.appendChild(btn);
+    root.appendChild(det);
+  });
+  function render(list,arr){
+    if(!arr||!arr.length){list.innerHTML='<span style="color:#666;font-size:12px;">No comments yet.</span>';return;}
+    list.innerHTML=arr.map(function(c){
+      var who=esc(c.author||'anon');
+      var cmd=(c.text&&c.text.charAt(0)==='~')?' <span style="color:#f59e0b;">&#9655; command</span>':'';
+      return '<div style="border-bottom:1px solid #222;padding:6px 0;"><div style="font-size:12px;color:#999;"><strong style="color:'+(who==='metal'?'#6FC3DF':'#e0e0e0')+';">'+who+'</strong>'+cmd+' <span style="color:#555;">'+esc(c.ts||'')+'</span></div><div style="margin-top:2px;white-space:pre-wrap;font-size:13px;">'+esc(c.text)+'</div></div>';
+    }).join('');
+  }
+  function post(obj,ta,btn){
+    var name=(nameEl.value||'').trim(), text=(ta.value||'').trim();
+    if(!name){nameEl.focus();nameEl.style.borderColor='#f59e0b';return;}
+    if(!text)return;
+    localStorage.setItem('lk-name',name);
+    btn.disabled=true; var o=btn.textContent; btn.textContent='...';
+    fetch(BRIDGE+'/comments?doc='+encodeURIComponent(TOKEN)+'&obj='+encodeURIComponent(obj),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({author:name,text:text})})
+    .then(function(r){if(!r||!r.ok)throw 0;ta.value='';btn.disabled=false;btn.textContent=o;load();})
+    .catch(function(){btn.disabled=false;btn.textContent=o;document.getElementById('lk-warn').style.display='block';});
+  }
+  function load(){
+    fetch(BRIDGE+'/comments?doc='+encodeURIComponent(TOKEN)).then(function(r){return r.json();}).then(function(d){
+      if(d.seenByMetal){document.getElementById('lk-seen').style.display='block';}
+      var b={};(d.comments||[]).forEach(function(c){var o=c.obj||'page';(b[o]=b[o]||[]).push(c);});
+      PHASES.forEach(function(p){var o=p[0];render(lists[o],b[o]);var n=document.getElementById('lk-n-'+o);if(n)n.textContent=b[o]?('('+b[o].length+')'):'';});
+    }).catch(function(){document.getElementById('lk-warn').style.display='block';});
+  }
+  load();
+})();
+</script>
+
+</div>
+<footer>v0 &middot; r? &middot; 2026-07-02 &middot; parity &middot; metal Desktop Edition &harr; Console Edition</footer>
+</body>
+</html>

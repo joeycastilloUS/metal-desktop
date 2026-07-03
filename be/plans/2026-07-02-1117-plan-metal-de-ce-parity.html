@@ -1,0 +1,251 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan &mdash; metal.de &harr; metal.ce Parity</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; }
+  li { margin: 6px 0; font-size: 14px; }
+  p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; }
+  .warn { color: #f59e0b; font-weight: 600; }
+  .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~p &mdash; metal.de &harr; metal.ce Parity</span>
+  <span class="pub">Published 2026-07-02 11:17 PT</span>
+</nav>
+<div class="container">
+
+<h1>Plan &mdash; metal.de &harr; metal.ce Parity</h1>
+<p style="color:#999;">Sequenced delivery: fresh consolidated repo &rarr; spec-first &rarr; native tilde engine &rarr; the full Be chain reaction &rarr; parity gate with external production verification.</p>
+
+<div class="banner">PLAN &mdash; AWAITING APPROVAL</div>
+
+<div class="note"><strong>Parity-target caveat (load-bearing):</strong> the CE inventory this plan measures against was read from a local clone that is <strong>275 commits behind</strong> <code>kastil-systems/metal-console</code> origin. Phase 0 MUST re-verify the target against origin before any board is pulled: DoD may be 10+4 (not 8), Purcius/wire and Language-Boundary canon post-date the clone, the MCP purge, <code>_purcius</code> rename, ~patterns, Signals Board 108+, real-network handshake, and biRT code may all have moved. The 13-point parity surface below is v1; expect it to shift and re-baseline.</div>
+
+<h2>Intent</h2>
+<div class="section">
+  <p>Bring metal.de (Desktop Edition) to full parity with metal.ce (Console Edition): the complete tilde contract &mdash; verbs, chains, board discipline, DoD/DoR gates, HTML report chain, telemetry, board-status, Signals, FQDN identity, ship/verify &mdash; executed <strong>natively on the operator's desktop</strong>, deterministic C at $0.00 where the work is deterministic (Tier 0), escalating to the Pantheon per tier where it isn't. Built in the fresh consolidated <code>kastil-systems/metal-desktop</code> repo (Joey's locked decision), which absorbs the biRT + Tier-0 engine from <code>C:\tools\metal-de</code> (r257) and the rebrand shell + 22-provider cockpit from <code>C:\metal-desktop</code> (r9). Built from a seeded a-d-d spec, never from context. Companion design: <code>be/designs/2026-07-02-1117-design-metal-de-ce-parity.html</code>.</p>
+</div>
+
+<h2>Scope</h2>
+<div class="section">
+  <h3>In</h3>
+  <ul>
+    <li>Seeding <code>kastil-systems/a-d-d/_projects/metal-desktop/</code> as <code>*.proposed</code> + <code>ARCHITECTURE.md</code> pointer; re-verifying the CE parity target against origin.</li>
+    <li>Repo consolidation with history (subtree split + unrelated-history merge), MOVED freezes on both old trees, org home <code>kastil-systems</code>.</li>
+    <li><code>route_tilde()</code> dispatcher at the serve.c:3056 seam; front-end <code>~</code> parser; the absorbed Tiered Execution Chain (birt_dispatch / tier0_exec / birt_loop) as the executor; multi-tilde chaining.</li>
+    <li>Local no-prime tildes end-to-end: ~h ~l ~ul ~i ~b(mechanics) ~jc ~config ~tag ~li ~cr, with .pi specs carrying <code>tier: N</code>.</li>
+    <li>The full be/ machinery: board.md discipline, board-status.json atomic writer, telemetry ring + commit backfill, h-cache, prompt trail, vendored renderer + watcher + auto-board pop, HTML report chain with DoD checklists + index + pop-and-link.</li>
+    <li>Signals: sealed per-tilde emission with local queue (<code>be/signals-pending.jsonl</code>); local telemetry always written.</li>
+    <li>Identity/auth: auth-gate un-bypass, FQDN + CF verify + TOTP, keystore, 5 relay flows refactored onto relay_client.c.</li>
+    <li>Cross-platform floor: <code>http_compat</code> (kills the Linux/Mac HTTPS stub), judge threading fix, Win+Mac+Linux compile+smoke as a DoD gate.</li>
+    <li>Relay-dependent tildes (~s mesh leg, Store, queue drain, intelligence loop) once a prime is deployed.</li>
+    <li>~t &rarr; tlt binding (the first .pi binding per canon) with the sanctioned C# Playwright jacket.</li>
+    <li>Full-parity gate: walk the 13-point CE surface; external production verification per Rule 9.</li>
+  </ul>
+  <h3>Out</h3>
+  <ul>
+    <li>C-native board renderer (v1 vendors Python behind the board.md/board-status.json contract; C-ification is boarded debt).</li>
+    <li>Terminal tab / <code>/ws/terminal</code> / xterm.js replacement; MCP (purged posture); silicon console.</li>
+    <li>Master-plan far horizon: ALF fold (P9), IDS self-storage (P12), biRT v3 (P13), 38 driver manifests (P14).</li>
+    <li>Chinese-provider cohort (backlogged BL-1); new cockpit paradigms; prime/relay <em>deployment itself</em> (external infrastructure prerequisite, tracked as a dependency not a board here).</li>
+    <li>Retro-editing any frozen be/ artifact in any tree.</li>
+  </ul>
+</div>
+
+<h2>Approach</h2>
+<div class="section">
+  <ol>
+    <li><strong>Spec first, code second.</strong> The a-d-d spec (<code>*.proposed</code>) and the origin re-verification land before any product commit. Build from a-d-d, never from context; drift stops work and flows up (Rules 10/11).</li>
+    <li><strong>Absorb, don't rewrite.</strong> Both trees merge with history so revision counts and <code>via &lt;hash&gt;</code> board references stay honest. The provider engine, WS broadcast, biRT engine, and sdk are lifted intact; the only new C is the seam (<code>route_tilde</code>) and the four organs (board_status / report_emit / telemetry / signal_emit).</li>
+    <li><strong>Prove the smallest seam, then widen by dependency ring.</strong> ~h end-to-end (~40 LOC per the 2026-06-12 inspect) proves frame &rarr; dispatcher &rarr; tier &rarr; round-trip. Then: local tildes &rarr; be/ machinery &rarr; report chain &rarr; Signals (queue) &rarr; identity &rarr; cross-platform &rarr; mesh &rarr; tlt &rarr; gate.</li>
+    <li><strong>Kernel owns semantics; DE routes and executes.</strong> Verb table lazy-loads from <code>be/docs/commands.md</code> via a configured path; slash and tilde stay separate namespaces; route / execute / report stay separated (tlt four-purpose discipline).</li>
+    <li><strong>Every item is a verify loop</strong> (~a~t / ~u~t / ~f~t, Rule 7); every phase exits through its own DoD including, where a deployable artifact exists, external verification (Rule 9). Signals and board-status are wired from the first tilde, not bolted on at the end &mdash; emission is the contract, not a feature.</li>
+    <li><strong>Plans are wrong by default.</strong> This is a v1 hypothesis; Unknowns and When To Revisit are first-class below. Phase 0's origin re-read is expected to move the target.</li>
+  </ol>
+</div>
+
+<h2>Phases <span class="tag">each phase = one named board for ~e to size</span></h2>
+<div class="section">
+  <table>
+    <tr><th>#</th><th>Board (named deliverable)</th><th>~pts</th><th>What ships / exit criterion</th></tr>
+    <tr><td>P0</td><td><strong>Seed + Verify Target</strong></td><td>8</td><td>a-d-d spec at <code>kastil-systems/a-d-d/_projects/metal-desktop/</code> as <code>*.proposed</code> (intent, parts, four contracts, consolidation map, tier table) + <code>ARCHITECTURE.md</code> pointers; CE origin pulled and the 13-point parity surface re-baselined (DoD 10+4? Purcius canon? MCP purge? Signals 108+? biRT code?). <strong>Exit: Joey approves the spec.</strong> Everything below is gated on this.</td></tr>
+    <tr><td>P1</td><td><strong>Consolidate</strong></td><td>13</td><td><code>kastil-systems/metal-desktop</code> stands up: subtree-split of tools/metal-de + merge of joeycastilloUS/metal-desktop, <code>--allow-unrelated-histories</code> + named move commits (serve.c base = shell; biRT graft = engine; <code>kernel_tilde</code> &rarr; <code>tilde</code> frame rename); MOVED READMEs freeze both old homes; NOTICE + trade-secret headers; <code>version_gen.h</code> stamping; Makefile + make.bat + test target; pre-commit guards (check_ascii/LF, header check); Go.Sign. <strong>Exit: clean build + tests green on Windows from the fresh clone.</strong></td></tr>
+    <tr><td>P2</td><td><strong>~h Native Proof</strong></td><td>5</td><td>loop.js sends <code>{"type":"tilde","cmd":"~h"}</code> on leading <code>~</code>; <code>route_tilde()</code> at the serve.c:3056 seam; <code>birt_dispatch</code> reads <code>tier: 0</code>; help grid renders in the cockpit; first board-status.json start/end writes. <strong>Exit: ~h round-trips at $0.00; three-form rule honored.</strong></td></tr>
+    <tr><td>P3</td><td><strong>Local No-Prime Tildes</strong></td><td>13</td><td>Tier-0 ~l/~ul ported from the absorbed engine onto the new frame; ~b board-pull mechanics (Tier 0); ~i via birt_loop (Tier 2, budget-railed); Tier-0 specs for ~jc ~config ~tag ~li ~cr; multi-tilde chain parser (context+args per the tiered design); kernel-docs path in desktop.conf. <strong>Exit: an operator runs a real ~l &rarr; ~i chain, 0 LLM calls on the ~l leg.</strong></td></tr>
+    <tr><td>P4</td><td><strong>be/ Machinery</strong></td><td>13</td><td>Full CE-shape be/ tree; <code>board_status.c</code> atomic writes from every tilde (start/phase/end); telemetry.json 100-ring with commit-hash backfill; h-cache; prompt trail; vendored render-board-view.py + watch.py + open-board; auto-board pop on ~b/~l; render-on-state-change. <strong>Exit: live board reflects a DE tilde mid-flight with spinner.</strong></td></tr>
+    <tr><td>P5</td><td><strong>HTML Report Chain</strong></td><td>8</td><td><code>report_emit.c</code>: Be-template reports (dark/tron-blue/800px, Published stamp, DoD checklist) from C string templates into be/&lt;kind&gt;/ with datetime names; index auto-update; pop-and-link (metalbrowse + live URL discipline). <strong>Exit: every implemented tilde except ~h produces its report; chain reaction order matches the kernel contract.</strong></td></tr>
+    <tr><td>P6</td><td><strong>Signals &mdash; Local Queue First</strong></td><td>8</td><td><code>signal_emit.c</code>: one sealed Signal per tilde ({kind,what,by,cmd,context,at,seal}, Ed25519 via crypt.c); fire-and-forget with <code>be/signals-pending.jsonl</code> queue when no relay; local telemetry always written; seal format isolated behind one function pending Sealed-IDS v3.1 conformance. <strong>Exit: every tilde run leaves a sealed queued Signal + telemetry entry.</strong></td></tr>
+    <tr><td>P7</td><td><strong>Identity / Auth</strong></td><td>13</td><td>Auth-gate un-bypass (initAuthGate revert); FQDN handshake + CF token verify + TOTP composing from crypt.c (modeled on CE auth gate + handshake); operator keystore (key never leaves the machine); the 5 dormant relay-auth flows refactored onto relay_client.c (~600-line copy-paste debt retired); Trust pattern applied (hollow edge / sealed core). <strong>Exit: operator logs in by FQDN + TOTP locally; NOUS branding residue gone.</strong></td></tr>
+    <tr><td>P8</td><td><strong>Cross-Platform Floor</strong></td><td>13</td><td><code>http_compat</code> wrapper kills the sdk/http.c Linux/Mac stub (lift the nous tls13 fill, beee6aa); judge threading off <code>#ifdef _WIN32</code>-only; pty/dir/spawn compat already absorbed; Linux + Mac compile + smoke join the ship-cycle DoD. <strong>Exit: fan-out + judge + a Tier-0 tilde run green on all three platforms.</strong></td></tr>
+    <tr><td>P9</td><td><strong>Relay-Dependent Tildes</strong> <span class="blocked">&#9940; blocked on prime deploy</span></td><td>13</td><td>~s full chain including Store/mesh leg over NTRP0001 wire; signals-pending queue drain to nous/comms; intelligence loop wake; store local-stub retirement (old Board 33). Wire-protocol-only into the substrate &mdash; never HTTP/REST. <strong>Exit: a DE ~s lands a Signal a listener can consume; queue drains verifiably.</strong></td></tr>
+    <tr><td>P10</td><td><strong>~t &rarr; tlt Binding</strong></td><td>13</td><td>The first tilde&rarr;binary binding per Tildes-Are-.pi canon: DE's ~t invokes tlt (intent &rarr; transpile &rarr; 14-op schema &rarr; C# Playwright jacket, dom_sig HMAC cache, manifests); ~t vs ~tlt both exposed, operator chooses (two-verb discipline); Test-tab serve wiring. <strong>Exit: a DE ~t run produces a manifest CE's tooling accepts.</strong></td></tr>
+    <tr><td>P11</td><td><strong>Full Parity Gate + Production Verification</strong></td><td>8</td><td>Walk the (re-baselined) 13-point CE surface point-by-point with evidence; fresh-machine clone &rarr; build &rarr; run smoke; published artifacts verified live per Rule 9 (third-party-checkable); parity retro (Kaizen items harvested); C-renderer + xterm.js debt formally boarded. <strong>Exit: parity declared with receipts, or the gap list becomes plan v2.</strong></td></tr>
+  </table>
+  <p><strong>Total: ~115 pts across 11 boards.</strong> Sequencing is dependency-true: P0 gates everything; P1&rarr;P2&rarr;P3 are strictly ordered; P4/P5/P6 can interleave after P3; P7 and P8 are parallel-eligible after P4; P9 waits on external prime deployment (calendar-independent &mdash; do not block P10/P11 on it if prime slips; the gate then records the queue-only posture explicitly). Companion <code>~e</code> sizes each board into triples.</p>
+</div>
+
+<h2>Constraints <span class="tag">the 16-item checklist</span></h2>
+<div class="section">
+  <ol>
+    <li><strong>C99 everywhere we own; C# only as foreign-API jackets</strong> (Language Boundary lock 2026-06-20). The Playwright worker is the sole sanctioned jacket.</li>
+    <li><strong>No external deps &mdash; roll your own.</strong> libc + OS primitives; no OpenSSL, no frameworks. (Vendored Python renderer is named, temporary, contract-bounded debt.)</li>
+    <li><strong>a-d-d spec seeded first as <code>*.proposed</code></strong> + ARCHITECTURE.md pointer; human approval before code; build from a-d-d never from context; drift stops work and flows up.</li>
+    <li><strong>Two-tree split resolved:</strong> fresh consolidated <code>kastil-systems/metal-desktop</code> (Joey, locked). Both sources absorbed with history; old homes frozen with MOVED READMEs.</li>
+    <li><strong>Kernel owns verb semantics; DE routes + executes.</strong> Lazy-load <code>be/docs</code>; never fork the tilde table into C; slash &ne; tilde.</li>
+    <li><strong>Tiered execution is the parity mechanism.</strong> Tier 0 pure C $0.00; <code>tier: N</code> in .pi frontmatter; escalation per tier; learned routing Cold/Warming/Hot.</li>
+    <li><strong>Wire protocol only into Purcius</strong> (NTRP0001, wire over TLS); never HTTP/REST/SDK into the substrate; new substrate capability = pure-C skill via Slot; secrets follow Trust. Foreign-AI fan-out stays direct-HTTPS (foreign edge, not substrate).</li>
+    <li><strong>FQDN = operator identity.</strong> CF verify + TOTP, no passwords, no third-party IdP; one root Ed25519 key never leaves the machine; <code>&lt;name&gt;US/vault</code>; <code>_purcius.&lt;fqdn&gt;</code> TXT.</li>
+    <li><strong>Signals are mandatory, not an edition feature.</strong> Every tilde emits one sealed Signal; local queue on mesh failure; local telemetry always; board-status.json schema v1 atomic writes; auto-board pop on ~b/~l.</li>
+    <li><strong>Full Be chain reaction per tilde:</strong> report &rarr; save &rarr; index &rarr; telemetry &rarr; commit (hash backfill) &rarr; push &rarr; DoD verify incl. external production verification &rarr; pop with pop-and-link.</li>
+    <li><strong>Cross-Platform From Day One:</strong> Win+Mac+Linux compile + smoke in the same ship cycle; named compat wrappers, no #ifdef spaghetti; MinGW UCRT (<code>C:\tools\mingw64</code>) is the WDAC-trusted Windows path; handlers designed for WDAC hand-off (interactive-terminal launch), never silent local exec under automation.</li>
+    <li><strong>Board discipline:</strong> triples {what, verb, context}, Fibonacci pts, verify-loop pairing (~a~t), Kaizen K-board, external-contributor <code>via &lt;hash&gt;</code> refs, historical be/ artifacts frozen.</li>
+    <li><strong>Versioning:</strong> v0 &middot; rN (= commit count) &middot; date &middot; pts. No semver. No co-author lines, ever.</li>
+    <li><strong>Trade-secret hygiene:</strong> confidentiality header first line of every source file; NOTICE at root; env-var names only, never token values; commercial intel stays out of versioned files.</li>
+    <li><strong>Plan shape honored:</strong> Intent / Scope / Approach / Phases / Constraints + Unknowns + When To Revisit; plans are wrong by default; this banner stays until Joey approves.</li>
+    <li><strong>Done = production, externally verified</strong> (Rule 9): committed/pushed/green is not done; a third party verifies with HTTP 200 / dig / a fresh-machine build before any Done is written.</li>
+  </ol>
+</div>
+
+<h2>Unknowns <span class="tag">named explicitly</span></h2>
+<div class="section">
+  <ul>
+    <li><strong>Native-vs-relay execution</strong> &mdash; treated as settled (native + tiered; proven by Tier-0 ~l/~ul in tools/metal-de). Carried here for Joey to <em>confirm at P0 approval</em>, since the 2026-06-12 inspect flagged it as the load-bearing ~d decision.</li>
+    <li><strong>No-prime v1 scope</strong> &mdash; exactly which tilde legs queue vs. ship: proposed split is "everything local full-chain; Store/Signal-delivery/intelligence queue loudly." Joey may want ~s to hard-require the mesh leg instead.</li>
+    <li><strong>Sealed-IDS v3.1 dependency</strong> &mdash; the record-kind spec lives under nous/security and is not in either DE tree. Until pulled, queued Signals seal behind one isolated function and may need re-sealing for mesh interop. Unknown: spec stability + pull path.</li>
+    <li><strong>C-renderer vs Python timing</strong> &mdash; v1 vendors render-board-view.py; unknown is <em>when</em> the C-native renderer earns a board (after P11? alongside P8?). Contract boundary makes the swap safe whenever.</li>
+    <li><strong>Org home mechanics</strong> &mdash; kastil-systems is locked as the org; unknown is fresh-create-then-merge vs. transfer-then-merge, and whether GitHub org policies (signing, branch protection) need Go.Sign changes on day one.</li>
+    <li><strong>CE origin drift (275 behind)</strong> &mdash; the parity target itself. P0 re-baselines; every downstream phase inherits whatever moved (DoD 10+4, Purcius canon, MCP purge, Signals Board 108+, real-network handshake, biRT code in CE).</li>
+    <li><strong>WDAC under automation</strong> &mdash; metal-desktop.exe and gcc are blocked from Claude's sub-shell on Joey's box. Interactive-terminal launch covers the operator path; unknown is how CI-style verify loops run locally without hand-off friction.</li>
+    <li><strong>Kernel-docs source for non-Joey operators</strong> &mdash; the configured-path answer assumes a sibling metal clone; unknown is the install-time provisioning story on a fresh operator's box.</li>
+    <li><strong>Linux/Mac TLS path for http_compat</strong> &mdash; lift nous's tls13.c fill vs. complete the partial CE tls13.c: same lineage, two states; needs one afternoon of source archaeology at P8.</li>
+    <li><strong>Prime/relay deployment date</strong> &mdash; wholly external to this repo; P9's calendar anchor.</li>
+  </ul>
+</div>
+
+<h2>When To Revisit <span class="tag">the v2 triggers</span></h2>
+<div class="section">
+  <ul>
+    <li><strong>P0's origin re-read changes the 13-point surface</strong> &mdash; any moved target (new DoD items, Signals emit-per-tilde shipped in CE, biRT landed in CE) re-baselines the phases: plan v2 immediately, before P1.</li>
+    <li><strong>The ~h proof fails the seam</strong> &mdash; if route_tilde + tier-0 can't round-trip in roughly the promised ~40 LOC + dispatch, the execution model (not the phase list) is wrong: back to ~d.</li>
+    <li><strong>Sealed-IDS v3.1 turns out incompatible</strong> with the queued seal format &mdash; P6 re-opens and queued Signals get a re-seal migration.</li>
+    <li><strong>Prime deploys</strong> &mdash; P9 unblocks; resequence it forward of whatever is then in flight.</li>
+    <li><strong>Any drift between the approved a-d-d spec and what implementation discovers</strong> &mdash; per Rule 11 that stops the tilde and flows up as a spec-update proposal; two such stops in one phase = plan v2.</li>
+    <li><strong>Tier assignments prove wrong in use</strong> (a Tier-0 spec keeps escalating, or a Tier-2 tilde turns out deterministic) &mdash; retune frontmatter numbers per the tiered design's escape route; a pattern of retunes = revisit the tier table in the spec.</li>
+  </ul>
+</div>
+
+<h2>Definition of Done <span class="tag">this artifact</span></h2>
+<div class="section">
+  <ul>
+    <li><span class="warn">&#9702;</span> Plan committed &mdash; PENDING (awaiting operator approval; no commit per this run's contract)</li>
+    <li><span class="warn">&#9702;</span> Commit hash in telemetry &mdash; PENDING</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/plans/2026-07-02-1117-plan-metal-de-ce-parity.html</code></li>
+    <li><span class="warn">&#9702;</span> Index updated &mdash; PENDING (follows approval)</li>
+    <li><span class="warn">&#9702;</span> Pushed to remote &mdash; PENDING</li>
+    <li><span class="pass">&#10003;</span> No prior work damaged &mdash; no source, board, or historical artifact touched</li>
+    <li><span class="pass">&#10003;</span> Required sections present: Intent / Scope / Approach / Phases / Constraints + Unknowns + When To Revisit (Rule 6)</li>
+    <li><span class="pass">&#10003;</span> Phases are named, rough-pointed boards sized for a follow-on ~e; dependency-true sequencing stated</li>
+    <li><span class="pass">&#10003;</span> 16-constraint checklist carried in full</li>
+    <li><span class="pass">&#10003;</span> Parity-target re-verification (CE origin, 275 behind) made explicit and gated at P0</li>
+    <li><span class="pass">&#10003;</span> Status banner present: Plan &mdash; Awaiting Approval</li>
+    <li><span class="pass">&#10003;</span> Trade-secret header first line; pubdate top-right</li>
+  </ul>
+</div>
+
+<h2>Comments &amp; Follow-up <span style="font-size:12px;color:#555;font-weight:400;">one thread per phase &middot; comment, then run <code>~fu</code></span></h2>
+<div style="background:#1A1A1A;border:1px solid #222;border-radius:6px;padding:14px;margin-top:8px;">
+  <div id="lk-seen" style="font-size:12px;color:#22c55e;margin-bottom:8px;display:none;">&#10003; seen by metal</div>
+  <label style="font-size:13px;color:#888;">Your name <input id="lk-name" style="background:#0a0a0a;border:1px solid #333;color:#e0e0e0;padding:5px 8px;border-radius:4px;font-size:13px;margin-left:6px;"></label>
+  <div id="lk-threads" style="margin-top:10px;"></div>
+  <div id="lk-warn" style="display:none;color:#f59e0b;font-size:12px;margin-top:10px;border-top:1px solid #333;padding-top:8px;">Comments won't post from <strong>Firefox</strong> when the page is opened as a file. Open this artifact in <strong>Chrome or Brave</strong> and try again.</div>
+</div>
+<script>
+(function(){
+  var BRIDGE='https://gcp-bridge-692654781984.us-west1.run.app';
+  var TOKEN='07aed9b5-8f1e-4d64-9b0d-0a82a7d72fd8';
+  var PHASES=[['page','General &mdash; the whole plan'],['P0','P0 &mdash; Seed + Verify Target'],['P1','P1 &mdash; Consolidate'],['P2','P2 &mdash; ~h Native Proof'],['P3','P3 &mdash; Local No-Prime Tildes'],['P4','P4 &mdash; be/ Machinery'],['P5','P5 &mdash; HTML Report Chain'],['P6','P6 &mdash; Signals (Local Queue First)'],['P7','P7 &mdash; Identity / Auth'],['P8','P8 &mdash; Cross-Platform Floor'],['P9','P9 &mdash; Relay-Dependent Tildes'],['P10','P10 &mdash; ~t to tlt Binding'],['P11','P11 &mdash; Full Parity Gate']];
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  var root=document.getElementById('lk-threads'), nameEl=document.getElementById('lk-name'), lists={};
+  nameEl.value=localStorage.getItem('lk-name')||'';
+  nameEl.addEventListener('change',function(){localStorage.setItem('lk-name',(nameEl.value||'').trim());nameEl.style.borderColor='#333';});
+  PHASES.forEach(function(p){
+    var obj=p[0];
+    var det=document.createElement('details');
+    det.style.cssText='border:1px solid #2a2a2a;border-radius:6px;margin:6px 0;padding:0 10px;background:#141414;';
+    var sm=document.createElement('summary');
+    sm.style.cssText='cursor:pointer;padding:8px 0;color:#e0e0e0;font-size:13px;';
+    sm.innerHTML=p[1]+' <span id="lk-n-'+obj+'" style="color:#6FC3DF;"></span>';
+    det.appendChild(sm);
+    var list=document.createElement('div'); list.style.cssText='margin:6px 0;'; det.appendChild(list); lists[obj]=list;
+    var ta=document.createElement('textarea'); ta.rows=2;
+    ta.placeholder=(obj==='page'?'General comment':'Comment on '+obj)+'... start with ~ for a tilde scoped here';
+    ta.style.cssText='width:100%;background:#0a0a0a;border:1px solid #333;color:#e0e0e0;padding:7px;border-radius:4px;font-size:13px;font-family:inherit;margin:4px 0;box-sizing:border-box;';
+    det.appendChild(ta);
+    var btn=document.createElement('button'); btn.textContent='Comment';
+    btn.style.cssText='background:#6FC3DF;color:#000;border:none;padding:6px 14px;border-radius:4px;font-weight:600;cursor:pointer;font-size:13px;margin-bottom:8px;';
+    btn.onclick=function(){post(obj,ta,btn);};
+    det.appendChild(btn);
+    root.appendChild(det);
+  });
+  function render(list,arr){
+    if(!arr||!arr.length){list.innerHTML='<span style="color:#666;font-size:12px;">No comments yet.</span>';return;}
+    list.innerHTML=arr.map(function(c){
+      var who=esc(c.author||'anon');
+      var cmd=(c.text&&c.text.charAt(0)==='~')?' <span style="color:#f59e0b;">&#9655; command</span>':'';
+      return '<div style="border-bottom:1px solid #222;padding:6px 0;"><div style="font-size:12px;color:#999;"><strong style="color:'+(who==='metal'?'#6FC3DF':'#e0e0e0')+';">'+who+'</strong>'+cmd+' <span style="color:#555;">'+esc(c.ts||'')+'</span></div><div style="margin-top:2px;white-space:pre-wrap;font-size:13px;">'+esc(c.text)+'</div></div>';
+    }).join('');
+  }
+  function post(obj,ta,btn){
+    var name=(nameEl.value||'').trim(), text=(ta.value||'').trim();
+    if(!name){nameEl.focus();nameEl.style.borderColor='#f59e0b';return;}
+    if(!text)return;
+    localStorage.setItem('lk-name',name);
+    btn.disabled=true; var o=btn.textContent; btn.textContent='...';
+    fetch(BRIDGE+'/comments?doc='+encodeURIComponent(TOKEN)+'&obj='+encodeURIComponent(obj),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({author:name,text:text})})
+    .then(function(r){if(!r||!r.ok)throw 0;ta.value='';btn.disabled=false;btn.textContent=o;load();})
+    .catch(function(){btn.disabled=false;btn.textContent=o;document.getElementById('lk-warn').style.display='block';});
+  }
+  function load(){
+    fetch(BRIDGE+'/comments?doc='+encodeURIComponent(TOKEN)).then(function(r){return r.json();}).then(function(d){
+      if(d.seenByMetal){document.getElementById('lk-seen').style.display='block';}
+      var b={};(d.comments||[]).forEach(function(c){var o=c.obj||'page';(b[o]=b[o]||[]).push(c);});
+      PHASES.forEach(function(p){var o=p[0];render(lists[o],b[o]);var n=document.getElementById('lk-n-'+o);if(n)n.textContent=b[o]?('('+b[o].length+')'):'';});
+    }).catch(function(){document.getElementById('lk-warn').style.display='block';});
+  }
+  load();
+})();
+</script>
+
+</div>
+<footer>v0 &middot; r? &middot; 2026-07-02 &middot; parity &middot; metal Desktop Edition &harr; Console Edition &middot; ~115 pts / 11 boards</footer>
+</body>
+</html>
