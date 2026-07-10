@@ -1,0 +1,235 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design &mdash; The Extraction Engine: Conversations &rarr; .pi &rarr; biRT Replay</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .optional h2 { border-bottom-style: dashed; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; }
+  li { margin: 6px 0; font-size: 14px; }
+  p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid #2a2a2a; font-size: 12.5px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; }
+  .warn { color: #f59e0b; font-weight: 600; }
+  .no { color: #ef5350; font-weight: 600; }
+  .banner { background: #06222b; border: 1px solid #14505f; color: #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; font-weight: 600; letter-spacing: 0.03em; }
+  .lb { color:#ef5350; font-weight:700; }
+  .rp { color:#22c55e; font-weight:700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~d &mdash; The Extraction Engine</span>
+  <span class="pub">Published 2026-07-10 14:44 PDT</span>
+</nav>
+<div class="container">
+
+<h1>The Extraction Engine <span class="tag">foundational</span></h1>
+<p style="color:#999;">Conversations &rarr; <code>.pi</code> &rarr; <code>.ids</code> &rarr; runtime dialect &rarr; biRT replay. Extract the intelligence under every tilde, restate it as sealed pure intent, and replay it on demand in pure C99 &mdash; renting an LLM only for the genuine Cold-phase discovery, hosted in clauderun. This design finishes what Tier-0 already proved.</p>
+
+<div class="banner">This design EXTENDS proven work &mdash; the Tier model, the Tier-0 <code>~l</code>/<code>~ul</code> engine (r257), nous <code>understand()</code>, gcp-bridge, and clauderun's CliWorker. It adds the three pieces that do not exist yet: the <code>.pi</code> format, the dialect translator, and the Cold-phase Cloud-Run host.</p>
+
+<h2>1. Need</h2>
+<div class="section">
+  <p>The software factory that builds itself cannot run on a per-command LLM bill. CE proved the discipline over 1,875 revisions &mdash; but every tilde routes through Claude Code, so every deterministic step (re-walking the same 9-step chain, re-reading the same recipe) costs tokens and seconds. The receipt is exact: an LLM-driven <code>~ul</code> ran 47.9s / $0.146 and didn't finish; the pure-C Tier-0 <code>~ul</code> runs ~100ms / $0.00 and does. The <code>~i</code> paired with this design showed the truth quantitatively: <strong>6 of 32 tildes are 100% LLM-free today and 13 of 32 are &ge;85%</strong> &mdash; yet none of that mechanism runs without a model in the loop, because the deterministic core has never been <em>separated from</em> the judgment and sealed as its own artifact.</p>
+  <p>What's missing is not the engine (Tier-0 exists) and not the decoder (nous <code>understand()</code> exists). What's missing is the <strong>artifact that makes tier a property of data, not of code</strong> &mdash; the <code>.pi</code> punch card &mdash; plus the two things that let it reach any model and run Cold work off-box: a <strong>dialect translator</strong> and a <strong>Cloud-Run Claude-Code host</strong>. Extract the intelligence, restate it as <code>.pi</code>, replay on demand. metal Desktop Edition becomes lightspeed and LLM-free by default, trickling in intelligence only at the genuine discovery edge.</p>
+</div>
+
+<h2>2. Raw User Stories</h2>
+<div class="section">
+  <ul>
+    <li>As the operator, I want <code>~h ~l ~config ~tag ~li ~chase</code> to run on my desktop at $0.00 in ~100ms, because the factory must not bill me for work that never changes.</li>
+    <li>As the operator, I want each tilde's intelligence sealed as a <code>.pi</code> punch card I own, so the recipe is sovereign data &mdash; not a prompt buried in a vendor's context window.</li>
+    <li>As the operator, I want the <code>.pi</code> exported to whatever dialect the target model speaks &mdash; Claude, Anthropic-on-Vertex, or the next model &mdash; <em>on the fly</em>. <code>.pi</code> first; model-specific second.</li>
+    <li>As the operator, I want Cold-phase discovery to run Claude Code inside Cloud Run (clauderun, revived), so the deep work happens off my box, keyless, and the result comes back as a sealed record.</li>
+    <li>As the operator, I want the deterministic substrate to <em>fact-check</em> whatever the model returns (atom-diff), so a probabilistic answer can't corrupt a sealed run.</li>
+    <li>As Joey and Fable&nbsp;5, I want to optimize the tilde <code>.md</code> files together and convert them to <code>.pi</code>, then make them records in the <code>.ids</code>, so the corpus becomes an executable library, not documentation.</li>
+    <li>As the substrate steward, I want <code>kastil-systems/a-d-d</code> and every skill to run on this same engine, so the whole platform inherits LLM-free replay, not just the tildes.</li>
+  </ul>
+</div>
+
+<h2>3. Sourced Solution</h2>
+<div class="section">
+  <p>Mined in canon order: a-d-d architecture &rarr; nous C99 primitives + in-repo sdk &rarr; apps we've built &rarr; outside. <strong>Almost nothing here is invented</strong> &mdash; the design's job is to <em>wire together</em> five existing bodies of work and add three small missing links.</p>
+  <table>
+    <tr><th>Source</th><th>What it gives</th><th>Disposition</th></tr>
+    <tr><td>Tiered Execution Chain design<br><code>metal/be/designs/2026-06-07-1547</code></td><td>Tier 0/1/2/3 = Cold/Warming/Hot; <code>tier:N</code> frontmatter; per-op escalation; <code>birt_dispatch()</code>; escape route = edit one number.</td><td class="rp">REUSE &mdash; the execution architecture.</td></tr>
+    <tr><td>Tildes-Are-.pi + .pi/biRT + IDS canon<br><code>metal/be/docs/conventions.md</code></td><td>The <code>.pi</code> = sealed punch card; biRT reads &amp; executes; IDS = sealed store of .pi + history; sub_task_hints; Cold&rarr;Warming&rarr;Hot.</td><td class="rp">REUSE &mdash; the definitional contract.</td></tr>
+    <tr><td>Argus &ldquo;conversation is a program&rdquo;<br><code>acmedevUS/argus ARCHITECTURE.md &sect;5&ndash;7</code></td><td>The decode&rarr;.pi&rarr;REPLAY spine; nous <code>understand()</code> as the $0 deterministic decoder; atom-diff governance (GROUNDED/UNSUPPORTED/CONTRADICTED); RAW sealed IDS + rebuildable DERIVED IDS.</td><td class="rp">REUSE &mdash; the decoder + verify spine; 4 of 5 stages already built.</td></tr>
+    <tr><td>metal-de engine<br><code>kastil-systems/tools</code> r257</td><td><code>birt_tier0_l/ul()</code> at $0.00; <code>birt_fs.c</code>; <code>birt_loop.c</code>; <code>birt_translator.c</code> (Anthropic); <code>relay_client.c</code>; sdk <code>wire/crypt/http</code>.</td><td class="rp">ABSORB &mdash; the running proof; generalize the hardcoded switch.</td></tr>
+    <tr><td>gcp-bridge<br><code>acmedevUS/gcp-bridge</code> (live)</td><td>Claude Opus on Cloud Run via ADC&rarr;Vertex <code>:rawPredict</code>, <strong>no key</strong>; the Anthropic-payload jacket (<code>anthropic_version:vertex-2023-10-16</code>, drop model/stream); <code>/version</code> build-stamp for external verify.</td><td class="rp">REUSE &mdash; the keyless model runtime.</td></tr>
+    <tr><td>clauderun / pantheon-platform<br><code>ai-pantheon/pantheon-platform</code></td><td><code>CliWorker/server.mjs</code> <code>runClaude()</code> via Agent SDK <code>query()</code>, <code>bypassPermissions</code>, <code>CI/TERM=dumb</code>; the autonomous <code>writeClaudeMd()</code> (&ldquo;don't ask, no plan-mode&rdquo;); Dockerfile fixes that <strong>kill the lock-up</strong> (pre-seed <code>settings.json</code>, non-root node); GCS session persistence for <code>--resume</code>.</td><td class="rp">REVIVE &mdash; the Cold-phase host; pattern source, not a live dep.</td></tr>
+    <tr><td>Slot + Trust patterns<br><code>kastil-systems/a-d-d/patterns</code></td><td>Slot: seat a self-contained skill in a conventional slot, wired one line. Trust: hollow edge over sealed core, secrets bound to FQDN.</td><td class="warn">APPLY &mdash; each tilde <code>.pi</code> is a Slot; the Cold host is Trust-shaped.</td></tr>
+  </table>
+  <p><strong>The only genuinely new design surface</strong> is item &sharp;7 in the naming section below (the dialect translator) and the wiring of clauderun as a tier-dispatched Cold host. Everything else is reuse.</p>
+</div>
+
+<h2>4. Name It True</h2>
+<div class="section">
+  <p>Literal names for each stage of the pipeline. The pipeline reads left to right; a tilde starts as a <code>.md</code> conversation and ends as a replayable card.</p>
+  <pre>
+ tilde.md ──optimize──▶ .pi ──seal/ingest──▶ IDS record ──┐
+ (conversation)      (pure intent      (sealed store:            │
+                      punch card)       RAW + DERIVED)           │
+                                                                 ▼
+   ┌────────────────────── biRT (the runtime) ──────────────────────┐
+   │  DECODER      = nous understand()   read .pi punches ($0, det.) │
+   │  TAIL EXECUTOR= one shared C99 chain (index/telemetry/commit…)  │
+   │  DISPATCHER   = birt_dispatch() reads per-SLOT tier from .pi    │
+   │  TRANSLATOR   = .pi ──▶ per-provider dialect ON THE FLY  [NEW]  │
+   │  VERIFIER     = atom-diff: substrate fact-checks the model      │
+   └───────────────┬───────────────────────────────┬────────────────┘
+        Hot slot    │ Tier 0: pure C, $0            │ Cold slot: Tier 2/3
+        replays ────┘                               └──▶ CLAUDE-RUN HOST
+        LLM-free                                         (clauderun revived,
+                                                          keyless via Vertex)
+  </pre>
+  <ol>
+    <li><strong>Optimize</strong> &mdash; Joey + Fable&nbsp;5 refine each tilde <code>.md</code> into its tightest form before sealing. Human-owned (Rule 10).</li>
+    <li><strong><code>.pi</code></strong> &mdash; the sealed pure-intent punch card. Frontmatter (name / protocol / DoR / DoD / verb / model / <strong>slots[]</strong> with per-slot tier + sub_task_hints) + scaffold. <em>Literal, canon-exact.</em></li>
+    <li><strong>IDS record</strong> &mdash; the sealed store. RAW (append-only, one writer, the seed) + DERIVED (many, rebuilt by the decoder, versioned against the decoder not the data). Same raw + same decoder = byte-identical derived. <em>No <code>.ids</code> file format; IDS is the umbrella.</em></li>
+    <li><strong>Decoder</strong> &mdash; nous <code>understand()</code>, the read side. This is the word Joey used; it already exists.</li>
+    <li><strong>Tail executor</strong> &mdash; the one shared chain-reaction program, extracted once.</li>
+    <li><strong>Dispatcher</strong> &mdash; <code>birt_dispatch()</code>, reads <code>tier:</code> <em>per slot</em> (the <code>~i</code>'s headline correction) and routes each slot to C99 or a model.</li>
+    <li><strong>Translator</strong> <span class="tag">NEW</span> &mdash; the dialect emitter. Takes one sealed <code>.pi</code> and emits the target model's wire dialect on the fly (Claude Messages, Vertex <code>:rawPredict</code>, the next model's schema). Literally &ldquo;.pi first, export to model-specifics.&rdquo; Name candidate for Joey to bless: <strong>emit</strong> / <strong>dialect</strong> / <strong>translator</strong>. Collision check: <code>birt_translator.c</code> exists (Anthropic-only) &mdash; this generalizes it, same name.</li>
+    <li><strong>clauderun (Cold host)</strong> &mdash; Claude Code in Cloud Run. Keeps Joey's name.</li>
+    <li><strong>Verifier</strong> &mdash; atom-diff. The deterministic substrate fact-checks the probabilistic model.</li>
+  </ol>
+</div>
+
+<h2>5. Shape</h2>
+<div class="section">
+  <h3>The <code>.pi</code> card (per tilde)</h3>
+  <pre>~config.pi
+---
+name: config
+protocol: [route_on_argshape, validate_key, validate_value, json_write, commit_push, render_table]
+dor: exempt
+dod: exempt
+verb: "configured in"
+slots: []            # zero judgment slots -> Tier 0 everywhere, replays LLM-free
+schema: { reports.display: [preview,print,silent], ... }   # the settings table rides in the card
+---
+&lt;body: display templates + the get/set grammar&gt;</pre>
+  <pre>~d.pi   (a Cold-heavy card, same shape)
+---
+name: design
+protocol: [dor_read, corpus_retrieve, scaffold_six_sections, tail_execute]
+slots:
+  - id: need_distillation   tier: cold(2/3)  hint: fan-out; anchor=fable5
+  - id: solution_sourcing   tier: warm       hint: nous-triplestore retrieval + rank; surface=~patterns
+  - id: literal_naming      tier: cold        hint: propose; operator-CLAIM selects
+  - id: shape+first_move    tier: cold        hint: the irreducible core; CLAIM-gated
+  - id: right_sizing        tier: hot         hint: threshold rule {pts, irreversibility, dep-count}
+---
+&lt;body: the six-section spine + right-sized-tools rules&gt;</pre>
+  <p>The card <em>is</em> the tier map, at slot granularity. The <strong>tail executor</strong> runs the mechanical protocol; the <strong>dispatcher</strong> walks <code>slots[]</code> &mdash; Hot slots run in C99, Cold slots go to the translator&rarr;clauderun&rarr;verifier loop. A tilde &ldquo;cools&rdquo; by a slot's tier dropping in its card &mdash; one number, operator-approved (Rule 10). No rebuild.</p>
+
+  <h3>The runtime path of one Cold slot</h3>
+  <ol>
+    <li>Dispatcher hits a <code>tier: cold</code> slot &rarr; asks the <strong>translator</strong> to emit the target dialect from the <code>.pi</code> + the slot's context (pre-computed by C99, so the model reads structure, not raw repo).</li>
+    <li>Dispatch to <strong>clauderun</strong> (Cloud Run) &mdash; Agent SDK <code>query()</code>, autonomous CLAUDE.md, keyless via Vertex (gcp-bridge path). Returns the work + <code>total_cost_usd</code>.</li>
+    <li><strong>Verifier</strong> atom-diffs the result against ground-truth atoms; CONTRADICTED &rarr; reject/retry. GROUNDED &rarr; accept.</li>
+    <li>Seal the (slot-context &rarr; result) pair as a DERIVED IDS record &mdash; the routing library warms by side-effect. Enough observations &rarr; the slot's tier drops toward Hot.</li>
+  </ol>
+
+  <h3>Boundaries (explicit out-of-scope)</h3>
+  <ul>
+    <li><span class="no">OUT:</span> the full 38-driver capability manifests (master-plan P14), ALF (P9/P13), silicon/biRT-v3. Far horizon.</li>
+    <li><span class="no">OUT:</span> the two <code>floor=cold</code> slots (<code>~p</code> Unknowns, <code>~patterns extract</code> abstraction) &mdash; designed to stay Cold forever; the translator serves them, it does not eliminate them.</li>
+    <li><span class="no">OUT:</span> repo consolidation into <code>kastil-systems/metal-desktop</code> &mdash; that is parity-plan P1, a prerequisite tracked separately; this design targets the currently-canonical <code>joeycastillo.us/metal-desktop</code> tree and is portable to the consolidated repo.</li>
+  </ul>
+</div>
+
+<h2 class="optional">Choices &amp; Consequences <span class="tag">load-bearing</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Fork</th><th>Options</th><th>Pick &amp; why</th></tr>
+    <tr><td>Tier as data or code?</td><td>(a) keep hardcoded C switch; (b) read <code>tier:</code> from <code>.pi</code> frontmatter</td><td><strong>(b).</strong> The whole thesis is that intelligence becomes sovereign data. A hardcoded switch can't be optimized by the operator or shared on the mesh. 2nd-order: a parser is now the critical-path unblocker (P2).</td></tr>
+    <tr><td>Dialect export: when?</td><td>(a) translate at runtime per call; (b) pre-compile one prompt per provider ahead of time</td><td><strong>(a) runtime.</strong> Joey's words: &ldquo;export to model-specifics <em>on the fly</em>.&rdquo; Pre-compiling forks the <code>.pi</code> into N stale copies; runtime keeps one sovereign source. Cost: a translate step per Cold call &mdash; negligible vs the model call itself.</td></tr>
+    <tr><td>Cold host: which runner?</td><td>(a) keyless Vertex via gcp-bridge; (b) consumer-key Claude CLI; (c) Agent SDK <code>query()</code> in Cloud Run</td><td><strong>(c) for Claude Code work, pointed at (a) Vertex for raw model calls.</strong> CliWorker's <code>query()</code> is the variant that <em>solved the lock-ups</em>; Vertex keeps it keyless inside the operator's GCP. (b) is the fallback. Consequence: two runtimes, but both already exist.</td></tr>
+    <tr><td>What proves it first?</td><td>(a) a Cold tilde (<code>~d</code>); (b) a 100% tilde (<code>~config</code>)</td><td><strong>(b).</strong> A Cold tilde can't isolate the format from the judgment. <code>~config</code> proves format + parser + tier-from-data + replay with zero judgment noise.</td></tr>
+  </table>
+</div>
+
+<h2 class="optional">Escape Routes <span class="tag">load-bearing</span></h2>
+<div class="section">
+  <ul>
+    <li><strong>Tier lives in frontmatter</strong> &mdash; if a Hot slot regresses, edit one number back to Cold. Instant, no rebuild. (Inherited from the Tier design.)</li>
+    <li><strong>Decoder is deterministic + versioned</strong> &mdash; DERIVED IDS records carry the decoder version; a bad decoder rev is rebuilt from RAW, byte-identical. No data loss.</li>
+    <li><strong>Cold host behind a dispatch seam</strong> &mdash; clauderun, Vertex, or a future runner swap at the dispatcher without touching any <code>.pi</code>. If clauderun locks up again, the seam falls back to the local Claude CLI.</li>
+    <li><strong>The <code>.pi</code> is a superset of today</strong> &mdash; a card that fails to parse falls back to reading <code>commands.md</code> as Tier-0 does now. The migration cannot strand a tilde.</li>
+  </ul>
+</div>
+
+<h2 class="optional">Pure Metal Test <span class="tag">load-bearing</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Dependency</th><th>Role</th><th>Load-bearing / replaceable</th></tr>
+    <tr><td>nous <code>understand()</code> (decoder)</td><td>reads .pi, atomizes, verifies</td><td class="lb">LOAD-BEARING &mdash; the $0 deterministic core; no substitute</td></tr>
+    <tr><td>sdk <code>wire.c</code> / <code>crypt.c</code></td><td>IDS transport + Ed25519 seals</td><td class="lb">LOAD-BEARING &mdash; the seal is the trust contract</td></tr>
+    <tr><td>gcp-bridge ADC&rarr;Vertex jacket</td><td>keyless model runtime</td><td class="rp">REPLACEABLE &mdash; pattern; could point at another keyless edge</td></tr>
+    <tr><td>clauderun CliWorker</td><td>Cold Claude-Code host</td><td class="rp">REPLACEABLE &mdash; dormant pattern source; local CLI is the fallback</td></tr>
+    <tr><td>Agent SDK <code>query()</code></td><td>headless invocation</td><td class="rp">REPLACEABLE &mdash; vendor SDK; behind the dispatch seam</td></tr>
+  </table>
+  <p>Two load-bearing deps, both pure-C and operator-owned (nous). Every vendor-shaped dependency (Vertex, Agent SDK, clauderun) is replaceable and sits behind the dispatch seam. Passes: the substrate is metal; the model is rented.</p>
+</div>
+
+<h2>6. First Move</h2>
+<div class="section">
+  <p>The single smallest step that proves the design is real:</p>
+  <div class="banner">Seal <code>~config.pi</code> as the first real <code>.pi</code> file, write the frontmatter+scaffold parser (<code>data_access.c</code>), and make <code>birt_dispatch()</code> read <code>tier:</code> from the card &mdash; then replay <code>~config</code> at Tier&nbsp;0, $0.00, driven by data not by a hardcoded switch.</div>
+  <p>If that one card runs, it proves the entire spine at once: the format parses, tier is data, the tail executor fires, and replay is LLM-free &mdash; with zero judgment noise because <code>~config</code> has zero slots. It is master-plan P2 (3 pts), the foundational unblocker, currently at zero.</p>
+  <h3>Candidate follow-up work (goes into <code>~p</code> / <code>~e</code>, not written to the board here)</h3>
+  <ul>
+    <li>Seal the six 100%-Hot cards (<code>~config ~tag ~h ~l ~li ~chase</code>) &mdash; the LLM-free proof set.</li>
+    <li>Extract the shared <strong>tail executor</strong> once (index/telemetry/commit/Signal chain) as biRT's common runtime.</li>
+    <li>Generalize <code>birt_dispatch()</code> from the hardcoded 2-tilde switch to a card-driven, per-slot tier walker.</li>
+    <li>Wire nous <code>understand()</code> as the decoder read-side; stand up RAW + DERIVED IDS.</li>
+    <li>Build the <strong>translator</strong> (<code>.pi</code> &rarr; per-provider dialect); generalize <code>birt_translator.c</code> beyond Anthropic.</li>
+    <li>Revive <strong>clauderun</strong> from CliWorker (Agent SDK <code>query()</code>, Dockerfile lock-up fixes, keyless Vertex) as the Cold host; add the atom-diff verifier gate.</li>
+    <li>Then: <code>kastil-systems/a-d-d</code> + skills adopt the same engine (the platform-wide payoff).</li>
+  </ul>
+</div>
+
+<h2>DoD Checklist</h2>
+<div class="section">
+  <ul style="list-style:none;margin-left:0;">
+    <li><span class="pass">&#10003;</span> Design saved &mdash; <code>be/designs/2026-07-10-1444-design-tilde-extraction-pi-birt-cloudrun.html</code></li>
+    <li><span class="pass">&#10003;</span> Six spine sections present (Need, Stories, Sourced Solution, Naming, Shape, First Move) + all three load-bearing tools (Choices, Escape Routes, Pure Metal Test) &mdash; the work earned them</li>
+    <li><span class="pass">&#10003;</span> Reuse mined before invention &mdash; 6 existing bodies of work sourced; exactly one new surface (translator) + one revival (clauderun)</li>
+    <li><span class="pass">&#10003;</span> Names literal + canon-aligned (.pi / IDS / biRT / decoder = understand()); translator naming flagged for operator bless</li>
+    <li><span class="pass">&#10003;</span> First Move is the genuine smallest proof (<code>~config.pi</code> at Tier-0)</li>
+    <li><span class="pass">&#10003;</span> Index updated &middot; committed &middot; pushed (metal-desktop)</li>
+    <li><span class="warn">&#8709;</span> Latchkey / Signal &mdash; N/A: DE organs not wired yet (named as follow-up work)</li>
+  </ul>
+</div>
+
+<footer>
+  Be &mdash; one signal in, full chain reaction out.<br>
+  v0 &middot; r16 &middot; 2026-07-10 &middot; metal Desktop Edition &middot; ~d design &middot; status: Awaiting Approval
+</footer>
+</div>
+</body>
+</html>
