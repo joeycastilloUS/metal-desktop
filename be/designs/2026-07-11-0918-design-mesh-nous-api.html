@@ -1,0 +1,290 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~d &mdash; nous.api: the mesh model front door</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; } li { margin: 6px 0; font-size: 14px; } p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; } .warn { color: #f59e0b; font-weight: 600; } .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  .lift td:first-child { color: #8fce90; font-weight: 700; }
+  .new td:first-child { color: #c9b04e; font-weight: 700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~d &mdash; nous.api: the mesh model front door</span>
+  <span class="pub">Published 2026-07-11 09:18 PT</span>
+</nav>
+<div class="container">
+
+<h1>nous.api &mdash; the mesh model front door</h1>
+<p style="color:#999;">Route ALL model calls through one mesh surface. BYOK on the wire, blank&nbsp;=&nbsp;internal key,
+<b>no key on the operator's box</b>, primes placed near each provider's datacenter. This is an
+<b>extraction, not an invention</b> &mdash; the engine already runs in metal-de; the mesh already speaks the wire;
+the contract already exists as <code>api.h</code>. Companion inspect:
+<code>be/plans/2026-07-11-0918-inspect-nous-api.html</code>.</p>
+
+<div class="banner">DESIGN &mdash; AWAITING APPROVAL</div>
+
+<h2>1 &middot; Need</h2>
+<div class="section">
+  <p>The locked decision says every model call goes through <b>nous.api</b> &mdash; four verbs
+  (<code>ask</code> / <code>judge</code> / <code>summarize</code> / <code>reconsider</code>) served from the mesh,
+  keys resolved <em>in</em> the mesh. Reality today (from the ~i):</p>
+  <ul>
+    <li><b>The engine exists but lives on the box.</b> metal-de <code>serve.c</code> (5,568 lines) implements
+    task/judge/summarize with a 38-provider parallel fan-out &mdash; and resolves every key locally:
+    <code>resolve_key</code> at <code>serve.c:358</code> (user key &rarr; env &rarr; <code>keys_builtin.h</code>
+    compiled into the binary). The moment that binary ships to any operator who isn't Joey, secrets ship with it.
+    That is the exact thing the decision forbids.</li>
+    <li><b>The mesh exists but doesn't serve the verbs.</b> 4 primes + 2 relays are live and sealed
+    (MESH_STATUS.md 2026-05-30) but primes serve only <code>/catalog/*</code>. <code>api.h</code> is a complete
+    contract with <b>zero lines of implementation</b> &mdash; <code>skill.json</code> declares
+    <code>"sources": ["api.c"]</code> and api.c does not exist.</li>
+    <li><b>The cost of not doing it:</b> every new surface (CE tildes, DE cockpit, Argus, anything on Purcius)
+    re-solves provider access and re-plants keys on endpoints. One front door, one custody model, one place
+    to meter &mdash; or N copies of the leak.</li>
+  </ul>
+</div>
+
+<h2>2 &middot; Raw user stories</h2>
+<div class="section">
+  <ul>
+    <li>As an <b>operator at the cockpit</b>, I ask a question and get the 38-model fan-out back &mdash;
+    <b>with zero API keys stored, compiled, or env-set on my machine</b>.</li>
+    <li>As a <b>BYOK operator</b>, I paste my own Anthropic/OpenAI/&hellip; key into the cockpit and my requests
+    run on <em>my</em> key &mdash; carried per-request over the encrypted wire, RAM-only on the prime, never
+    persisted, never logged.</li>
+    <li>As a <b>free-tier operator</b>, I leave the key field <b>blank</b> and the call silently falls through
+    to the mesh's internal key. Blank = internal. No error, no setup.</li>
+    <li>As <b>the mesh operator (Joey)</b>, I rotate a provider key in ONE sealed vault on the prime fleet &mdash;
+    not in N binaries, N env vars, N users.dat files.</li>
+    <li>As <b>a judge/summarize/reconsider flow</b>, I run entirely on whatever key custody the original ask used
+    &mdash; overrides forward through composed calls.</li>
+    <li>As a <b>latency-sensitive call</b>, my request executes on a prime placed near the provider's datacenter,
+    so the mesh hop costs less than it saves.</li>
+    <li>As an <b>offline / bridge operator</b>, when the relay is unreachable, metal-de's local fan-out still
+    works with my local keys &mdash; the mesh is the default, not a hostage-taker.</li>
+  </ul>
+</div>
+
+<h2>3 &middot; Sourced solution &mdash; the reuse map</h2>
+<div class="section">
+  <p>Mined first, per the ~d contract: a-d-d spec tree, nous C99 primitives, our apps. The answer is
+  overwhelming &mdash; <b>~80% of this design is a lift</b>. The a-d-d fanout spec already names the extraction:
+  <em>&ldquo;fanout is <code>handle_task</code> minus the WebSocket I/O&rdquo;</em>
+  (<code>C:\a-d-d\nous\intelligence\skill\fanout\CLAUDE.md</code> &sect; Extracted From).</p>
+
+  <h3>Lifted &mdash; donor code exists, port it</h3>
+  <table>
+  <tr><th>Piece</th><th>Donor</th><th>What moves</th></tr>
+  <tr class="lift"><td>fanout.c</td>
+    <td><code>C:\tools\metal-de\src\serve.c</code> &mdash; <code>handle_task</code> (serve.c:2842) +
+    <code>provider_thread</code> workers</td>
+    <td>The parallel thread-per-provider driver, per-format request shaping
+    (anthropic / openai / openai-responses / gemini / cohere), result collection. Strip the WebSocket
+    posts and <code>g_last_results</code> globals; return <code>FanoutResult</code> per
+    <code>fanout.h</code>. Target contract already written: <code>fanout_ask</code> /
+    <code>fanout_ask_stream</code> / <code>fanout_result_free</code>.</td></tr>
+  <tr class="lift"><td>providers.c</td>
+    <td><code>g_defaults[]</code> at <code>serve.c:386&ndash;433</code> &mdash; the 38-row provider table
+    (endpoint, wire format, cost, <code>key_env</code>)</td>
+    <td>Table + row lookup become the <code>providers</code> skill per
+    <code>C:\a-d-d\nous\memory\skill\providers\providers.h</code>. The living table is <em>richer</em> than
+    the spec (cohere + openai-responses formats) &mdash; the lift updates the spec, flowing up per Rule 11.</td></tr>
+  <tr class="lift"><td>judge.c</td>
+    <td><code>handle_judge</code> (serve.c:3297)</td>
+    <td>Leaderboard ranking over a prior fan-out. De-globalize: rank a passed-in
+    <code>FanoutResult</code>, not <code>g_last_results</code>.</td></tr>
+  <tr class="lift"><td>summarize.c</td>
+    <td><code>handle_summarize</code> (serve.c:3679)</td>
+    <td>Consensus/differences over a prior fan-out. Same de-globalization.</td></tr>
+  <tr class="lift"><td>Wire transport</td>
+    <td><code>C:\tools\metal-de\src\relay_client.c</code> &mdash; the 0xCA AES-256-GCM WireTriple envelope
+    to <code>relay.3-metal.net</code> (default at <code>config.c:180</code>)</td>
+    <td>Already speaks the wire from cockpit to relay today (<code>relay_intelligence()</code>, used at
+    serve.c:2886&ndash;2897 for store enrichment). Reused verbatim as the client leg; the prime leg reuses
+    the same envelope code from the mesh tree. <b>Wire-protocol only into the substrate &mdash; never HTTP.</b></td></tr>
+  <tr class="lift"><td>The contract</td>
+    <td><code>C:\a-d-d\nous\intelligence\skill\api\api.h</code> (65 lines)</td>
+    <td>Unchanged. <code>api_ask/judge/summarize/reconsider</code> + <code>api_dispatch</code>, triples in,
+    triples out, exactly four verbs. The design's job is to make the declared
+    <code>"sources": ["api.c"]</code> true.</td></tr>
+  <tr class="lift"><td>BYOK precedence</td>
+    <td>fanout CLAUDE.md &sect; &ldquo;BYO Keys (2026-06-19)&rdquo; + design
+    <code>kastil-systems/nous/be/designs/2026-06-18-1932-design-byo-keys.html</code></td>
+    <td>Already designed to the struct: <code>KeyOverride { env, val }</code> on <code>FanoutOpts</code>;
+    precedence <em>per-request override &rarr; vault &rarr; store &rarr; env</em>; RAM-only, never logged;
+    overrides forward through judge/summarize/reconsider. <b>Blank = internal key is literally the specified
+    fallthrough</b> &mdash; no override entry means <code>providers_resolve_key()</code> resolves the mesh's
+    own key. Zero new key design needed; implement as written.</td></tr>
+  </table>
+
+  <h3>New &mdash; no donor anywhere, build it</h3>
+  <table>
+  <tr><th>Piece</th><th>Why it's new</th><th>Size</th></tr>
+  <tr class="new"><td>api.c</td>
+    <td>The verb router on relay/prime. Thin by contract (&ldquo;composes, owns no AI logic&rdquo;): parse
+    request triples, <code>api_dispatch</code> to the four skills, write response triples. New because nothing
+    routes wire verbs to intelligence skills today &mdash; primes serve only <code>/catalog/*</code>.</td>
+    <td>Small</td></tr>
+  <tr class="new"><td>reconsider.c</td>
+    <td>The only verb with <b>zero donor code</b> in any tree &mdash; sole trace is the TODO comment at
+    serve.c:5328. Header exists; semantics (&ldquo;top-3 winners re-examine&rdquo;) need prompt design.
+    Composes fanout+judge, so it lands <em>after</em> those port.</td>
+    <td>Medium</td></tr>
+  <tr class="new"><td>Prime-side key vault</td>
+    <td>The sealed vault (<code>keys.bat</code> chain per providers.h) exists as spec, but nothing provisions
+    it on the prime fleet. Which node class holds keys, and how they're planted/rotated, is unanswered on disk
+    &mdash; carried as an open question into the plan. This is the piece that makes &ldquo;no key on the
+    operator's box&rdquo; real.</td>
+    <td>Medium + ops</td></tr>
+  <tr class="new"><td>Cockpit cutover seam</td>
+    <td>In <code>handle_task</code>, swap the phase-3 local fan-out for a <code>relay_request("ask", &hellip;)</code>
+    over the existing 0xCA wire, forwarding the operator's BYOK overrides (or none = blank). Guarded: relay
+    unreachable &rarr; fall back to the local path.</td>
+    <td>Small</td></tr>
+  <tr class="new"><td>Provider-adjacent placement</td>
+    <td>Current 4 primes (Ashburn / Las Vegas / Singapore / Hong Kong) sit in generic zones. Placing primes
+    near provider DCs is ops work not yet started &mdash; v1 <b>accepts existing placement</b>; the router
+    gains a provider&rarr;prime affinity map when new nodes exist.</td>
+    <td>Ops, deferred</td></tr>
+  </table>
+
+  <div class="note"><b>Choices baked in (escape routes kept).</b>
+  (1)&nbsp;<b>Defer the C# blind-REST edge.</b> api.h names an acmedev Cloud Run C# jacket; v1 carries the four
+  verbs on the wire path the cockpit already authenticates (PSK + cockpit key via relay_client) &mdash; the C#
+  jacket is additive later for REST-only callers, per the Language Boundary canon (C# for foreign surfaces only).
+  (2)&nbsp;<b>Local fan-out is not deleted.</b> It demotes to offline/bridge fallback &mdash; the escape route if
+  the mesh path stalls. (3)&nbsp;<b>Payload sizing</b> (38&nbsp;&times;&nbsp;MAX_RESPONSE through the 0xCA envelope)
+  is verified in the first move; if it doesn't fit, chunking is a wire-skill change, not an api.c change.</div>
+</div>
+
+<h2>4 &middot; Name it true</h2>
+<div class="section">
+  <ul>
+    <li><b>nous.api</b> &mdash; it is the API of the nous mesh. Not &ldquo;gateway&rdquo;, not
+    &ldquo;proxy&rdquo;, not &ldquo;model-service&rdquo;. The front door of the intelligence mesh.</li>
+    <li><b>The four verbs are the four words:</b> <code>ask</code>, <code>judge</code>, <code>summarize</code>,
+    <code>reconsider</code>. metal-de's legacy <code>"task"</code> WebSocket verb maps to wire verb
+    <code>ask</code> at the cutover seam &mdash; the cockpit keeps its dialect, the wire speaks true.</li>
+    <li><b>Files say what they are:</b> <code>api.c</code> routes, <code>fanout.c</code> fans out,
+    <code>providers.c</code> knows providers, <code>judge.c</code> judges, <code>summarize.c</code> summarizes,
+    <code>reconsider.c</code> reconsiders. One skill, one noun, no <code>utils.c</code>.</li>
+    <li><b><code>KeyOverride</code></b> &mdash; it overrides a key. <b>Blank = internal</b> &mdash; the absence
+    of an override IS the free tier; no flag, no mode, no config.</li>
+  </ul>
+</div>
+
+<h2>5 &middot; Shape</h2>
+<div class="section">
+<pre>cockpit (metal-de, NO KEYS ON BOX)
+   │  wire verb: ask  (+ optional KeyOverride[] — BYOK, RAM-only)
+   ▼
+relay (LA / HK)                        0xCA AES-256-GCM WireTriples
+   │  forwards triples — blind
+   ▼
+prime running nous.api  ──────────  placed near the provider DC (v2 placement)
+   │  api_dispatch("ask") → fanout_ask
+   │  key per provider: override? use it : vault → store → env  (blank = internal)
+   ▼
+providers (38-row table) ⇒ parallel HTTPS to Anthropic / OpenAI / Google / …
+   │
+   ▼
+response triples → wire → relay → cockpit renders the fan-out</pre>
+
+  <h3>The five parts (build order)</h3>
+  <ol>
+    <li><b>providers + fanout as real nous C skills.</b> Lift <code>g_defaults[]</code> +
+    <code>handle_task</code>/<code>provider_thread</code> out of serve.c into <code>providers.c</code> +
+    <code>fanout.c</code> against the existing headers. Standalone, testable off the cockpit.</li>
+    <li><b>judge / summarize port + reconsider build.</b> De-globalize handle_judge/handle_summarize into
+    <code>judge.c</code>/<code>summarize.c</code>; design + build <code>reconsider.c</code> (the one genuinely
+    new verb) composing them.</li>
+    <li><b>api.c verb router on relay/prime + deploy.</b> Implement <code>api_dispatch</code>, wire it into the
+    prime binary next to the catalog server, deploy to the sealed fleet. Primes now serve intelligence, not
+    just <code>/catalog/*</code>.</li>
+    <li><b>BYOK KeyOverride on the wire + prime key vault.</b> Carry overrides as request triples; implement
+    <code>fanout_resolve_key</code> precedence as designed; provision the sealed vault on the prime fleet
+    (the custody move &mdash; keys leave the operator's box for good).</li>
+    <li><b>Cockpit cutover.</b> handle_task phase 3 swaps local fan-out for <code>relay_request("ask")</code>;
+    blank-key fallback verified end-to-end; local fan-out demoted to offline/bridge fallback.</li>
+  </ol>
+
+  <h3>Boundaries</h3>
+  <ul>
+    <li><b>metal-de's LOCAL fan-out stays</b> &mdash; as the offline/bridge fallback only. Default path is the mesh.</li>
+    <li><b>Wire protocol only into the substrate.</b> Never HTTP/REST/SDK into the mesh; the deferred C# edge
+    is a jacket <em>outside</em> the door, not a second door.</li>
+    <li><b>C99 we own.</b> api.c, fanout.c, providers.c, judge.c, summarize.c, reconsider.c &mdash; all pure C99.
+    C# appears only if/when the foreign-facing REST jacket ships.</li>
+    <li><b>api.c is thin.</b> Four verbs, nothing else. Dev-loop, /search, /learn stay engine-only (api.h:58).</li>
+    <li><b>a-d-d is the spec.</b> Where the living table outgrew providers.h, the spec updates flow up first
+    (Rule 11) &mdash; approval required before the header changes.</li>
+  </ul>
+</div>
+
+<h2>6 &middot; First move</h2>
+<div class="section">
+  <p><b>The smallest proof: one question, one provider, one prime, zero keys on the box.</b></p>
+  <ol>
+    <li>Extract <code>providers.c</code> + <code>fanout.c</code> from serve.c against the existing headers
+    (part 1) &mdash; compile standalone, smoke locally.</li>
+    <li>Stub <code>api.c</code> with only <code>api_ask</code> routing to <code>fanout_ask</code>; deploy to
+    ONE prime (Ashburn elite) beside the catalog server.</li>
+    <li>Plant one provider key (Gemini free-tier) in that prime's sealed vault. Unset it everywhere on the
+    dev box.</li>
+    <li>From the cockpit, send wire verb <code>ask</code> with a <b>blank</b> key through
+    <code>relay.3-metal.net</code>; receive the answer triples back and render them.</li>
+  </ol>
+  <p>Green means: the extraction compiles, the wire carries the verbs, the round-trip payload fits the 0xCA
+  envelope (or tells us it needs chunking <em>now</em>), and blank&nbsp;=&nbsp;internal works with the key
+  living only in the mesh. That single thread de-risks all five parts before any board gets points.
+  Per Rule 13, verification runs from inside GCP (SSH the prime, peer-curl the wire port) &mdash; not from
+  this box.</p>
+</div>
+
+<h2>DoD</h2>
+<div class="section">
+  <ul style="list-style:none; margin-left:0;">
+    <li><span class="pass">✓</span> A-D-D read first &mdash; api.h / fanout.h / providers.h / fanout CLAUDE.md read before designing (Rule 10)</li>
+    <li><span class="pass">✓</span> Extraction, not invention &mdash; every reused piece cites donor file + line (serve.c:358/386&ndash;433/2842/3297/3679/5328, relay_client.c, config.c:180)</li>
+    <li><span class="pass">✓</span> Six-section spine complete (Need / Raw user stories / Sourced solution / Name it true / Shape / First move)</li>
+    <li><span class="pass">✓</span> Lifted vs new named explicitly &mdash; new = api.c router, reconsider.c, prime key vault, cutover seam, placement</li>
+    <li><span class="pass">✓</span> Locked decision honored &mdash; BYOK in mesh, blank = internal, no key on operator's box, wire-only, C99</li>
+    <li><span class="pass">✓</span> Escape routes kept &mdash; local fan-out fallback, deferred C# edge, envelope-sizing check in the first move</li>
+    <li><span class="pass">✓</span> Be template style, banner, publication stamp; saved with datetime in be/designs/</li>
+    <li><span class="warn">✗</span> Not yet approved &mdash; design awaits operator sign-off before ~p/~e</li>
+    <li><span class="warn">✗</span> Index / telemetry / Latchkey publish &mdash; handled by the calling session's post-work chain</li>
+    <li><span class="warn">✗</span> Mesh state 42 days old (MESH_STATUS.md 2026-05-30) &mdash; same-plane re-verify is step zero of the first move</li>
+  </ul>
+</div>
+
+<footer>Be &mdash; nous.api design &middot; v0 &middot; Generated 2026-07-11 09:18</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~i nous.api — spec vs. reality</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #ddd; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.6; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+  nav .brand { color: #6FC3DF; font-weight: bold; font-size: 18px; }
+  nav .pub { color: #777; font-size: 12px; }
+  main { max-width: 800px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin: 24px 0 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 36px 0 12px; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; }
+  h3 { color: #aad9ea; font-size: 15px; margin: 20px 0 8px; }
+  p { margin: 10px 0; }
+  .sub { color: #888; font-size: 14px; }
+  .card { background: #1A1A1A; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin: 14px 0; }
+  .verdict { border-left: 4px solid #6FC3DF; }
+  code { background: #1A1A1A; color: #9fd8ec; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: Consolas, Monaco, monospace; }
+  pre { background: #1A1A1A; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px; overflow-x: auto; font-size: 12.5px; margin: 12px 0; font-family: Consolas, Monaco, monospace; color: #bce4f2; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th { text-align: left; color: #6FC3DF; border-bottom: 1px solid #2a2a2a; padding: 6px 8px; }
+  td { border-bottom: 1px solid #222; padding: 6px 8px; vertical-align: top; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 5px 0; }
+  .ok { color: #7ee08a; } .bad { color: #e07a7a; } .warn { color: #e0c07a; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 10px; border: 1px solid; margin-left: 6px; vertical-align: middle; }
+  .b-real { color: #7ee08a; border-color: #7ee08a; } .b-spec { color: #e0c07a; border-color: #e0c07a; } .b-none { color: #e07a7a; border-color: #e07a7a; }
+  footer { color: #666; font-size: 12px; text-align: center; padding: 24px; border-top: 1px solid #2a2a2a; margin-top: 32px; }
+  .dod li { list-style: none; margin-left: -20px; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="pub">Published 2026-07-11 09:18 PT</span>
+</nav>
+<main>
+
+<h1>~i nous.api</h1>
+<p class="sub">Inspect: does a usable nous.api exist today for the locked decision — route ALL model calls
+through one mesh front door (BYOK, primes near providers, no key on the operator's box)? Ground truth from
+files on disk; no vibes, no curls from this box (Rule 13).</p>
+
+<div class="card verdict">
+<strong style="color:#6FC3DF">Verdict in one line.</strong>
+The mesh nous.api is <span class="bad">spec-only</span> — a complete, well-drawn contract with
+<strong>zero lines of implementation C</strong> and <strong>nothing deployed serving the four verbs</strong>.
+The <span class="ok">real, running implementation of the same surface</span> is metal-de's
+<code>serve.c</code> — a local 38-provider fan-out with task/judge/summarize working today —
+but it keeps keys <em>on the operator's box</em>, which is exactly what the locked decision forbids.
+The gap is extraction + deployment, not invention: the donor code exists.
+</div>
+
+<h2>What It Is</h2>
+<p><strong>nous.api</strong> is the orchestration surface of the nous intelligence mesh: exactly four
+public verbs — <code>ask</code>, <code>judge</code>, <code>summarize</code>, <code>reconsider</code> —
+carried as NTRP wire triples from a relay, dispatched by <code>api_dispatch()</code> onto four capability
+skills. Per <code>C:\a-d-d\nous\intelligence\skill\api\api.h</code> (lines 5–14):</p>
+<pre>The public verb surface is EXACTLY four: ask, judge, summarize, reconsider.
+Requests and responses are NTRP triples carried on the wire from the relay.
+The C# edge (acmedev Cloud Run) is the blind REST front; it never sees
+keys or plaintext — it forwards triples and returns triples.
+This skill is thin. It composes fanout/judge/summarize/reconsider.</pre>
+<p>Its own <code>CLAUDE.md</code> opens with <em>"Spec ahead of implementation. Architecture → tests →
+code."</em> — and the inspection confirms it is <strong>all the way ahead</strong>: spec exists, tests do
+not, code does not.</p>
+
+<h2>Structure</h2>
+
+<h3>1. The spec tree — C:\a-d-d\nous (architecture, no code)</h3>
+<table>
+<tr><th>Path</th><th>Contents</th><th>Status</th></tr>
+<tr><td><code>intelligence\skill\api\</code></td><td><code>api.h</code> (65 lines, 4 verb handlers + <code>api_dispatch</code>), <code>CLAUDE.md</code>, <code>skill.json</code></td><td><span class="warn">spec only — <code>skill.json</code> declares <code>"sources": ["api.c"]</code> but <strong>api.c does not exist</strong></span></td></tr>
+<tr><td><code>intelligence\skill\fanout\</code></td><td><code>fanout.h</code> (<code>fanout_ask</code> / <code>fanout_ask_stream</code> / <code>FanoutResult</code>), <code>CLAUDE.md</code> incl. BYOK design</td><td><span class="warn">spec only — no fanout.c</span></td></tr>
+<tr><td><code>intelligence\skill\judge\</code>, <code>summarize\</code>, <code>reconsider\</code></td><td>header + CLAUDE.md + skill.json each</td><td><span class="warn">spec only — no .c in any of them</span></td></tr>
+<tr><td><code>memory\skill\providers\</code></td><td><code>providers.h</code> — ~38-model table spec, 3 wire formats, key chain <em>sealed vault (keys.bat) → store triple (apikey:*) → env</em></td><td><span class="warn">spec only</span></td></tr>
+</table>
+<p>Verified by search: <code>find C:\a-d-d\nous -name "*.c"</code> returns <strong>zero files</strong>.
+The entire a-d-d/nous tree is headers and docs — by design (it is the architecture repo), but that means
+nothing in it runs.</p>
+
+<h3>2. The implementation tree — C:\nous (real code, no api)</h3>
+<p><code>C:\nous\intelligence\skill\</code> contains <code>acquire</code>, <code>language</code>,
+<code>learn</code>, <code>read</code>, <code>reason</code>, <code>understand</code> — real .c files —
+but <strong>no api/, no fanout/, no judge/, no summarize/, no reconsider/</strong> directories at all.
+<code>grep -r api_dispatch C:\nous</code> and <code>grep -r fanout_ask C:\nous</code> both return
+nothing. The old cockpit the spec says it was "extracted from"
+(<code>C:\nous\user\interface\desktop\serve.c</code>, 123 KB, last touched May 8) predates the current
+engine.</p>
+
+<h3>3. The living implementation — C:\tools\metal-de\src\serve.c <span class="badge b-real">REAL C, RUNS TODAY</span></h3>
+<p>5,568 lines of C99. This is the de-facto nous.api, welded to a local WebSocket cockpit:</p>
+<table>
+<tr><th>nous.api verb</th><th>metal-de equivalent</th><th>Evidence</th></tr>
+<tr><td><code>ask</code></td><td><code>handle_task</code> — parallel thread-per-provider fan-out across the full table</td><td><code>serve.c:2842</code>; routed at <code>serve.c:5192</code> (<code>"task"</code>)</td></tr>
+<tr><td><code>judge</code></td><td><code>handle_judge</code> — ranks the prior fan-out (<code>g_last_results</code>) into a leaderboard</td><td><code>serve.c:3297</code>; routed at <code>serve.c:5194</code></td></tr>
+<tr><td><code>summarize</code></td><td><code>handle_summarize</code> — consensus/differences over the prior fan-out</td><td><code>serve.c:3679</code>; routed at <code>serve.c:5206</code></td></tr>
+<tr><td><code>reconsider</code></td><td><span class="bad">Not implemented anywhere.</span> Sole mention: <code>serve.c:5328</code> — <code>/* terminal, set_route, reconsider — TODO */</code></td><td>grep of the whole src tree finds only that comment</td></tr>
+</table>
+<p>Provider table: <code>g_defaults[]</code> at <code>serve.c:386–433</code> — <strong>38 rows</strong>
+(5 Gemini, 4 DeepSeek, 4 Mistral incl. codestral, 3 Claude, 11 OpenAI incl. codex/o-series/search,
+3 Grok, 3 Perplexity, Cohere, Reka, 2 Llama-via-Groq). Three-plus wire formats
+(anthropic / openai / openai-responses / gemini / cohere) — richer than the providers.h spec.</p>
+
+<h3>4. Key custody today (the BYOK question)</h3>
+<pre>/* serve.c:358 — resolve_key: user key &gt; env var &gt; builtin &gt; NULL */
+1. Per-user key from users.dat        (userkeys.c — INI [user:&lt;name&gt;] sections)
+2. Environment variable               (getenv on the operator's box)
+3. Compiled-in builtin (free tier)    (keys_builtin.h — gitignored, see .example)</pre>
+<p>Every layer lives <strong>on the operator's machine</strong>. <code>keys_builtin.h.example</code>
+confirms Gemini/DeepSeek/Mistral free-tier keys compile straight into the binary. This is a working
+BYOK for a <em>local</em> engine — and a direct violation of the locked decision's "no key on the
+operator's box" once the box is anyone's but Joey's.</p>
+
+<h3>5. Deployment reality — the mesh <span class="badge b-none">NOT RUNNING nous.api</span></h3>
+<p>Per <code>C:\a-d-d\nous\MESH_STATUS.md</code> (rev 2026-05-30): 6 VMs live — 4 primes
+(Ashburn c2-standard-8 elite, Las Vegas, Singapore, Hong Kong) + 2 relays (LA 35.236.10.94,
+HK 34.92.148.71), Sealed-IDS operator-signed roster, all verified booted. But what the primes serve is
+the <strong>catalog</strong>: <em>"Boots to serve /catalog/* over HTTP on :8080"</em>
+(MESH_STATUS.md line 30–35; prime-server CLAUDE.md line 17: <em>"HTTP endpoints — /catalog/*"</em>).
+No prime or relay dispatches ask/judge/summarize/reconsider — there is no api.c to have deployed.
+The C# blind-REST edge on Cloud Run named in api.h line 10 has no deploy config anywhere in either tree.
+Note also: current primes sit in generic GCP zones — "primes placed near each provider's datacenter"
+is placement work not yet started.</p>
+<p>metal-de <em>does</em> already speak the wire to the mesh: <code>relay_client.c</code> implements the
+0xCA AES-256-GCM WireTriple envelope, <code>config.c:180</code> defaults
+<code>relay_host = "relay.3-metal.net"</code>, and <code>handle_task</code> phase 2
+(<code>serve.c:2886–2897</code>) queries <code>relay_intelligence()</code> over that wire — but only as a
+store/context enrichment step. The model fan-out itself (phase 3) runs locally with local keys.</p>
+
+<h2>Stack</h2>
+<ul>
+<li><strong>Contract:</strong> pure C99 headers, NTRP WireTriple in/out (<code>api.h</code> includes <code>comms/skill/wire/wire.h</code>) — wire protocol, never HTTP into the substrate.</li>
+<li><strong>Edge:</strong> C# blind-REST jacket on Cloud Run (spec'd, consistent with the Language Boundary canon; not deployed).</li>
+<li><strong>Engine donor:</strong> metal-de serve.c — C99, WinSock/pthreads fan-out, JSON-over-WebSocket to the browser cockpit, wire-over-TLS to the relay.</li>
+<li><strong>Mesh:</strong> 4 primes + 2 relays on GCP (kastil-systems project), Ed25519 sealed roster, prime binary ~480 KB pure C.</li>
+</ul>
+
+<h2>Patterns Found</h2>
+<ol>
+<li><strong>Spec-ahead is real and honest.</strong> Every skill CLAUDE.md says so, and the tree proves it — no phantom stubs pretending to work. skill.json's <code>"sources": ["api.c"]</code> is a declared intention, not a lie.</li>
+<li><strong>The extraction map is already written.</strong> fanout's CLAUDE.md § "Extracted From" names the exact donor symbols: <code>provider_thread</code> is the worker, <code>handle_task</code> is the driver, <em>"fanout is handle_task minus the WebSocket I/O."</em> The port is a lift, not a design.</li>
+<li><strong>BYOK is designed to the struct level.</strong> fanout CLAUDE.md § "BYO Keys (2026-06-19)": <code>KeyOverride { env, val }</code> on <code>FanoutOpts</code>, precedence <em>per-request override → vault → store → env</em>, RAM-only, never logged. <strong>"Blank = internal key" is literally the specified fallthrough</strong> — no override entry means <code>providers_resolve_key()</code> resolves the mesh's own key from the prime-side sealed vault. Design artifact: <code>kastil-systems/nous/be/designs/2026-06-18-1932-design-byo-keys.html</code>.</li>
+<li><strong>Two serve.c generations.</strong> The spec's line references (route_ws_message ~3185) point at the old <code>C:\nous\user\interface\desktop\serve.c</code>; the living engine at <code>C:\tools\metal-de\src\serve.c</code> has drifted (route now at 5182, +2,000 lines, cohere/openai-responses formats, workforce/map/prove verbs). Spec refs need a refresh when api.c gets built.</li>
+<li><strong>Reconsider is vaporware on both sides.</strong> Spec'd verb, header exists, zero implementation in any tree. It is the only one of the four with no donor code.</li>
+</ol>
+
+<h2>Open Questions</h2>
+<ul>
+<li>Where does the mesh-side key vault physically live — <code>keys.bat</code> sealed vault per providers.h, but on which node class (prime? all primes?), and provisioned how? Nothing on disk answers this.</li>
+<li>Is the C# Cloud Run edge required for v1, or can the cockpit's existing relay_client wire path (already authenticated via PSK + cockpit key) carry the four verbs directly, deferring the REST jacket?</li>
+<li>"Primes near each provider's datacenter" — current 4 primes are generic zones. Does v1 accept existing placement, or does the decision require new provider-adjacent nodes first?</li>
+<li>Reconsider semantics ("top-3 winners re-examine") have a header but no prompt design — needs its own small ~d before code.</li>
+<li>Does <code>relay_intelligence()</code>'s existing triple round-trip already carry enough payload size for full fan-out responses (38 × MAX_RESPONSE), or does the 0xCA envelope need chunking?</li>
+</ul>
+
+<h2>DoD</h2>
+<ul class="dod">
+<li><span class="ok">✓</span> A-D-D read first (spec tree C:\a-d-d\nous inspected before any conclusion — Rule 10)</li>
+<li><span class="ok">✓</span> Every claim grounded in a real file path + line number (api.h, serve.c:358/386/2842/3297/3679/5182/5328, MESH_STATUS.md)</li>
+<li><span class="ok">✓</span> Rule 13 honored — no curl from this box; deployment state read from MESH_STATUS.md + prime-server docs, and stated as of their dates (2026-05-30)</li>
+<li><span class="ok">✓</span> Both canonical locations checked (a-d-d spec tree AND C:\nous impl tree AND C:\tools\metal-de)</li>
+<li><span class="ok">✓</span> Symptom vs diagnosis separated: "nothing deployed serves the verbs" evidenced by absence of api.c + primes' documented /catalog/* surface, not by a failed probe</li>
+<li><span class="ok">✓</span> Report saved with datetime stamp in be/plans/</li>
+<li><span class="warn">✗</span> Mesh state not re-verified live from inside GCP (status file is 42 days old; a same-plane check is the follow-up before the ~d locks placement)</li>
+<li><span class="warn">✗</span> Not yet indexed/telemetried/published (handled by the calling session's post-work chain)</li>
+</ul>
+
+<footer>Be — nous.api inspection · v0 · Generated 2026-07-11 09:18</footer>
+</main>
+</body>
+</html>

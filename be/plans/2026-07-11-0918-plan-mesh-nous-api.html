@@ -1,0 +1,158 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan &mdash; nous.api Mesh Front Door</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; } li { margin: 6px 0; font-size: 14px; } p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; } .warn { color: #f59e0b; font-weight: 600; } .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  .super { background: #0f0f0f; border: 1px solid #333; border-left: 3px solid #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #bbb; }
+  .boards td:first-child { color: #8fce90; font-weight: 700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~p &mdash; nous.api Mesh Front Door</span>
+  <span class="pub">Published 2026-07-11 09:18 PT</span>
+</nav>
+<div class="container">
+
+<h1>Plan &mdash; nous.api Mesh Front Door</h1>
+<p style="color:#999;">Route ALL model calls through one mesh front door &mdash; four verbs (<code>ask</code> / <code>judge</code> / <code>summarize</code> / <code>reconsider</code>), BYOK in the mesh, no key on the operator's box, primes near provider datacenters.</p>
+
+<div class="banner">PLAN &mdash; AWAITING APPROVAL</div>
+
+<div class="super"><b>Relationship.</b> This plan <b>realizes the tagged architecture decision</b> (all model calls through nous.api) and <b>is the model-access layer the metal.de Finish plan deferred to the mesh horizon</b> (<code>be/plans/2026-07-11-0820-plan-metal-de-finish.html</code>). Grounded in the same-timestamp inspect: <code>be/plans/2026-07-11-0918-inspect-nous-api.html</code> &mdash; verdict: mesh nous.api is spec-only (zero implementation C, nothing deployed serving the verbs); the living donor is metal-de's <code>serve.c</code> (5,568 lines, task/judge/summarize working today, keys on-box). <b>This is an EXTRACTION job, not an invention job</b> &mdash; the extraction map is already written in fanout's CLAUDE.md ("fanout is handle_task minus the WebSocket I/O"). Estimate: ~2&ndash;3 weeks, 5 boards.</div>
+
+<h2>Intent</h2>
+<div class="section">
+  <p>Stand up <b>nous.api as the mesh's single model-access front door</b>: extract the proven 38-provider fan-out engine out of metal-de's cockpit into standalone nous C skills, port judge + summarize, build the missing reconsider, wire the four verbs into <code>api_dispatch()</code> on the relay/prime path, and move key custody off the operator's box into the prime-side sealed vault with BYOK carried on the wire. When this lands, metal-de (and every future consumer &mdash; metal.ce tildes, Argus, anything on Purcius) makes model calls by sending a WireTriple to the mesh; the mesh resolves keys, fans out from primes near the providers, and returns triples. The operator's machine holds <b>zero provider keys</b> &mdash; that is the whole point.</p>
+</div>
+
+<h2>Scope</h2>
+<div class="section">
+  <h3>In</h3>
+  <ul>
+    <li>Extraction of the provider table (38 rows, 5 wire formats) + thread-per-provider parallel fan-out from <code>C:\tools\metal-de\src\serve.c</code> into standalone nous C skills (<code>providers</code>, <code>fanout</code>) &mdash; the spec headers in <code>C:\a-d-d\nous</code> made real.</li>
+    <li>Ports of <code>handle_judge</code> and <code>handle_summarize</code> into <code>judge.c</code> / <code>summarize.c</code>; a small <code>~d</code> + first implementation of <code>reconsider</code> (a TODO today, implemented nowhere).</li>
+    <li><code>api.c</code> &mdash; the thin verb router (<code>api_dispatch()</code>) carrying NTRP triples relay &rarr; prime; deployment of nous.api onto a live prime.</li>
+    <li>BYOK on the wire: <code>KeyOverride</code> on <code>FanoutOpts</code>, precedence <em>per-request override &rarr; vault &rarr; store &rarr; env</em>; the prime-side sealed key vault; blank override = mesh-internal key.</li>
+    <li>Cockpit cutover: metal-de's local fan-out swapped for a <code>relay_request</code> to nous.api, with the local path retained as the offline bridge.</li>
+  </ul>
+  <h3>Out</h3>
+  <ul>
+    <li><b>The C# blind-REST edge on Cloud Run</b> &mdash; the cockpit's existing authenticated <code>relay_client.c</code> wire path carries the verbs for v1; the REST jacket is deferred until an external (non-wire-speaking) consumer needs it.</li>
+    <li><b>New provider-adjacent prime nodes</b> &mdash; v1 deploys to the existing 4 primes; "primes near provider DCs" is a deploy-topology goal tracked as follow-on placement work, not a gate on this plan.</li>
+    <li>Removing metal-de's local fan-out &mdash; it stays, demoted to offline bridge (constraint 4).</li>
+    <li>New verbs beyond the four; streaming (<code>fanout_ask_stream</code>) beyond what the cutover needs; billing/metering of BYOK usage.</li>
+    <li>Refreshing the old <code>C:\nous\user\interface\desktop\serve.c</code> generation &mdash; extraction sources from the living metal-de engine only; spec line-refs get corrected as touched.</li>
+  </ul>
+</div>
+
+<h2>Approach</h2>
+<div class="section">
+  <ol>
+    <li><b>Extract, don't invent.</b> The donor code runs in production today. <code>provider_thread</code> is the worker, <code>handle_task</code> is the driver &mdash; fanout is handle_task minus the WebSocket I/O. Lift the engine, leave the cockpit.</li>
+    <li><b>Spec is already written &mdash; honor it, refresh it.</b> Headers (<code>api.h</code>, <code>fanout.h</code>, <code>providers.h</code>) and the BYOK design (<code>KeyOverride</code>, 2026-06-19) exist in <code>C:\a-d-d\nous</code>. Architecture &rarr; tests &rarr; code (Rule 11): where the living engine has drifted past the spec (5 wire formats vs 3, line refs), flow the correction up to a-d-d first &mdash; as proposals, per Rule 10.</li>
+    <li><b>Skills stand alone before they stand on the mesh.</b> N1/N2 build and test the skills as pure C off-mesh (deterministic harness, canned provider responses); N3 is where the wire enters. Never debug extraction and transport in the same board.</li>
+    <li><b>Key custody flips exactly once.</b> Keys move box &rarr; vault in N4 as a single auditable change with the precedence chain proven by test; until then skills run on env keys in the harness only.</li>
+    <li><b>Cutover with a lifeboat.</b> N5 swaps metal-de's phase-3 fan-out for a mesh call behind a reachability check: mesh up &rarr; wire; mesh down &rarr; local offline bridge. No flag-day.</li>
+    <li><b>Verify from the right vantage</b> (Rule 13): mesh state gets a same-plane re-check (SSH a prime, peer curl over wire-TLS) before N3 deploys &mdash; MESH_STATUS.md is 42 days old. No conclusions from home-router curls.</li>
+    <li><b>Plans are wrong by default.</b> Reconsider has no donor and no prompt design; payload sizing over the 0xCA envelope is unmeasured. Unknowns and revisit triggers below are first-class.</li>
+  </ol>
+</div>
+
+<h2>Phases <span class="tag">5 extraction boards &middot; rough Fibonacci &middot; ~e sizes the triples</span></h2>
+<div class="section">
+  <table class="boards">
+    <tr><th>#</th><th>Board</th><th>~pts</th><th>What ships / exit</th></tr>
+    <tr><td>N1</td><td>Extract providers + fanout</td><td>13</td><td>The 38-provider table (<code>g_defaults[]</code>, serve.c:386&ndash;433, all 5 wire formats) into <code>providers.c</code>; the thread-per-provider parallel fan-out (<code>provider_thread</code> + <code>handle_task</code> driver, serve.c:2842) into <code>fanout.c</code> &mdash; "minus the WebSocket I/O." Standalone nous C skills matching <code>providers.h</code> / <code>fanout.h</code>, off-mesh test harness with canned responses. <b>Exit: <code>fanout_ask()</code> returns a full <code>FanoutResult</code> across the table from a plain C test, zero cockpit code linked.</b></td></tr>
+    <tr><td>N2</td><td>Port judge + summarize; build reconsider</td><td>13</td><td><code>handle_judge</code> (serve.c:3297) &rarr; <code>judge.c</code> and <code>handle_summarize</code> (serve.c:3679) &rarr; <code>summarize.c</code>, decoupled from <code>g_last_results</code> globals into passed state. <b>Reconsider built from scratch</b> (sole trace today: a TODO comment at serve.c:5328) &mdash; small ~d for the top-3-winners-re-examine semantics, then implement over fanout+judge. <b>Exit: all four capabilities pass the harness; reconsider produces a re-ranked verdict from a canned fan-out.</b></td></tr>
+    <tr><td>N3</td><td>api.c verb router + prime deploy</td><td>8</td><td><code>api.c</code> written at last (skill.json has declared it for weeks): <code>api_dispatch()</code> routing ask/judge/summarize/reconsider as NTRP WireTriples on the relay/prime path, wired beside the primes' existing /catalog surface. Same-plane mesh re-verify first (Rule 13). <b>Exit: a wire client sends an <code>ask</code> triple to a deployed prime and gets the fan-out back &mdash; the mesh serves the four verbs for the first time.</b></td></tr>
+    <tr><td>N4</td><td>BYOK on the wire + prime-side key vault</td><td>8</td><td><code>KeyOverride { env, val }</code> on <code>FanoutOpts</code> carried in the request triple; prime-side sealed vault stood up; <code>providers_resolve_key()</code> precedence <em>override &rarr; vault &rarr; store (<code>apikey:*</code>) &rarr; env</em>; <b>blank = mesh-internal key</b> (the specified fallthrough). Keys RAM-only, never logged, never in a response triple. <b>Exit: one request with an override key and one blank both fan out correctly; proof by test that no key byte ever reaches the operator side.</b></td></tr>
+    <tr><td>N5</td><td>Cockpit cutover</td><td>5</td><td>metal-de <code>handle_task</code> phase 3 swapped for a <code>relay_request</code> to nous.api over the existing <code>relay_client.c</code> 0xCA path; blank-key default (operator keys optional, on the wire only); local fan-out retained behind a mesh-reachability check as the <b>offline bridge</b>; <code>keys_builtin.h</code> demoted to bridge-only. <b>Exit: a cockpit task round-trips through the mesh with zero local key use; pull the network and the bridge answers.</b></td></tr>
+  </table>
+  <p><b>Total: ~47 pts across 5 boards (~2&ndash;3 weeks).</b> Sequencing is dependency-true and strict: N1 &rarr; N2 &rarr; N3 &rarr; N4 &rarr; N5. N2's reconsider ~d can start during N1. Every board runs the verify loop (<code>~b~t</code>, Rule 7); N3&ndash;N5 exits are externally verified from the mesh plane, not this box (Rules 9 + 13).</p>
+</div>
+
+<h2>Constraints <span class="tag">the checklist</span></h2>
+<div class="section">
+  <ol>
+    <li><b>Wire protocol only into the mesh.</b> The four verbs travel as NTRP WireTriples over the relay/prime path (0xCA AES-256-GCM, wire over TLS) &mdash; never HTTP/REST/SDK into the substrate. The C# REST jacket, if ever built, sits outside as a blind edge and is out of scope here.</li>
+    <li><b>C99 for everything we own.</b> providers/fanout/judge/summarize/reconsider/api are pure C99 nous skills; C# exists only as foreign-API jackets, none needed in this plan.</li>
+    <li><b>Keys never on the operator's box &mdash; the whole point.</b> Custody is mesh-side (sealed vault on the prime); BYOK rides the wire per-request, RAM-only, never logged; blank = mesh-internal key. Post-cutover, no resolvable provider key on the operator machine outside the offline bridge.</li>
+    <li><b>metal-de's local fan-out stays as the offline bridge.</b> Demoted, not deleted &mdash; mesh unreachable means the cockpit still answers. The bridge is the one sanctioned residence of local keys.</li>
+    <li><b>Primes near provider datacenters is a deploy-topology goal</b>, not a v1 gate. v1 ships on the existing 4 primes; placement work follows with latency evidence from N3/N5.</li>
+    <li><b>Architecture first (Rules 10/11).</b> a-d-d/nous specs are read before each board; drift (wire-format count, line refs, vault node-class) flows up as proposals before code lands. Claude never writes a-d-d without approval.</li>
+    <li><b>Done = production, externally verified (Rule 9).</b> N3&ndash;N5 exits are proven from a machine other than this dev box, from the same plane as the real client (Rule 13).</li>
+    <li><b>Plan shape honored</b> + this banner stays until approved.</li>
+  </ol>
+</div>
+
+<h2>Unknowns <span class="tag">named explicitly</span></h2>
+<div class="section">
+  <ul>
+    <li><b>Prime placement / latency</b> &mdash; whether existing generic GCP zones give acceptable cockpit-to-answer latency once fan-out moves mesh-side, and what "near provider DCs" costs to actually do. Measure at N3/N5.</li>
+    <li><b>Per-provider vault provisioning</b> &mdash; where the sealed vault physically lives (which node class &mdash; one prime? all primes?), how 38 providers' keys get provisioned/rotated into it, and who holds the seal. Nothing on disk answers this; settle before N4 starts.</li>
+    <li><b>Whether reconsider needs new judge state</b> &mdash; "top-3 winners re-examine" may require judge to expose ranked state it currently buries in <code>g_last_results</code>; the N2 ~d decides if judge's port grows a state contract.</li>
+    <li><b>Mesh auth for the ask verb</b> &mdash; the cockpit's PSK + cockpit-key relay auth exists, but whether it is sufficient authorization for model-spending verbs (and how BYOK requests bind to an operator identity) is unresolved.</li>
+    <li><b>0xCA envelope sizing</b> &mdash; whether <code>relay_intelligence()</code>'s triple round-trip carries 38 &times; MAX_RESPONSE fan-out payloads or the envelope needs chunking. Measure in N3.</li>
+    <li><b>Mesh liveness</b> &mdash; MESH_STATUS.md is 42 days old; the same-plane re-check before N3 may surface hung primes/relays (Rule 13's exact lesson) and add restart/ops work.</li>
+  </ul>
+</div>
+
+<h2>When To Revisit <span class="tag">the v2 triggers</span></h2>
+<div class="section">
+  <ul>
+    <li><b>N1 extraction fights the donor</b> &mdash; if fanout can't separate from the WebSocket layer in roughly the promised lift (globals, socket writes tangled into <code>provider_thread</code>), the "extraction not invention" premise is wrong: stop, re-~d the skill boundaries.</li>
+    <li><b>Envelope can't carry the payload</b> &mdash; if N3 shows 0xCA needs chunking/streaming, N3 re-opens with a transport sub-board before N4 proceeds.</li>
+    <li><b>Vault provisioning has no owner-approved home</b> by N3's end &mdash; N4 stops; key custody is not improvised.</li>
+    <li><b>Latency makes the cockpit worse</b> &mdash; if mesh round-trip meaningfully degrades the operator experience vs local fan-out, the placement goal (constraint 5) promotes from follow-on to plan v2's first board.</li>
+    <li><b>Auth gap is structural</b> &mdash; if PSK + cockpit key can't bind spend to operator identity, pull the Operator-Identity Auth canon in before cutover; N5 waits.</li>
+    <li><b>Any a-d-d drift stop</b> (Rule 11) twice in one board = plan v2 before the next board.</li>
+  </ul>
+</div>
+
+<h2>Definition of Done <span class="tag">this artifact</span></h2>
+<div class="section">
+  <ul>
+    <li><span class="warn">&#9702;</span> Plan committed &mdash; PENDING (this run) / <span class="pass">&#10003;</span> after commit</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/plans/2026-07-11-0918-plan-mesh-nous-api.html</code></li>
+    <li><span class="pass">&#10003;</span> Required sections: Intent / Scope (in/out) / Approach / Phases / Constraints + Unknowns + When To Revisit (Rule 6)</li>
+    <li><span class="pass">&#10003;</span> Phases are the 5 named extraction boards (N1&ndash;N5), rough Fibonacci pointed, dependency-true sequencing stated; ~e sizes the triples next</li>
+    <li><span class="pass">&#10003;</span> Grounded in the ~i (<code>2026-07-11-0918-inspect-nous-api.html</code>): donor symbols + line numbers carried, reconsider's no-donor status named</li>
+    <li><span class="pass">&#10003;</span> Relationship stated: realizes the tagged architecture decision; is the model-access layer metal.de Finish deferred to the mesh horizon</li>
+    <li><span class="pass">&#10003;</span> Locked-decision constraints carried: wire-only, C99, keys-never-on-box, offline bridge retained, prime placement as topology goal</li>
+    <li><span class="pass">&#10003;</span> Status banner: PLAN &mdash; AWAITING APPROVAL; trade-secret header + pubdate top-right</li>
+    <li><span class="warn">&#9702;</span> Index updated + Latchkey published + pushed &mdash; PENDING (calling session's post-work chain)</li>
+  </ul>
+</div>
+
+</div>
+<footer>v0 &middot; 2026-07-11 &middot; nous.api mesh front door &middot; ~47 pts / 5 boards &middot; extraction, not invention</footer>
+</body>
+</html>

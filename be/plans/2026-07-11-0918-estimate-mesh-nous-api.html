@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~e nous.api mesh front door — deliverables &amp; estimates</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #ddd; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.6; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+  nav .brand { color: #6FC3DF; font-weight: bold; font-size: 18px; }
+  nav .pub { color: #777; font-size: 12px; }
+  main { max-width: 800px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin: 24px 0 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 36px 0 12px; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; }
+  h3 { color: #aad9ea; font-size: 15px; margin: 20px 0 8px; }
+  p { margin: 10px 0; }
+  .sub { color: #888; font-size: 14px; }
+  .card { background: #1A1A1A; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin: 14px 0; }
+  .verdict { border-left: 4px solid #6FC3DF; }
+  code { background: #1A1A1A; color: #9fd8ec; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: Consolas, Monaco, monospace; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th { text-align: left; color: #6FC3DF; border-bottom: 1px solid #2a2a2a; padding: 6px 8px; }
+  td { border-bottom: 1px solid #222; padding: 6px 8px; vertical-align: top; }
+  td.pts { text-align: center; white-space: nowrap; color: #6FC3DF; font-weight: bold; }
+  td.cmd { white-space: nowrap; font-family: Consolas, Monaco, monospace; font-size: 12.5px; color: #9fd8ec; }
+  tr.subtotal td { border-bottom: 2px solid #6FC3DF; color: #aad9ea; font-weight: bold; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 5px 0; }
+  .ok { color: #7ee08a; } .bad { color: #e07a7a; } .warn { color: #e0c07a; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 10px; border: 1px solid; margin-left: 6px; vertical-align: middle; }
+  .b-cheap { color: #7ee08a; border-color: #7ee08a; } .b-mixed { color: #e0c07a; border-color: #e0c07a; } .b-new { color: #e07a7a; border-color: #e07a7a; }
+  .infra { color: #e0c07a; }
+  .grand { font-size: 17px; }
+  footer { color: #666; font-size: 12px; text-align: center; padding: 24px; border-top: 1px solid #2a2a2a; margin-top: 32px; }
+  .dod li { list-style: none; margin-left: -20px; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="pub">Published 2026-07-11 09:18 PT</span>
+</nav>
+<main>
+
+<h1>~e nous.api mesh front door</h1>
+<p class="sub">Estimate: the 5-board extraction build sized from the ~i
+(<code>2026-07-11-0918-inspect-nous-api.html</code>). Fibonacci, 3s and 5s only — a 5 is one focused
+college-student-night, complete + perfect. Every work item carries its paired verify loop
+(Rule 7: <code>~a~t</code> / <code>~u~t</code> / <code>~f~t</code>). Boards that touch a new
+prime port/service emit an <span class="infra">infra-awareness sibling</span> (firewall + same-plane
+verify, Rule 13).</p>
+
+<div class="card verdict">
+<strong style="color:#6FC3DF">Bottom line.</strong>
+<span class="grand"><strong>113 pts</strong> across 5 boards, 25 items.</span>
+At metal pace (1–2 paired items per working day; extraction days run faster, deploy/vault days run slower)
+that reads as <strong>~12–16 working days ≈ 2.5–3 weeks</strong> — the ~i's 2–3 week call holds, with the
+back half (N3 deploy, N4 vault, reconsider) carrying all the risk. The front half is a lift, not a design:
+the ~i confirmed the extraction map is already written in fanout's CLAUDE.md.
+</div>
+
+<h2>Confidence Map — extraction vs. invention</h2>
+<table>
+<tr><th>Board</th><th>Nature</th><th>Confidence</th><th>Why</th></tr>
+<tr><td>N1</td><td>Pure extraction</td><td><span class="ok">High</span></td><td>Donor symbols named in spec: <em>"fanout is handle_task minus the WebSocket I/O."</em> serve.c:386/2842 exist and run today.</td></tr>
+<tr><td>N2</td><td>Extraction + one invention</td><td><span class="warn">Mixed</span></td><td>judge/summarize are lifts (serve.c:3297/3679); <strong>reconsider has zero donor code anywhere</strong> and no prompt design — priced with its own mini-design item.</td></tr>
+<tr><td>N3</td><td>New assembly + first deploy</td><td><span class="warn">Medium-low</span></td><td>api.c is 0 lines today; primes serve only /catalog. Chunking of the 0xCA envelope (38 × MAX_RESPONSE) is an open question priced in, not wished away.</td></tr>
+<tr><td>N4</td><td>Genuinely new</td><td><span class="bad">Low</span></td><td>KeyOverride is designed to the struct level, but <em>where the vault physically lives and how it's provisioned</em> is unanswered on disk. Cheapest board to underestimate.</td></tr>
+<tr><td>N5</td><td>Rewire of running code</td><td><span class="ok">Med-high</span></td><td>relay_client.c already speaks the 0xCA wire (serve.c:2886 uses it today); cutover is redirecting a working path, plus a fallback that must not rot.</td></tr>
+</table>
+
+<h2>N1 — Extract providers + fanout from serve.c <span class="badge b-cheap">PURE EXTRACTION</span></h2>
+<p class="sub">Donor: <code>C:\tools\metal-de\src\serve.c</code> (5,568 lines, live). Target: standalone
+nous C skills <code>providers.c</code> + <code>fanout.c</code>, minus all WebSocket I/O. No new
+ports/services — no infra sibling.</p>
+<table>
+<tr><th>#</th><th>Triple {what, verb, context}</th><th>Pts</th><th>Cmd</th></tr>
+<tr><td>1</td><td>{38-row provider table + resolve_key chain, extract from, serve.c:386–433/358 into providers.c per providers.h}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>2</td><td>{five wire formats (anthropic/openai/openai-responses/gemini/cohere), extract from, serve.c request builders + parsers into providers.c}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>3</td><td>{provider_thread worker, extract from, serve.c into fanout.c thread worker (minus WS push)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>4</td><td>{handle_task driver, extract from, serve.c:2842 into fanout_ask + FanoutResult aggregation}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>5</td><td>{spec line-refs + format list, update with, drifted serve.c reality in fanout.h/providers.h (~i pattern 4 — needs a-d-d approval, Rule 10)}</td><td class="pts">3</td><td class="cmd">~u~t</td></tr>
+<tr class="subtotal"><td></td><td>N1 subtotal</td><td class="pts">23</td><td></td></tr>
+</table>
+
+<h2>N2 — Port judge + summarize; build reconsider <span class="badge b-mixed">EXTRACTION + INVENTION</span></h2>
+<p class="sub">judge/summarize are lifts; both currently lean on the <code>g_last_results</code> global —
+that seam must be broken (pass FanoutResult explicitly), priced as its own fix. reconsider is the only
+verb with no donor: mini-design first, then build. No new ports — no infra sibling.</p>
+<table>
+<tr><th>#</th><th>Triple {what, verb, context}</th><th>Pts</th><th>Cmd</th></tr>
+<tr><td>1</td><td>{handle_judge leaderboard, extract from, serve.c:3297 into judge.c (minus WS I/O)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>2</td><td>{handle_summarize consensus/differences, extract from, serve.c:3679 into summarize.c (minus WS I/O)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>3</td><td>{g_last_results global seam, fix in, judge/summarize skills (explicit FanoutResult param — statelessness the mesh requires)}</td><td class="pts">5</td><td class="cmd">~f~t</td></tr>
+<tr><td>4</td><td>{reconsider prompt semantics (top-3 winners re-examine), add to, reconsider skill as mini-design + header contract (no donor exists)}</td><td class="pts">3</td><td class="cmd">~a~t</td></tr>
+<tr><td>5</td><td>{reconsider.c, add to, reconsider skill — re-fanout to top-3 with judge context, new implementation}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr class="subtotal"><td></td><td>N2 subtotal</td><td class="pts">23</td><td></td></tr>
+</table>
+
+<h2>N3 — api.c verb router + deploy to a prime <span class="badge b-new">NEW ASSEMBLY + FIRST DEPLOY</span></h2>
+<p class="sub">api.c goes from 0 lines to deployed. The router itself is thin (api.h says so:
+"this skill is thin; it composes"); the marshaling, the envelope chunking, and the first-ever
+non-catalog prime deploy are where the points live. <span class="infra">New service + port on a prime
+→ infra sibling required.</span></p>
+<table>
+<tr><th>#</th><th>Triple {what, verb, context}</th><th>Pts</th><th>Cmd</th></tr>
+<tr><td>1</td><td>{api_dispatch four-verb router, add to, api.c per api.h (ask/judge/summarize/reconsider → skill calls)}</td><td class="pts">3</td><td class="cmd">~a~t</td></tr>
+<tr><td>2</td><td>{NTRP triple request/response marshaling, add to, api.c (wire in/out — never HTTP into the substrate)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>3</td><td>{0xCA envelope payload sizing/chunking, update with, full fan-out responses (38 × MAX_RESPONSE — ~i open question, priced not wished)}</td><td class="pts">5</td><td class="cmd">~u~t</td></tr>
+<tr><td>4</td><td>{api skill build + wire listener, add to, one prime (Ashburn elite) alongside the /catalog surface}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>5</td><td class="infra">{api wire port firewall rule + same-plane verify, add to, GCP for the api prime (probe from a peer node, not this box — Rule 13)}</td><td class="pts">3</td><td class="cmd">~a~t</td></tr>
+<tr class="subtotal"><td></td><td>N3 subtotal</td><td class="pts">21</td><td></td></tr>
+</table>
+<p class="sub">Deferred by this estimate (matches the ~i's open question): the C# Cloud Run blind-REST
+edge is <strong>not</strong> in v1 — the cockpit's existing authenticated relay path carries the verbs.
+Provider-adjacent prime placement is also out of scope; v1 accepts existing zones.</p>
+
+<h2>N4 — BYOK on the wire + prime-side key vault <span class="badge b-new">GENUINELY NEW</span></h2>
+<p class="sub">Designed to the struct level (KeyOverride {env,val}, precedence per-request → vault →
+store → env, blank = internal) but the vault's physical home and provisioning are unanswered on disk —
+this board resolves them. Keys never leave the mesh; never logged; RAM-only in flight.
+<span class="infra">Vault rides the existing wire port opened in N3 — no new port, so the infra
+sibling here is the custody proof, not a firewall rule.</span></p>
+<table>
+<tr><th>#</th><th>Triple {what, verb, context}</th><th>Pts</th><th>Cmd</th></tr>
+<tr><td>1</td><td>{KeyOverride {env,val} carriage, add to, FanoutOpts + the wire triple (RAM-only, never logged, per byo-keys design)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>2</td><td>{sealed vault → store(apikey:*) → env resolve chain, add to, providers_resolve_key on the prime side}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>3</td><td>{blank-key = internal-key fallthrough, add to, resolve chain (no override entry → mesh's own key — the specified default)}</td><td class="pts">3</td><td class="cmd">~a~t</td></tr>
+<tr><td>4</td><td>{vault provisioning path, add to, the api prime (answers the open question: which node class, seeded how — decision + script)}</td><td class="pts">5</td><td class="cmd">~a~t</td></tr>
+<tr><td>5</td><td class="infra">{key custody proof, test in, the mesh end-to-end (no key in logs, wire plaintext, or on the operator's box — the locked decision, verified with eyes)}</td><td class="pts">5</td><td class="cmd">~t</td></tr>
+<tr class="subtotal"><td></td><td>N4 subtotal</td><td class="pts">23</td><td></td></tr>
+</table>
+
+<h2>N5 — Cockpit cutover <span class="badge b-mixed">REWIRE OF RUNNING CODE</span></h2>
+<p class="sub">metal-de's local fan-out → <code>relay_request</code> to nous.api. The wire path already
+exists and authenticates (serve.c:2886 uses it for store enrichment today) — this redirects the model
+calls onto it. Local fan-out is <strong>kept</strong> as the offline bridge, not deleted. No new
+ports (client side of N3's port) — no firewall sibling; the e2e test is the verify anchor.</p>
+<table>
+<tr><th>#</th><th>Triple {what, verb, context}</th><th>Pts</th><th>Cmd</th></tr>
+<tr><td>1</td><td>{handle_task phase 3, update with, relay_request → nous.api ask (local thread fan-out → mesh round-trip)}</td><td class="pts">5</td><td class="cmd">~u~t</td></tr>
+<tr><td>2</td><td>{judge/summarize/reconsider cockpit routes, update with, nous.api verbs over the wire (reconsider is net-new UI verb — clears serve.c:5328 TODO)}</td><td class="pts">5</td><td class="cmd">~u~t</td></tr>
+<tr><td>3</td><td>{operator BYOK pass-through, add to, cockpit (users.dat/env keys → KeyOverride on the wire; blank = internal)}</td><td class="pts">3</td><td class="cmd">~a~t</td></tr>
+<tr><td>4</td><td>{offline bridge fallback, update with, kept local fan-out when relay unreachable (detect, degrade, surface state in cockpit)}</td><td class="pts">5</td><td class="cmd">~u~t</td></tr>
+<tr><td>5</td><td>{full cutover round trip, test in, cockpit → relay → prime → providers → cockpit (all four verbs, BYOK + blank-key paths)}</td><td class="pts">5</td><td class="cmd">~t</td></tr>
+<tr class="subtotal"><td></td><td>N5 subtotal</td><td class="pts">23</td><td></td></tr>
+</table>
+
+<h2>Totals + Calendar Read</h2>
+<table>
+<tr><th>Board</th><th>Scope</th><th>Items</th><th>Pts</th><th>Confidence</th></tr>
+<tr><td>N1</td><td>providers + fanout extraction</td><td>5</td><td class="pts">23</td><td><span class="ok">high — pure lift</span></td></tr>
+<tr><td>N2</td><td>judge/summarize port + reconsider build</td><td>5</td><td class="pts">23</td><td><span class="warn">mixed — reconsider has no donor</span></td></tr>
+<tr><td>N3</td><td>api.c router + prime deploy + firewall</td><td>5</td><td class="pts">21</td><td><span class="warn">medium-low — first non-catalog deploy, chunking unknown</span></td></tr>
+<tr><td>N4</td><td>BYOK wire + prime key vault</td><td>5</td><td class="pts">23</td><td><span class="bad">low — vault home unresolved on disk</span></td></tr>
+<tr><td>N5</td><td>cockpit cutover + offline bridge</td><td>5</td><td class="pts">23</td><td><span class="ok">med-high — wire path already live</span></td></tr>
+<tr class="subtotal"><td></td><td><strong>Grand total</strong></td><td><strong>25</strong></td><td class="pts grand">113</td><td></td></tr>
+</table>
+<div class="card">
+<p><strong style="color:#6FC3DF">Calendar.</strong> A 5 = one focused night; the board is 20 fives + 5
+threes ≈ 23 night-equivalents of pointed work. At metal pace — 1–2 paired <code>~x~t</code> items land
+per working day, extraction items often 2/day, deploy/vault items rarely more than 1 — that is
+<strong>~12–16 working days ≈ 2.5–3 weeks</strong>. Sequence N1 → N2 → N3 → N4 → N5 (each board ⛔-blocked
+on its predecessor); N1+N2 should burn in ~1 week and build confidence for the pricier back half.</p>
+<p><strong style="color:#6FC3DF">Where it slips, if it slips.</strong> Not the extraction — N3's first
+api deploy to a prime and N4's vault provisioning are the two items whose real shape is unknown until
+touched (Rule 6: plans are wrong by default). Signal to revisit this estimate: either item still red after
+two focused nights → re-point that board before proceeding, don't grind.</p>
+</div>
+
+<h2>Unknowns (priced, not hidden)</h2>
+<ul>
+<li>0xCA envelope chunking for 38 × MAX_RESPONSE — priced at 5 in N3; if the envelope already fits, that 5 comes back.</li>
+<li>Vault node class + provisioning mechanics — priced at 5 in N4 item 4; the decision itself may need a 10-minute a-d-d sign-off before code (Rule 10/11).</li>
+<li>Reconsider prompt quality — the mini-design (N2 item 4) is deliberately small; if judge context proves insufficient, v2 of that item is a new triple, not scope creep on this one.</li>
+<li>Mesh status is 42 days stale (~i DoD gap) — a same-plane liveness check is a pre-flight for N3, absorbed into its infra sibling, not a separate item.</li>
+</ul>
+
+<h2>DoD</h2>
+<ul class="dod">
+<li><span class="ok">✓</span> Sized from the ~i, not from vibes (every board maps to inspected file paths + line numbers)</li>
+<li><span class="ok">✓</span> All 25 items are {what, verb, context} triples with verbs mapping to work tildes (~a/~u/~f/~t)</li>
+<li><span class="ok">✓</span> Fibonacci 3/5 only; a 5 = one focused night complete + perfect; nothing left larger undecomposed</li>
+<li><span class="ok">✓</span> Every work item paired with its verify loop (~a~t/~u~t/~f~t; dedicated ~t items exempt from ~t~t per Rule 7)</li>
+<li><span class="ok">✓</span> Infra-awareness siblings emitted where a new prime port/service appears (N3 firewall + same-plane verify; N4 custody proof)</li>
+<li><span class="ok">✓</span> Extraction vs. invention honestly separated with per-board confidence (N1 high → N4 low)</li>
+<li><span class="ok">✓</span> Unknowns named and priced, with revisit signals (Rule 6)</li>
+<li><span class="ok">✓</span> Per-board subtotals + grand total (113 pts) + calendar read (~2.5–3 weeks) present</li>
+<li><span class="warn">✗</span> Not yet transcribed into be/board.md as boards N1–N5 (next step: ~p or direct board write)</li>
+<li><span class="warn">✗</span> Not yet indexed/telemetried/published (handled by the calling session's post-work chain)</li>
+</ul>
+
+<footer>Be — nous.api mesh front door estimate · v0 · Generated 2026-07-11 09:18</footer>
+</main>
+</body>
+</html>
