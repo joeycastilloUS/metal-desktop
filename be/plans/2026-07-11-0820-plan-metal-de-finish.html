@@ -1,0 +1,181 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan &mdash; metal.de: The Finish</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; } li { margin: 6px 0; font-size: 14px; } p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; } .warn { color: #f59e0b; font-weight: 600; } .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  .super { background: #0f0f0f; border: 1px solid #333; border-left: 3px solid #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #bbb; }
+  .tier1 td:first-child { color:#8fce90; font-weight:700; } .tier2 td:first-child { color:#c9b04e; font-weight:700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~p &mdash; metal.de: The Finish</span>
+  <span class="pub">Published 2026-07-11 08:20 PT</span>
+</nav>
+<div class="container">
+
+<h1>metal.de &mdash; The Finish</h1>
+<p style="color:#999;">Sequenced boards from <b>usable now</b> to <b>done</b>. One locked operator decision baked into every line: <b>passphrase-only auth</b>, local-only done first, the mesh deferred behind explicit triggers.</p>
+
+<div class="banner">PLAN &mdash; AWAITING APPROVAL</div>
+
+<div class="note"><b>LOCKED DECISION (operator, 2026-07-11).</b> Auth is a <b>passphrase only</b> (<code>goodtimes</code>) &mdash; no login, no relay, no TOTP, no FQDN for now. Full identity is deferred to the Mesh Horizon. Priority: the operator <b>uses metal.de now</b> and reaches a complete <b>LOCAL-ONLY done</b>, deferring everything that needs the mesh / relay / prime.</div>
+
+<div class="super"><b>Relationship to parity v2</b> (<code>be/plans/2026-07-10-1833-plan-metal-de-ce-parity-v2-pi-catalog-contract.html</code>). This plan does not supersede v2 &mdash; it <b>re-sequences its remainder</b> around the locked decision. Shipped and proven since v2: the .pi engine runs on <b>both editions from the same files</b> (parser <code>data_access.c</code>, shared <code>tail_exec.c</code>, sealed cards, translator); <code>metal-de.exe</code> builds + signs + runs; the cockpit at <code>:5050</code> with the passphrase gate; 6 Hot cards replay Tier-0 $0.00 over WS; the shared tail fires LIVE behind a fail-safe guard (default observe; real mutation only for an explicit non-engine project); 5 free providers loaded. Remaining from v2's Arc B &mdash; B0, B2, B5, B6, B7, B8 &mdash; plus CE Arc A remainders (real ed25519 seal signing, <code>decode_ids</code> nous headers, A4 prime emit) are re-cut below into two tiers: what finishes locally now, and what waits on the mesh.</div>
+
+<h2>Intent</h2>
+<div class="section">
+  <p>Finish metal.de as a <b>complete, usable, local-only application</b> &mdash; an operator sits down, enters the passphrase, loads a real project, runs real tildes that produce real artifacts through the free providers, watches the live board, and gets a verifiable done &mdash; with <b>zero dependency on relay, prime, or FQDN identity</b>. Everything that needs the mesh is named, boarded, and parked behind an explicit un-defer trigger rather than silently blocking the finish line. Local done is THE done for this plan; the Mesh Horizon is the next plan's opening move.</p>
+</div>
+
+<h2>Scope</h2>
+<div class="section">
+  <h3>In</h3>
+  <ul>
+    <li><b>Tier 1 &mdash; Local Done:</b> flip the tail's fail-safe from observe to real mutation for a verified loaded project; artifact-producing (Cold) tildes running on the 5 free providers with the live tail shipping their output; the full local <code>be/</code> machinery (board.md, board-status, telemetry, index, reports) with the live board view in the cockpit; the cross-platform floor (v2's B5 &mdash; Win/Mac/Linux build + run); real ed25519 card sealing with a <b>local</b> key (no relay ceremony); a local-done gate with receipts.</li>
+    <li>The passphrase gate (<code>goodtimes</code>) as the whole auth surface for this plan &mdash; hardened only to the extent of not weakening it (no bypass paths), not extended.</li>
+    <li>Rough Fibonacci points per board; <code>~e</code> sizes each into triples after approval.</li>
+  </ul>
+  <h3>Out</h3>
+  <ul>
+    <li><b>Everything mesh:</b> relay sessions, NTRP0001 into the substrate, prime deploy, Signal delivery off-box, catalog-over-wire (B2), relay-dependent tildes (B6), ~tlt metered runs (B7), A4 prime catalog emit, <code>decode_ids</code> nous headers. All boarded in Tier 2 as <span class="blocked">&#9940; deferred</span> with named triggers &mdash; not forgotten, not blocking.</li>
+    <li><b>All identity:</b> login, FQDN handshake, CF verify, TOTP, operator keystore, vault wiring (v2's B4). The passphrase is the interim contract until the Mesh Horizon opens.</li>
+    <li>B0 cross-org repo consolidation <em>if</em> it requires cross-org moves &mdash; local build discipline is already green; the org move waits for the org decision.</li>
+    <li>The full CE&harr;DE parity gate (v2 B8) &mdash; it requires the mesh legs; Tier 1 ships its own local-done gate instead.</li>
+    <li>New auth schemes, new catalog formats, frameworks, terminal tab, MCP, silicon console.</li>
+  </ul>
+</div>
+
+<h2>Approach</h2>
+<div class="section">
+  <ol>
+    <li><b>Local done is a real done, not a consolation prize.</b> Define it, gate it, verify it. An operator using metal.de daily on their own project at $0.00 is the product working &mdash; the mesh adds reach, not existence.</li>
+    <li><b>The engine is already proven; finish the plumbing around it.</b> The .pi parser, shared tail, sealed cards, and translator run on both editions from the same files. Tier 1 is not engine work &mdash; it is aiming the proven engine at a real loaded project and letting it mutate for real.</li>
+    <li><b>Flip the guard, never remove it.</b> The tail's fail-safe (default observe; mutate only an explicit, verified, non-engine project) is the safety contract. F1 widens the <em>verified</em> path; the default stays observe forever.</li>
+    <li><b>Free providers are the Cold floor.</b> The 5 loaded free providers carry every artifact-producing tilde in Tier 1. Paid escalation and metered For Rent stay out of scope; the mission stays $0-biased.</li>
+    <li><b>Seal locally now, federate later.</b> ed25519 signing lands in Tier 1 with a locally generated keypair on the operator's box. When FQDN identity arrives (Tier 2), the local key becomes the thing the identity ceremony attests &mdash; nothing re-built, only re-anchored.</li>
+    <li><b>Defer loudly.</b> Every Tier-2 board carries its un-defer trigger inline. When a trigger fires, that board moves to the top of the active queue &mdash; no re-planning required to resume.</li>
+    <li><b>Plans are wrong by default.</b> This is the v1 hypothesis of &ldquo;the finish&rdquo;; Unknowns and When To Revisit are first-class below.</li>
+  </ol>
+</div>
+
+<h2>Phases <span class="tag">two tiers &middot; each board sized rough-Fibonacci</span></h2>
+<div class="section">
+  <h3>Tier 1 &mdash; LOCAL DONE <span class="tag">no mesh &middot; ship now</span></h3>
+  <table class="tier1">
+    <tr><th>#</th><th>Board</th><th>~pts</th><th>What ships / exit</th></tr>
+    <tr><td>F1</td><td>Loaded-project plumbing <span class="tag">first move</span></td><td>8</td><td>The tail's fail-safe guard gains the <b>verified-project mutate path</b>: <code>~l</code> in the cockpit loads an explicit operator project (path picked, confirmed, recorded), and for that project only the shared tail runs LIVE mutation (save, index, commit) instead of observe. Default remains observe; the engine's own repo is never mutable. <b>Exit: a tilde run against a loaded real project lands a real commit in that project's repo, tail-driven, guard intact.</b></td></tr>
+    <tr><td>F2</td><td>Artifact tildes on free providers</td><td>13</td><td>The artifact-producing (Cold) tildes &mdash; <code>~d ~p ~i ~b</code>-class &mdash; execute their judgment slots on the 5 loaded free providers and hand results to the live tail, which ships the HTML artifact into the loaded project's <code>be/</code>. Escalation order + provider fallback data-driven from the cards. <b>Exit: operator runs <code>~d &lt;thing&gt;</code> in the cockpit and a real design artifact lands in the loaded project at $0.00.</b></td></tr>
+    <tr><td>F3</td><td>Local be/ machinery + live board</td><td>13</td><td>The full be/ ledger native in DE for the loaded project: <code>board.md</code> triples discipline, <code>board-status.json</code> writes, telemetry ring, index regeneration, and the <b>live board view rendered in the cockpit</b> (meta-refresh live, spinner off board-status). <b>Exit: operator runs a <code>~l &rarr; ~i &rarr; ~b</code> chain and watches the item walk Ready &rarr; In Progress &rarr; Done on screen, board committed alongside the work.</b></td></tr>
+    <tr><td>F4</td><td>Cross-platform floor <span class="tag">v2 B5</span></td><td>13</td><td><code>http_compat</code> kills the Linux/Mac HTTPS stub; threading off <code>#ifdef _WIN32</code>-only; metal-de builds + runs + passes smoke (cockpit up, passphrase gate, one Hot replay, one Cold artifact) on Win + Mac + Linux. <b>Exit: the same tarball/clone builds and smokes green on all three platforms.</b></td></tr>
+    <tr><td>F5</td><td>Real card sealing &mdash; ed25519, LOCAL key</td><td>8</td><td>Replace placeholder seal signing with real ed25519: keypair generated locally on first run, private key never leaves the box, cards signed + verified at load. <b>No relay, no ceremony, no identity dependency</b> &mdash; the key is anchored to the machine now, to the FQDN later. <b>Exit: a tampered card fails verification and refuses to replay; a sealed card verifies and runs.</b></td></tr>
+    <tr><td>F6</td><td>Local-done gate</td><td>5</td><td>Walk the local surface end-to-end with receipts: fresh-machine build (per platform from F4), passphrase gate holds (no bypass), 6 Hot cards replay $0.00, one full Cold artifact chain into a real project, board live, seals verified, guard defaults confirmed observe. Retro + Kaizen harvest. <b>Exit: LOCAL DONE declared with evidence, or the gap list becomes the next board.</b></td></tr>
+  </table>
+  <p style="color:#8fce90;"><b>End of Tier 1: metal.de is a complete local application an operator uses daily.</b> 6 boards / ~60 pts.</p>
+
+  <h3>Tier 2 &mdash; MESH HORIZON <span class="blocked">&#9940; deferred</span> <span class="tag">needs prime / relay</span></h3>
+  <table class="tier2">
+    <tr><th>#</th><th>Board</th><th>~pts</th><th>What it is &middot; <b>un-defer trigger</b></th></tr>
+    <tr><td>M1</td><td>B2 &mdash; Catalog over the wire</td><td>8</td><td>DE consumes <code>/catalog</code> over NTRP0001; DoR 5 / DoD 11 run against wire reads; never a repo clone. <span class="blocked">&#9940;</span> <b>Trigger: a prime serves <code>GET /catalog</code> live (A4 landed) + relay session available.</b></td></tr>
+    <tr><td>M2</td><td>B6 &mdash; Relay-dependent tildes + Signal delivery</td><td>13</td><td><code>~s</code> full chain incl. Store/mesh leg; signals-pending queue drain; off-box Signal delivery to authorized listeners. <span class="blocked">&#9940;</span> <b>Trigger: relay + prime deployed and reachable over wire from the operator's box.</b></td></tr>
+    <tr><td>M3</td><td>Full identity &mdash; FQDN replaces the passphrase <span class="tag">v2 B4</span></td><td>13</td><td>FQDN handshake + CF verify + TOTP + operator keystore; the F5 local key re-anchored to the operator's FQDN; passphrase retired. <span class="blocked">&#9940;</span> <b>Trigger: operator lifts the passphrase-only lock AND relay auth flows are live to verify against.</b></td></tr>
+    <tr><td>M4</td><td>A4 &mdash; Prime catalog emit</td><td>13</td><td>Patterns + skills emitted as entity types into the live <code>/catalog</code> store via <code>manifest_export_filtered</code>, policy-scoped visibility. <span class="blocked">&#9940;</span> <b>Trigger: prime deploy lands; publishes from origin, upstream of M1.</b></td></tr>
+    <tr><td>M5</td><td>B0 &mdash; Cross-org consolidation</td><td>13</td><td><code>kastil-systems/metal-desktop</code> stand-up: subtree split + unrelated-histories merge + MOVED freezes + guards. <span class="blocked">&#9940;</span> <b>Trigger: operator green-lights the org move (one-project-one-org resolution).</b></td></tr>
+    <tr><td>M6</td><td>B7 &mdash; ~t &rarr; ~tlt binding</td><td>13</td><td><code>~t</code> stays local/$0; <code>~tlt</code> is the metered For Rent cloud sibling (Bearer auth, signed RunRequest). <span class="blocked">&#9940;</span> <b>Trigger: the For Rent <code>/serve/run</code> endpoint is live and billable.</b></td></tr>
+    <tr><td>M7</td><td>decode_ids nous headers <span class="tag">CE Arc A remainder</span></td><td>5</td><td>DERIVED IDS records carry proper nous decoder-version headers. <span class="blocked">&#9940;</span> <b>Trigger: the nous/security record-kind specs are published and pullable.</b></td></tr>
+    <tr><td>M8</td><td>B8 &mdash; Full parity gate</td><td>8</td><td>CE&harr;DE surface walked point-by-point with external production verification, mesh legs included. <span class="blocked">&#9940;</span> <b>Trigger: M1&ndash;M4 landed &mdash; the last gate, closing parity v2 for real.</b></td></tr>
+  </table>
+  <p style="color:#c9b04e;"><b>Tier 2 is parked, not lost:</b> 8 boards / ~86 pts, each resuming on its trigger without re-planning. Sequencing when live: M4 &rarr; M1; M2 after relay; M3 on operator unlock; M8 last.</p>
+  <p><b>Tier-1 sequencing:</b> F1 &rarr; F2 &rarr; F3 strict (guard, then artifacts, then ledger); F4 and F5 parallel after F2; F6 last. <b>Tier-1 total: ~60 pts / 6 boards.</b></p>
+</div>
+
+<h2>Constraints <span class="tag">the checklist</span></h2>
+<div class="section">
+  <ol>
+    <li><b>Passphrase-only auth is the interim contract.</b> <code>goodtimes</code> gates the cockpit; no login, relay, TOTP, or FQDN lands in Tier 1. No board may quietly introduce an identity dependency. Full identity is M3, operator-triggered.</li>
+    <li><b>The tail's fail-safe guard is never weakened.</b> Default is observe, always. Real mutation happens ONLY for an explicit, verified, operator-loaded non-engine project (F1's verified path). No board, fix, or convenience ever flips the default or widens mutation past the verified project.</li>
+    <li><b>Zero mesh dependency in Tier 1.</b> If a Tier-1 board discovers it needs relay/prime to exit, the board is mis-cut: re-scope it local or move it to Tier 2. Local done cannot wait on the mesh by definition.</li>
+    <li><b>C99 everywhere we own; no frameworks.</b> Vanilla HTML/CSS/JS in the cockpit; C# only as sanctioned foreign-API jackets. The engine stays the same files on both editions &mdash; no DE fork of parser/tail/translator.</li>
+    <li><b>Done = externally verifiable where a real artifact exists</b> (Rule 9). Local-only scope narrows the vantage, not the standard: fresh-machine build receipts, tamper-fail seal proof, a real commit in a real project's repo a third party can clone and see. Where an artifact has a published home, HTTP 200 or it isn't done.</li>
+    <li><b>Free providers only in Tier 1.</b> The 5 loaded free providers are the Cold floor; no paid escalation, no metered runs (that's M6).</li>
+    <li><b>Local ed25519 key never leaves the box.</b> Generated on first run, machine-anchored now, FQDN-attested later (M3). Key material never committed, never transmitted.</li>
+    <li><b>Wire protocol only into Purcius</b> when Tier 2 opens &mdash; never HTTP/REST/SDK into the substrate. Tier 1 touches the substrate zero times.</li>
+    <li><b>Board + versioning discipline:</b> triples, Fibonacci, verify-loop pairing (<code>~a~t</code>), Kaizen K-board; v0 &middot; rN &middot; date &middot; pts; no co-author lines.</li>
+    <li><b>a-d-d is human-owned</b> (Rule 10); any spec change this work surfaces flows up as a proposal before code lands (Rule 11).</li>
+    <li><b>Plan shape honored</b> + this banner stays until approved.</li>
+  </ol>
+</div>
+
+<h2>Unknowns <span class="tag">named explicitly</span></h2>
+<div class="section">
+  <ul>
+    <li><b>What &ldquo;verified project&rdquo; means precisely</b> &mdash; F1's verification contract (explicit path pick? git-repo check? marker file? confirm prompt?) is undesigned. It must be strong enough to protect the guard and light enough to not annoy daily use. Settle at F1 start.</li>
+    <li><b>Free-provider reliability under real Cold load</b> &mdash; the 5 free providers are loaded but unproven against full artifact generation (length limits, rate limits, refusal shapes). Fallback ordering may need tuning; a provider dropping to 4 or 3 changes F2's floor.</li>
+    <li><b>Cockpit board-view rendering path</b> &mdash; CE renders board views via Python (<code>render-board-view.py</code>); DE's cockpit needs either a vendored equivalent or a C99-native render. Which one F3 ships is open (vendoring is the v2 precedent; native is the mission).</li>
+    <li><b>Mac/Linux build environments</b> &mdash; no Mac or Linux box has built metal-de yet this cycle; toolchain surprises (signing, threading, TLS) land on F4. WDAC-under-automation on Windows remains the known CI gap.</li>
+    <li><b>ed25519 implementation source</b> &mdash; roll from the C99 primitives in nous/crypt or vendor a single-file implementation? License + audit posture decides; no OpenSSL dependency either way.</li>
+    <li><b>Passphrase hardening line</b> &mdash; &ldquo;don't weaken&rdquo; is clear; whether F6 requires rate-limiting/lockout on the gate before declaring local done is not. Decide at the gate.</li>
+    <li><b>Trigger observability</b> &mdash; who notices when a Tier-2 trigger fires (prime deploys, specs publish)? No watcher exists; today it's the operator saying so. Cheap: a K-board item per trigger.</li>
+    <li><b>How much of B0 is actually needed locally</b> &mdash; if the org move stays deferred, does any Tier-1 board trip over the current repo layout? Believed no (builds are green); F6's fresh-machine walk is the proof.</li>
+  </ul>
+</div>
+
+<h2>When To Revisit <span class="tag">the v2 triggers</span></h2>
+<div class="section">
+  <ul>
+    <li><b>F1's verification contract can't be both safe and usable</b> &mdash; if the verified-mutate path needs more than a light ceremony, the guard design (not the plan) is wrong: back to <code>~d</code> before touching the tail.</li>
+    <li><b>Free providers can't carry a full artifact</b> &mdash; if F2 can't land a real <code>~d</code>/<code>~p</code> artifact on the free floor after fallback tuning, the $0 Cold premise re-opens and this plan needs a v2 with an escalation decision.</li>
+    <li><b>Any Tier-2 trigger fires</b> &mdash; the moment prime/relay deploys, specs publish, or the operator lifts the passphrase lock, pull that M-board to the top of the queue and re-sequence forward of whatever is in flight. That is the Mesh Horizon opening, and it likely warrants the successor plan.</li>
+    <li><b>The operator asks for a second machine or a second operator</b> &mdash; the passphrase contract is single-box by design; the first multi-box need un-defers M3 early.</li>
+    <li><b>F4 uncovers a platform fork in the engine</b> &mdash; if cross-platform work forces divergent parser/tail sources, the same-files invariant is threatened: stop, flow up (Rule 11).</li>
+    <li><b>F6 fails its gate</b> &mdash; the gap list becomes the next boards, not a silent shrug; two consecutive gate failures = plan v2.</li>
+    <li><b>Any drift between the a-d-d spec and implementation</b> (Rule 11) stops the tilde and flows up; two stops in one board = plan v2.</li>
+  </ul>
+</div>
+
+<h2>Definition of Done <span class="tag">this artifact</span></h2>
+<div class="section">
+  <ul>
+    <li><span class="warn">&#9702;</span> Plan committed &mdash; PENDING (this run) / <span class="pass">&#10003;</span> after commit</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/plans/2026-07-11-0820-plan-metal-de-finish.html</code></li>
+    <li><span class="pass">&#10003;</span> Locked operator decision (passphrase-only, local-first) stated up top and enforced in Scope, Phases, and Constraints</li>
+    <li><span class="pass">&#10003;</span> Required sections: Intent / Scope / Approach / Phases / Constraints + Unknowns + When To Revisit (Rule 6)</li>
+    <li><span class="pass">&#10003;</span> Phases in two tiers: Tier 1 local-done (F1&ndash;F6, ~60 pts) and Tier 2 mesh-horizon (M1&ndash;M8, &#9940; deferred, each with a named un-defer trigger)</li>
+    <li><span class="pass">&#10003;</span> Relationship to parity v2 stated &mdash; re-sequences its Arc B remainder + CE Arc A remainders; does not supersede</li>
+    <li><span class="pass">&#10003;</span> Constraints include: passphrase interim contract, fail-safe guard never weakened, C99/no-frameworks, done = externally verifiable where a real artifact exists</li>
+    <li><span class="pass">&#10003;</span> Status banner: PLAN &mdash; AWAITING APPROVAL; trade-secret header + pubdate top-right</li>
+    <li><span class="warn">&#9702;</span> Index updated + pushed &mdash; PENDING (follows this run)</li>
+  </ul>
+</div>
+
+</div>
+<footer>v0 &middot; the finish &middot; 2026-07-11 &middot; Tier 1 local done ~60 pts / 6 boards &middot; Tier 2 mesh horizon &#9940; ~86 pts / 8 boards</footer>
+</body>
+</html>

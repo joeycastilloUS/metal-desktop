@@ -1,0 +1,175 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design &mdash; metal.de: The Finish</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; } li { margin: 6px 0; font-size: 14px; } p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; } .warn { color: #f59e0b; font-weight: 600; } .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  .super { background: #0f0f0f; border: 1px solid #333; border-left: 3px solid #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #bbb; }
+  .local td:first-child { color:#8fce90; font-weight:700; } .mesh td:first-child { color:#c9b04e; font-weight:700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~d &mdash; metal.de: The Finish</span>
+  <span class="pub">Published 2026-07-11 08:20 PT</span>
+</nav>
+<div class="container">
+
+<h1>metal.de &mdash; The Finish</h1>
+<p style="color:#999;">From &ldquo;it runs&rdquo; to &ldquo;the operator does real work in it, daily.&rdquo; Passphrase in, tildes out, real artifacts on disk &mdash; zero mesh dependency. The finish line is local; the mesh is a horizon, not a blocker.</p>
+
+<div class="banner">DESIGN &mdash; AWAITING APPROVAL</div>
+
+<div class="super"><b>Locked decision (bake it in, 2026-07-11):</b> auth is a <b>passphrase only</b> &mdash; <code>goodtimes</code>, SHA-256 client gate, already live at <code>:5050</code>. <b>NO login, no relay, no TOTP, no FQDN handshake</b> for now. Full operator-identity auth (parity v2 board B4) is <b>explicitly deferred</b>, not descoped &mdash; it returns with the mesh horizon. Every phase below assumes and preserves this: nothing in The Finish may add a login, a relay session, or a prime dependency to the daily path.</div>
+
+<div class="note"><b>Standing on (shipped + proven this session):</b> the .pi engine is real on BOTH editions from the SAME files (<code>data_access.c</code> parser, <code>tail_exec.c</code> shared tail, sealed <code>.pi</code> cards, <code>translator.h</code>) &mdash; compiled together, not forked. <code>metal-de.exe</code> builds, <b>signs</b> (WDAC sig Valid), runs; the cockpit serves at :5050 behind the passphrase gate; <code>~config</code>/<code>~h</code> + the 6 Hot cards replay natively at <b>Tier-0 $0.00</b> over the WebSocket; the shared tail fires <b>live</b> after a tilde and streams its chain to the cockpit under a <b>fail-safe guard</b> (default = observe/narrate, ZERO disk writes; mutation only for an explicit non-engine operator project); 5 free providers loaded, so Cold tildes/chat already answer. Parent plan: <code>be/plans/2026-07-10-1833-plan-metal-de-ce-parity-v2-pi-catalog-contract.html</code> (Arc B).</div>
+
+<h2>1 &middot; Need</h2>
+<div class="section">
+  <p><b>The operator wants to USE the app now.</b> Open metal.de, type the passphrase, and work: run tildes, produce real artifacts in a real project, close board items &mdash; without a login flow, without the relay being up, without a prime existing. Today the engine <i>runs</i> and the tail <i>narrates</i>; nothing the operator does in the cockpit lands a file in a real project yet. That is the whole gap.</p>
+  <h3>Minimal complete usable state vs full parity</h3>
+  <p><b>Minimal complete</b> (this design's &ldquo;done&rdquo; line): passphrase &rarr; <code>~l</code> a real project &rarr; work tildes execute &rarr; Cold slots answer via the free providers &rarr; a real artifact file lands in that project's <code>be/</code> &rarr; the shared tail ships it (index, telemetry, board, commit) &mdash; all on this machine, $0 for the Hot legs, free-tier for the Cold ones.</p>
+  <p><b>Full parity</b> (plan v2's 18-board line) additionally needs the mesh: catalog-over-wire (B2), FQDN identity (B4), relay tildes + Signals delivery (B6), the ~tlt metered cloud leg (B7's rent side). None of that gates daily use. The Finish draws the line explicitly and ships everything on the near side of it.</p>
+</div>
+
+<h2>2 &middot; Raw user stories</h2>
+<div class="section">
+  <ul>
+    <li>As the operator, I open metal.de, type <code>goodtimes</code>, and I'm in &mdash; no account, no login, no network beyond my own box.</li>
+    <li>As the operator, I <code>~l</code> a real project of mine and the tail <b>mutates it</b> &mdash; board.md moves, reports save, commits land &mdash; instead of narrating what it would do.</li>
+    <li>As the operator, I run <code>~i</code> / <code>~d</code> / <code>~a</code> / <code>~b</code> and get a <b>real HTML artifact file</b> in my project's <code>be/</code>, indexed and committed, visible from the cockpit.</li>
+    <li>As the operator, I never wait on the relay, a prime, or the mesh &mdash; if a tail step needs the mesh (Signal delivery, Latchkey cap-URL when offline), it queues locally and tells me, and the work is still done.</li>
+    <li>As the operator, I can see at a glance which tildes are fully local and which are deferred-to-mesh &mdash; the app never fakes a mesh feature.</li>
+    <li>As the operator, I trust the guard: if no project is loaded, or the loaded path is the engine itself, <b>nothing writes</b>. Ever.</li>
+  </ul>
+</div>
+
+<h2>3 &middot; Sourced solution <span class="tag">mine before invent</span></h2>
+<div class="section">
+  <table>
+    <tr><th>Need</th><th>Source</th><th>What it gives</th></tr>
+    <tr><td>Mutate a real project safely</td><td>ours &mdash; the fail-safe guard in <code>tail_exec.c</code> (this session)</td><td>The guard already distinguishes observe vs mutate and already keys off &ldquo;explicit non-engine operator project.&rdquo; The Finish doesn't add a mechanism &mdash; it adds the <b>loaded-project plumbing</b> that feeds the guard a verified target.</td></tr>
+    <tr><td>Project load semantics</td><td>ours &mdash; metal.ce <code>~l</code> spec (<code>be/docs/commands.md</code> &sect; ~l) + auto-board rule</td><td>DE's <code>~l</code> replays the same card: resolve path, read board, pop the live view. Presence stamping ports as-is (local exe, no mesh).</td></tr>
+    <tr><td>Artifacts from Cold slots</td><td>ours &mdash; <code>translator.h</code> + the 5 loaded free providers</td><td>Cold judgment slots already answer. Artifact tildes = sealed .pi cards whose Cold slots fill the section bodies; the scaffold + save are Tier-0 tail work.</td></tr>
+    <tr><td>Report scaffold + style</td><td>ours &mdash; Be HTML template (this file's own CSS, from the parity v2 plan)</td><td>The scaffold is deterministic C: string template + slot splice. No renderer framework, per Design Principles.</td></tr>
+    <tr><td>Trust boundary at the gate</td><td>a-d-d patterns &mdash; <b>Trust</b> (kastil-systems/a-d-d/patterns)</td><td>The passphrase gate is a Trust edge: one secret, hashed client-side, checked server-side, nothing else trusted. Apply the pattern's checklist; don't grow the gate.</td></tr>
+    <tr><td>Provider seam</td><td>a-d-d patterns &mdash; <b>Slot</b></td><td>Cold host behind the dispatch seam (plan v2 constraint 10): free providers today, clauderun/Vertex later, zero card edits.</td></tr>
+    <tr><td>Outside</td><td>&mdash;</td><td>Nothing. Every piece of The Finish exists in-tree or in the a-d-d catalog. No new dependency crosses the wall.</td></tr>
+  </table>
+</div>
+
+<h2>4 &middot; Name it true</h2>
+<div class="section">
+  <ul>
+    <li><b>The passphrase gate</b> &mdash; never call it &ldquo;auth.&rdquo; It is a door lock, not an identity. Code/docs say <code>passphrase_gate</code>; &ldquo;auth&rdquo; stays reserved for the deferred B4 identity work so no one mistakes the lock for the badge.</li>
+    <li><b><code>loaded_project</code></b> &mdash; the single piece of session state The Finish adds: the absolute path the operator explicitly loaded. Not &ldquo;workspace,&rdquo; not &ldquo;context.&rdquo;</li>
+    <li><b><code>guard_mode</code>: observe &rarr; mutate</b> &mdash; the tail's two states, named for what they do. The flip is earned by verification, never by default.</li>
+    <li><b>The local-only done line</b> &mdash; the milestone's name. Everything on the near side ships now; everything past it is <b>the mesh horizon</b> (deferred, visible, honest).</li>
+    <li><b>metal.de v0-daily</b> &mdash; what we call the finished state: v0, revision-counted, used daily. Not &ldquo;beta,&rdquo; not &ldquo;MVP.&rdquo;</li>
+  </ul>
+</div>
+
+<h2>5 &middot; Shape</h2>
+<div class="section">
+  <h3>The daily path (what a session looks like when finished)</h3>
+  <pre>:5050 &rarr; passphrase gate (goodtimes, SHA-256 client-side)
+  &rarr; ~l C:\my-project        loaded_project set &middot; verified &middot; guard_mode=mutate (scoped to it)
+                              board popped &middot; presence stamped &middot; all Tier-0, $0.00
+  &rarr; ~i / ~d / ~a / ~b ...   Hot slots replay from sealed .pi cards ($0)
+                              Cold slots answer via free providers (no relay, no key cost)
+  &rarr; tail fires LIVE         scaffold &rarr; save HTML in loaded_project\be\&lt;kind&gt;s\
+                              &rarr; index &rarr; telemetry &rarr; board.md move &rarr; commit
+                              mesh-needing steps (Signal delivery) &rarr; local queue + honest note
+  &rarr; cockpit shows the artifact + the chain it just ran</pre>
+
+  <h3>Piece 1 &mdash; loaded-project plumbing (the guard flip)</h3>
+  <p>The guard exists; feed it. <code>~l &lt;path&gt;</code> in the cockpit sets <code>loaded_project</code> after three checks, all local: (a) the path was <b>explicitly given by the operator this session</b> &mdash; never inferred, never persisted across restarts without re-confirmation; (b) it is a real git repo (or the operator confirms init); (c) it is <b>not the engine</b> &mdash; metal-desktop / metal trees are permanently observe-only. Pass all three and <code>guard_mode=mutate</code>, scoped to that one root: every tail write path-checks against <code>loaded_project</code> before touching disk. <code>~unload</code> or a failed check drops straight back to observe. No project loaded = today's behavior exactly (narrate, zero writes).</p>
+
+  <h3>Piece 2 &mdash; artifact tildes over free providers</h3>
+  <p>Promote the work tildes from &ldquo;Cold slots answer in chat&rdquo; to &ldquo;Cold slots fill a scaffold the tail ships.&rdquo; Order of proof: <code>~i</code> (inspect &mdash; reads the loaded project, cheapest judgment), then <code>~d</code>, then <code>~a</code>/<code>~b</code>. Each is its sealed .pi card: Tier-0 scaffold + save + index + commit from the tail; Cold judgment slots via the provider seam (5 free providers now; clauderun/Vertex later behind the same Slot &mdash; zero card edits). No relay anywhere on this path. Artifacts carry the Be template, the DoD checklist, the pubdate nav &mdash; indistinguishable from CE output because they run the same cards through the same tail.</p>
+
+  <h3>Piece 3 &mdash; the line: local-only done vs the mesh horizon</h3>
+  <table class="local">
+    <tr><th>Ships now (local-only)</th><th>Why it's local</th></tr>
+    <tr><td>Loaded-project plumbing + guard flip</td><td>Session state + path checks; pure C on-box.</td></tr>
+    <tr><td>Artifact tildes (~i ~d ~a ~b ...) end-to-end</td><td>Tail is Tier-0; Cold via direct-HTTPS free providers (fan-out is sanctioned direct, only Purcius requires wire).</td></tr>
+    <tr><td>Board discipline in DE (board.md, board-status, live view, telemetry)</td><td>Files + local renderer; already CE-proven, tail carries it (B3 remainder).</td></tr>
+    <tr><td>Local <code>~t</code> leg of B7 (14-op / dom_sig / HMAC on-box, $0)</td><td>Explicitly never <code>/serve/run</code> per plan v2.</td></tr>
+    <tr><td>B0 consolidate, B5 cross-platform floor, B8 parity gate <i>scoped to the local surface</i></td><td>Repo + build + verification work; no mesh in the loop.</td></tr>
+    <tr><td>Signal <b>emission</b> from the tail</td><td>Sealed locally, queued in the signals-pending queue; delivery waits for the horizon. Honest note in the report.</td></tr>
+  </table>
+  <table class="mesh">
+    <tr><th>Deferred (the mesh horizon)</th><th>Needs</th></tr>
+    <tr><td>B4 identity &mdash; FQDN + CF verify + TOTP, keystore</td><td>The locked decision itself; returns when identity auth is un-deferred.</td></tr>
+    <tr><td>B2 catalog-over-wire (DoR item 5 from a live <code>/catalog</code>)</td><td>Relay session (NTRP0001) + prime store. Until then DE cites patterns from its sealed local card knowledge; no fake catalog.</td></tr>
+    <tr><td>B6 relay-dependent tildes (~s mesh leg, queue drain, Signal delivery)</td><td>Prime deploy &mdash; wholly external, already calendar-independent in plan v2.</td></tr>
+    <tr><td>~tlt metered cloud sibling (B7 rent side)</td><td>For Rent surface + Bearer auth on a live prime.</td></tr>
+    <tr><td>Latchkey cap-URL leg when the publish push is unavailable</td><td>Degrades to queued publish; the artifact is still saved + committed locally.</td></tr>
+  </table>
+  <p>The cockpit renders the line: mesh-horizon tildes/legs show a &#9940; <code>mesh</code> badge, never a spinner pretending. The app is honest about what it is today.</p>
+
+  <h3>Escape routes</h3>
+  <ul>
+    <li><b>Guard flip proves too eager or too shy</b> &mdash; the three checks live in one function; retune there, never per-tilde. Two retunes = the load semantics were wrong, back to this design.</li>
+    <li><b>Free providers throttle or degrade on artifact-sized Cold slots</b> &mdash; the Slot seam swaps in local CLI or paid providers without touching a card. Daily use survives on any one working provider.</li>
+    <li><b>Prime deploys early</b> &mdash; nothing here blocks the horizon: the queue drains, B2/B6 pick up per plan v2, the passphrase gate simply gains a sibling (identity) rather than being replaced mid-daily-use.</li>
+  </ul>
+</div>
+
+<h2>6 &middot; First move</h2>
+<div class="section">
+  <p><b>One step crosses the line: the loaded-project set + one artifact tilde, tail shipping for real.</b></p>
+  <ol>
+    <li>Implement <code>~l &lt;path&gt;</code> setting <code>loaded_project</code> with the three checks; flip <code>guard_mode=mutate</code> scoped to it (engine trees hard-excluded, path-check on every tail write).</li>
+    <li>Run <code>~i</code> against a real loaded operator project: Cold slots via a free provider, scaffold + save via the tail &mdash; a real <code>be/builds/&lt;stamp&gt;-inspect-*.html</code> lands ON DISK in that project, indexed, board-touched, committed by the tail.</li>
+    <li><b>Exit proof:</b> the file exists in the loaded project's repo with a tail-made commit; the cockpit displayed the chain as it ran; the engine tree shows zero writes; with no project loaded the same <code>~i</code> still narrates only.</li>
+  </ol>
+  <p>That single loop is the difference between &ldquo;metal.de runs&rdquo; and &ldquo;the operator works in metal.de.&rdquo; Everything else in The Finish widens this loop.</p>
+</div>
+
+<h2>Definition of Done <span class="tag">this artifact</span></h2>
+<div class="section">
+  <ul>
+    <li><span class="pass">&#10003;</span> Six-section spine present: Need / Raw user stories / Sourced solution / Name it true / Shape / First move (+ Escape Routes where earned)</li>
+    <li><span class="pass">&#10003;</span> Locked decision baked in: passphrase-only gate, no login/relay/TOTP/FQDN; B4 identity explicitly deferred, not descoped</li>
+    <li><span class="pass">&#10003;</span> Local-only done line vs mesh horizon drawn explicitly (two tables), honest-badge rule for deferred legs</li>
+    <li><span class="pass">&#10003;</span> Solution sourced before invented: guard (tail_exec.c), ~l spec, translator seam, Trust + Slot patterns; zero new outside dependencies</li>
+    <li><span class="pass">&#10003;</span> First move is one loop with a falsifiable exit proof (file on disk, engine untouched, observe-mode preserved)</li>
+    <li><span class="pass">&#10003;</span> Parent plan cross-referenced (parity v2 Arc B: B0/B2/B3/B4/B5/B6/B7/B8 all dispositioned local-now or horizon)</li>
+    <li><span class="pass">&#10003;</span> Be template: #111 / #6FC3DF / 800px / pubdate top-right nav / status banner / trade-secret header</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/designs/2026-07-11-0820-design-metal-de-finish.html</code></li>
+    <li><span class="warn">&#9702;</span> Committed + index updated &mdash; PENDING (follows this run)</li>
+    <li><span class="warn">&#9702;</span> Operator approval &mdash; PENDING (banner stays until approved)</li>
+  </ul>
+</div>
+
+</div>
+<footer>v0 &middot; 2026-07-11 &middot; ~d metal.de: The Finish &middot; passphrase in, real work out &middot; local-only done line drawn</footer>
+</body>
+</html>
