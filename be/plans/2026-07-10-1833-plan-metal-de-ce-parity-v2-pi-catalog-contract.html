@@ -1,0 +1,191 @@
+<!-- CONFIDENTIAL - TRADE SECRET - Property of Joseph M. Castillo - All rights reserved -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan v2 &mdash; metal.de &harr; metal.ce Parity (.pi + Catalog contract)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.65; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; z-index: 100; display: flex; align-items: center; gap: 16px; }
+  nav .brand { color: #6FC3DF; font-weight: 700; font-size: 18px; }
+  nav .title { color: #999; font-size: 14px; }
+  nav .pub { margin-left: auto; color: #555; font-size: 12px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin-bottom: 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 32px 0 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  h3 { color: #9ad8ec; font-size: 15px; margin: 18px 0 8px; }
+  .section { background: #1A1A1A; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6FC3DF; border: 1px solid #333; border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+  ul, ol { margin: 8px 0 8px 22px; } li { margin: 6px 0; font-size: 14px; } p { margin: 8px 0; font-size: 14px; }
+  code { background: #222; padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: #6FC3DF; }
+  pre { background: #0a0a0a; padding: 12px 16px; border-radius: 6px; overflow-x: auto; border: 1px solid #222; margin: 12px 0; font-size: 12px; color: #d6e6ee; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #333; font-size: 13px; vertical-align: top; }
+  th { color: #6FC3DF; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  blockquote { border-left: 3px solid #6FC3DF; padding: 4px 16px; margin: 12px 0; color: #ccc; font-style: italic; background: #0f0f0f; }
+  .pass { color: #22c55e; font-weight: 600; } .warn { color: #f59e0b; font-weight: 600; } .blocked { color: #ef5350; font-weight: 600; }
+  .banner { background: #2a230d; border: 1px solid #5e4f1f; color: #d8a13a; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-align: center; }
+  .note { background: #06222b; border: 1px solid #14505f; color: #9ad8ec; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; }
+  .super { background: #0f0f0f; border: 1px solid #333; border-left: 3px solid #6FC3DF; border-radius: 6px; padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #bbb; }
+  .arcA td:first-child { color:#8fce90; font-weight:700; } .arcB td:first-child { color:#c9b04e; font-weight:700; }
+  footer { text-align: center; color: #555; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #222; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="title">~p v2 &mdash; metal.de &harr; metal.ce Parity (.pi + Catalog contract)</span>
+  <span class="pub">Published 2026-07-10 18:33 PT</span>
+</nav>
+<div class="container">
+
+<h1>Plan v2 &mdash; metal.de &harr; metal.ce Parity</h1>
+<p style="color:#999;">Settle the contract on metal.ce first &mdash; the <b>.pi</b> program model, the Catalog, DoR/DoD &mdash; then fold the <i>settled</i> contract into metal.de. Serving the mission: LLM/GPU-free, Zero Cost Intelligence, deterministic from the start.</p>
+
+<div class="banner">PLAN &mdash; AWAITING APPROVAL</div>
+
+<div class="super"><b>Supersedes v1</b> (<code>be/plans/2026-07-02-1117-plan-metal-de-ce-parity.html</code>, 11 boards / ~115 pts). What changed: v1 built metal.de to parity from a seeded a-d-d spec with native tiered execution. v2 keeps that spine but <b>re-centers on the contract, and sequences ce-before-de</b>. Four things this session produced now fold in: (1) the corpus is a <b>.pi program library</b> (33 cards scored, live at <code>joeycastillo.us/metal/pi</code>) &mdash; per-slot tiering, the chain-reaction tail is ONE program; (2) the <b>Catalog</b> &mdash; patterns + C99 skills as entity types in the live <code>/catalog</code> store (~d awaiting approval); (3) <b>DoR item 5 + DoD item 11</b> that reach every gated tilde through the shared programs; (4) the decoder (<code>understand()</code>), the dialect <b>translator</b>, and <b>clauderun</b> as the Cold host. v1's P4/P5/P6 (four organs) collapse into one extracted tail. Mark v1 SUPERSEDED in the index.</div>
+
+<h2>Intent</h2>
+<div class="section">
+  <p>Bring metal.de (Desktop Edition) to full parity with metal.ce (Console Edition) &mdash; the complete tilde contract executed natively on the operator's desktop, deterministic C at $0.00 where the work is deterministic, escalating per tier where it isn't. <b>The reframe:</b> the thing being ported is a <i>contract</i> (the .pi cards, the Catalog, the DoR/DoD, the shared tail, decoder, translator, Cold host), not a bag of features. A contract that isn't settled cannot be ported without doing it twice and re-opening the ce/de split that forced the P12 absorb. So v2 settles and proves the contract on metal.ce &mdash; where it is cheap and where the <code>/catalog</code> store already ships &mdash; then metal.de folds the <i>settled</i> contract in as its parity build. Every phase serves the mission: drive to Tier-0, LLM-free, deterministic. Companion design: the .pi Extraction Engine (<code>be/designs/2026-07-10-1444-...</code>) + the Catalog (<code>joeycastillo.us/metal/catalog</code>).</p>
+</div>
+
+<h2>Scope</h2>
+<div class="section">
+  <h3>In</h3>
+  <ul>
+    <li><b>Arc A &mdash; settle the contract on metal.ce:</b> the .pi card format + parser + per-slot tier dispatch; the shared tail executor extracted once; the six Hot cards sealed; the Catalog (patterns + skills as <code>type=</code> triples in the live store); DoR item 5 + DoD item 11 + the <code>uses:</code> field; the decoder (nous <code>understand()</code>) + RAW/DERIVED IDS; the dialect translator; clauderun revived as the Cold host + atom-diff verifier.</li>
+    <li><b>Arc B &mdash; fold the settled contract into metal.de:</b> the consolidated <code>kastil-systems/metal-desktop</code> repo; <code>route_tilde()</code> at the serve.c:3056 seam replaying .pi cards natively; DE reading the Catalog <b>over the wire</b> (never a repo); the be/ machinery + tail native in DE; identity/auth; the cross-platform floor; relay-dependent tildes; the ~t&rarr;tlt binding; the full parity gate with external production verification.</li>
+    <li>The pre-existing <b>DoD drift</b> fix (commands.md 8 items vs help-blocks 10) &mdash; gates clean numbering; done in A0.</li>
+  </ul>
+  <h3>Out</h3>
+  <ul>
+    <li>A new catalog format / API &mdash; the Catalog is entity types in the store that already ships; no <code>catalog.json</code> schema of our own.</li>
+    <li>Exposing kastil-systems to editions &mdash; ever. Patterns/skills reach DE as a sealed projection over the wire (publish the list, seal the source).</li>
+    <li>Writing to a-d-d without operator approval: the Nameplate pattern name, PRACTICES #13, and any a-d-d spec change are proposals (Rule 10).</li>
+    <li>C-native board renderer (v1 vendors Python behind the contract); terminal tab / xterm.js; MCP; silicon console; the far-horizon master-plan (ALF, biRT v3, 38 driver manifests); prime/relay <em>deployment itself</em> (external dependency).</li>
+  </ul>
+</div>
+
+<h2>Approach</h2>
+<div class="section">
+  <ol>
+    <li><b>Contract first, edition second.</b> Arc A settles the .pi + Catalog + DoR/DoD on metal.ce. metal.de's parity is defined as executing that contract &mdash; so the contract must exist and be proven before the DE fold. No porting a moving target.</li>
+    <li><b>Extract the tail once, not thirty-two times.</b> The chain-reaction tail (scaffold&rarr;save&rarr;index&rarr;telemetry&rarr;Latchkey&rarr;commit/push&rarr;DoD&rarr;Signal&rarr;pop) is ONE program. Extract it as biRT's common runtime; every .pi card collapses to frontmatter + scaffold + judgment slots.</li>
+    <li><b>Publish, don't expose.</b> Patterns + skills become <code>type=pattern</code>/<code>type=skill</code> triples in the live prime <code>/catalog</code> store, published by <code>manifest_export_filtered</code>, sealed by <code>mesh.sealed</code>, served over the wire. DE reads the projection; the source never leaves a-d-d. (Trust governs; the projection move is the new pattern, Nameplate.)</li>
+    <li><b>The contract reaches all tildes through shared programs, not per-card edits.</b> DoR item 5 (class-scoped) + DoD item 11 land once in the shared pre-flight and tail; the exemption machinery excludes the 13 dor-exempt utilities for free. The <code>uses:</code> field is written on apply and resolve-checked at DoD.</li>
+    <li><b>Prove the smallest seam, then widen by dependency ring.</b> A1 (<code>~config.pi</code> replays at Tier-0 $0, data-driven not hardcoded) proves the whole spine. Then Hot set &rarr; Catalog &rarr; contract &rarr; decoder &rarr; translator &rarr; Cold host; then the DE fold ring by ring.</li>
+    <li><b>No baby steps; production-like from the first move.</b> A-arc runs on the store that already ships and the corpus that already runs; each piece is the real thing at small scale. Fall fast on ce where a miss is a $0 query &mdash; never discover the contract's holes inside the DE port.</li>
+    <li><b>Plans are wrong by default.</b> This is a v2 hypothesis; the FC full-court press already re-shaped the Catalog once. Unknowns and When To Revisit are first-class below.</li>
+  </ol>
+</div>
+
+<h2>Phases <span class="tag">each phase = one named board for ~e to size</span></h2>
+<div class="section">
+  <h3>Arc A &mdash; settle &amp; prove the contract on metal.ce</h3>
+  <table class="arcA">
+    <tr><th>#</th><th>Board</th><th>~pts</th><th>What ships / exit</th></tr>
+    <tr><td>A0</td><td>Seed + Verify + DoD re-sync</td><td>8</td><td>a-d-d spec seeded as <code>*.proposed</code> + ARCHITECTURE pointer; CE origin re-verified; <b>the 8-vs-10 DoD drift fixed</b> (commands.md re-synced to the 10-item display). <b>Exit: Joey approves the spec; DoD copies agree.</b> Gates everything.</td></tr>
+    <tr><td>A1</td><td>The .pi Spine <span class="tag">first move</span></td><td>5</td><td><code>~config.pi</code> sealed; frontmatter/scaffold/slot parser (<code>data_access.c</code>); <code>birt_dispatch()</code> reads <code>tier:</code> per slot from the card. <b>Exit: ~config replays at Tier-0, $0.00, driven by data not a hardcoded switch.</b></td></tr>
+    <tr><td>A2</td><td>The Tail Executor, extracted once <span class="tag">folds v1 P4/P5/P6</span></td><td>13</td><td>The shared chain-reaction tail as biRT's common runtime (board-status, report, telemetry ring + backfill, h-cache, Latchkey, index, Signal, pop). Declares its own <code>uses: [patterns.latchkey, skills.signals]</code> once. <b>Exit: one tail runs the full post-work chain for any card.</b></td></tr>
+    <tr><td>A3</td><td>Seal the Hot Set</td><td>8</td><td>The six 100%-Hot cards (<code>~config ~tag ~h ~l ~li ~chase</code>) sealed as .pi; <code>birt_dispatch</code> generalized from the 2-tilde switch to a card-driven per-slot walker. <b>Exit: six tildes replay at $0.00 from their cards.</b></td></tr>
+    <tr><td>A4</td><td>The Catalog</td><td>13</td><td>Patterns (5) + C99 skills (~50) emitted as <code>type=pattern</code>/<code>type=skill</code> triples into the live <code>/catalog</code> store via <code>manifest_export_filtered</code>; per-entry <code>class/served-by/rent/auth</code>; visibility scoped by the <code>policy</code> skill (security sigs not blanket-public); For Rent discovery absorbed (closes tags #18). <b>Exit: <code>GET /catalog?type=pattern</code> answers on a prime; an operator sees the priced list.</b></td></tr>
+    <tr><td>A5</td><td>Wire the contract &mdash; DoR 5 / DoD 11 / uses:</td><td>8</td><td>DoR item 5 (class-scoped: build stop-and-cite, discovery consult-and-cite, verify/ship/util skip) + DoD item 11 (publish-what-changed) in both doc copies + kernel crossrefs; <code>uses:</code> canonized in conventions.md and seeded on the 12 day-one cards. <b>Exit: a ce session applies a pattern named from the Catalog read; <code>uses:</code> records it; $0.</b></td></tr>
+    <tr><td>A6</td><td>The Decoder + IDS</td><td>8</td><td>nous <code>understand()</code> wired as the read-side decoder; RAW (append-only, one writer) + DERIVED (rebuilt, decoder-versioned) IDS stood up. <b>Exit: same raw + same decoder = byte-identical derived; a Hot card's replay reads its .pi through <code>understand()</code>.</b></td></tr>
+    <tr><td>A7</td><td>The Translator <span class="tag">new</span></td><td>8</td><td><code>.pi</code> &rarr; per-provider dialect on the fly; generalize <code>birt_translator.c</code> beyond Anthropic (Claude Messages, Vertex <code>:rawPredict</code>, next model's schema). Runtime translate, one sovereign source. <b>Exit: one sealed card emits two provider dialects from one source.</b></td></tr>
+    <tr><td>A8</td><td>clauderun (Cold host) + verifier</td><td>13</td><td>Revive clauderun from CliWorker (Agent SDK <code>query()</code>, Dockerfile lock-up fixes, keyless via gcp-bridge ADC&rarr;Vertex); atom-diff verifier gate (GROUNDED/CONTRADICTED); seal slot-context&rarr;result as DERIVED IDS (warming by side-effect). <b>Exit: a Cold slot (a <code>~d</code> section) runs on clauderun, keyless, verified, sealed.</b></td></tr>
+  </table>
+  <p style="color:#8fce90;"><b>End of Arc A: the contract is real and proven on metal.ce.</b> ~76 pts.</p>
+
+  <h3>Arc B &mdash; fold the settled contract into metal.de</h3>
+  <table class="arcB">
+    <tr><th>#</th><th>Board</th><th>~pts</th><th>What ships / exit</th></tr>
+    <tr><td>B0</td><td>Consolidate the DE repo</td><td>13</td><td><code>kastil-systems/metal-desktop</code> stands up: subtree-split of tools/metal-de + merge of joeycastilloUS/metal-desktop (<code>--allow-unrelated-histories</code> + named move commits); MOVED READMEs freeze both old homes; NOTICE + headers; Makefile + make.bat + test target; pre-commit guards; Go.Sign. Parallel-eligible with late Arc A. <b>Exit: clean build + tests green on Windows from the fresh clone.</b></td></tr>
+    <tr><td>B1</td><td>DE .pi native proof</td><td>8</td><td>loop.js sends <code>{type:tilde,cmd}</code> on leading <code>~</code>; <code>route_tilde()</code> at serve.c:3056; DE's <code>birt_dispatch</code> reads <code>tier:</code> from the sealed cards; a Hot card renders in the cockpit. <b>Exit: <code>~config</code>/<code>~h</code> replay natively in DE at $0.00.</b></td></tr>
+    <tr><td>B2</td><td>DE reads the Catalog over the wire</td><td>8</td><td>DE consumes <code>/catalog</code> over NTRP0001 (relay session), runs DoR item 5 + DoD item 11 through its shared pre-flight/tail. <b>Never clones kastil-systems.</b> <b>Exit: a DE tilde applies a pattern named from a wire catalog read, zero repo access.</b></td></tr>
+    <tr><td>B3</td><td>DE Hot set + tail executor native</td><td>13</td><td>The six Hot cards + the extracted tail run natively in DE (board.md discipline, board-status, telemetry, report chain, auto-board pop). <b>Exit: an operator runs a real <code>~l &rarr; ~i</code> chain in DE, 0 LLM calls on the <code>~l</code> leg, live board on screen.</b></td></tr>
+    <tr><td>B4</td><td>Identity / Auth</td><td>13</td><td>Auth-gate un-bypass; FQDN handshake + CF verify + TOTP from crypt.c; operator keystore (key never leaves the machine); the 5 dormant relay-auth flows refactored onto relay_client.c; Trust applied. <b>Exit: operator logs in by FQDN + TOTP locally; NOUS residue gone.</b></td></tr>
+    <tr><td>B5</td><td>Cross-platform floor</td><td>13</td><td><code>http_compat</code> kills the Linux/Mac HTTPS stub; judge threading off <code>#ifdef _WIN32</code>-only; Win+Mac+Linux compile + smoke join the ship-cycle DoD. <b>Exit: fan-out + judge + a Tier-0 tilde run green on all three platforms.</b></td></tr>
+    <tr><td>B6</td><td>Relay-dependent tildes <span class="blocked">&#9940; prime deploy</span></td><td>13</td><td><code>~s</code> full chain incl. Store/mesh leg over NTRP0001; signals-pending queue drain; intelligence loop wake. Wire-only into the substrate. Calendar-independent &mdash; do not block B7/B8 if prime slips. <b>Exit: a DE <code>~s</code> lands a Signal a listener consumes; queue drains verifiably.</b></td></tr>
+    <tr><td>B7</td><td>~t &rarr; tlt binding</td><td>13</td><td>DE's <code>~t</code> stays LOCAL (14-op/dom_sig/HMAC on-box, $0, never <code>/serve/run</code>); <code>~tlt</code> is the For Rent cloud sibling (Bearer auth, signed RunRequest, hide=free, metered). <b>Exit: a DE <code>~t</code> produces a manifest CE tooling accepts; <code>~tlt</code> bills a metered run.</b></td></tr>
+    <tr><td>B8</td><td>Full parity gate + production verify</td><td>8</td><td>Walk the re-baselined CE surface point-by-point with evidence; fresh-machine clone &rarr; build &rarr; smoke; published artifacts verified live per Rule 9; the Catalog reachable from DE; parity retro (Kaizen harvested); C-renderer + xterm.js debt boarded. <b>Exit: parity declared with receipts, or the gap list becomes plan v3.</b></td></tr>
+  </table>
+  <p style="color:#c9b04e;"><b>End of Arc B: metal.de executes the settled contract, externally verified.</b> ~102 pts.</p>
+  <p><b>Total: ~178 pts across 17 boards.</b> Sequencing is dependency-true: A0 gates all; A1&rarr;A2&rarr;A3 strict; A4/A5 after A3; A6/A7 after A2; A8 after A7. Arc B starts once the contract is proven (B0 can run parallel to late Arc A); B1&rarr;B2&rarr;B3 strict; B4/B5 parallel after B3; B6 waits on external prime deploy; B8 last. Companion <code>~e</code> sizes each board into triples.</p>
+</div>
+
+<h2>Constraints <span class="tag">the checklist</span></h2>
+<div class="section">
+  <ol>
+    <li><b>Contract before edition.</b> metal.de folds the <i>settled</i> contract; nothing ports until Arc A proves it on ce.</li>
+    <li><b>C99 everywhere we own; C# only as foreign-API jackets</b> (the Playwright worker is the sole sanctioned jacket).</li>
+    <li><b>Publish, don't expose.</b> Patterns/skills reach editions as a sealed projection of the live <code>/catalog</code> store, over the wire; a-d-d source never leaves origin. No repo access from any edition, ever.</li>
+    <li><b>No new catalog format.</b> Entity types in the existing store + <code>manifest_export_filtered</code> + <code>mesh.sealed</code>. Zero new API.</li>
+    <li><b>Visibility scoped.</b> Security-domain signatures gated by the <code>policy</code> skill against requester FQDN; public discovery is names + intents only.</li>
+    <li><b>The contract reaches all via shared programs.</b> DoR item 5 + DoD item 11 land once in the shared pre-flight/tail, class-scoped; 13 dor-exempt utilities excluded for free; zero per-card edits. <code>uses:</code> written on apply, resolve-checked at DoD.</li>
+    <li><b>Tier is data, not code.</b> <code>tier:</code> per slot in .pi frontmatter; the tail is always Tier-0; a tilde cools by one number, operator-approved.</li>
+    <li><b>Extract the tail once.</b> One shared runtime; cards carry only frontmatter + scaffold + judgment slots.</li>
+    <li><b>Decoder cannot hallucinate.</b> nous <code>understand()</code> is the read side; DERIVED IDS carry the decoder version; bad rev rebuilds from RAW byte-identical.</li>
+    <li><b>Cold host behind a dispatch seam.</b> clauderun / Vertex / local CLI swap at the dispatcher without touching any card; keyless via gcp-bridge ADC&rarr;Vertex.</li>
+    <li><b>Wire protocol only into Purcius</b> (NTRP0001, wire over TLS); foreign-AI fan-out stays direct-HTTPS.</li>
+    <li><b>FQDN = operator identity</b> (CF verify + TOTP; one root key never leaves the machine; <code>&lt;name&gt;US/vault</code>).</li>
+    <li><b>Signals mandatory.</b> Every tilde emits one sealed Signal from the shared tail; local queue on mesh failure; allowlist-gated delivery.</li>
+    <li><b>Cross-Platform From Day One:</b> Win+Mac+Linux compile + smoke in the same ship cycle; MinGW UCRT the WDAC-trusted Windows path.</li>
+    <li><b>Board + versioning discipline:</b> triples, Fibonacci, verify-loop pairing (<code>~a~t</code>), Kaizen K-board, frozen historical artifacts; v0 &middot; rN &middot; date &middot; pts; no co-author lines.</li>
+    <li><b>a-d-d is human-owned</b> (Rule 10): Nameplate name, PRACTICES #13, spec changes are proposals awaiting approval.</li>
+    <li><b>Done = production, externally verified</b> (Rule 9): a third party verifies with HTTP 200 / dig / a fresh-machine build before any Done.</li>
+    <li><b>Plan shape honored</b> + this banner stays until approved.</li>
+  </ol>
+</div>
+
+<h2>Unknowns <span class="tag">named explicitly</span></h2>
+<div class="section">
+  <ul>
+    <li><b>Where Arc A runs</b> &mdash; on the metal.ce repo, on metal-desktop's tools tree, or on the consolidated repo? The Catalog store is on the primes regardless, but the .pi engine (A1&ndash;A3) has a home question. Confirm at A0.</li>
+    <li><b>clauderun revival stability</b> &mdash; the CliWorker lock-up fixes are believed sufficient (Agent SDK <code>query()</code>, pre-seeded settings, non-root, TERM=dumb); unproven under sustained Cold load. Local CLI is the fallback behind the seam.</li>
+    <li><b>Catalog visibility scoping detail</b> &mdash; exactly which entries are public vs operator-scoped, and how <code>policy</code> resolves a requester's entitlement over the wire. FC-B flagged the direction; the tiering is unspecified.</li>
+    <li><b>DoD re-sync blast radius</b> &mdash; re-syncing commands.md to the 10-item display may touch more crossrefs than A0 assumes (the 8-vs-10 fork has been drifting). Audit before renumbering.</li>
+    <li><b><code>served-by: none-yet</code> honesty</b> &mdash; how many of the ~50 skills have NO wire verb today (roadmap rows, not product)? The Catalog must not over-promise. Count at A4.</li>
+    <li><b>Sealed-IDS record kinds</b> &mdash; the DERIVED IDS + queued-Signal seal formats depend on nous/security specs not in the DE tree; stability + pull path unknown.</li>
+    <li><b>CE origin drift</b> &mdash; the parity target itself; A0 re-baselines and every downstream phase inherits what moved.</li>
+    <li><b>Nameplate</b> &mdash; the pattern name is unblessed (Rule 10); until then the projection move is unnamed in the catalog.</li>
+    <li><b>Prime/relay deploy date</b> &mdash; wholly external; B6's calendar anchor.</li>
+    <li><b>WDAC under automation</b> &mdash; metal-desktop.exe + gcc blocked from Claude's sub-shell; interactive-terminal launch covers the operator path, CI-style verify loops unknown.</li>
+  </ul>
+</div>
+
+<h2>When To Revisit <span class="tag">the v3 triggers</span></h2>
+<div class="section">
+  <ul>
+    <li><b>A1 fails the seam</b> &mdash; if <code>~config.pi</code> can't replay Tier-0 data-driven in roughly the promised parser + dispatch, the execution model (not the phase list) is wrong: back to <code>~d</code>.</li>
+    <li><b>The Catalog can't serve patterns/skills as entity types</b> &mdash; if the live store's schema resists <code>type=pattern</code> without new API, A4 re-opens and the &ldquo;extend, don't invent&rdquo; premise is re-examined.</li>
+    <li><b>DoR item 5 proves noisy or wrong</b> for a tilde class in real use &mdash; retune the class-scoping in the one shared line; a pattern of retunes = revisit the contract.</li>
+    <li><b>clauderun locks up under load</b> &mdash; fall back to local CLI behind the seam; if the seam itself leaks, A8 re-opens.</li>
+    <li><b>A0's origin re-read moves the target</b> &mdash; any moved DoD/Signals/biRT surface re-baselines the phases: v3 before Arc B.</li>
+    <li><b>Prime deploys</b> &mdash; B6 unblocks; resequence forward of whatever is in flight.</li>
+    <li><b>Any drift between the approved a-d-d spec and implementation</b> (Rule 11) stops the tilde and flows up; two stops in one phase = plan v3.</li>
+  </ul>
+</div>
+
+<h2>Definition of Done <span class="tag">this artifact</span></h2>
+<div class="section">
+  <ul>
+    <li><span class="warn">&#9702;</span> Plan committed &mdash; PENDING (this run) / <span class="pass">&#10003;</span> after commit</li>
+    <li><span class="pass">&#10003;</span> HTML saved at <code>be/plans/2026-07-10-1833-plan-metal-de-ce-parity-v2-pi-catalog-contract.html</code></li>
+    <li><span class="pass">&#10003;</span> <b>Supersedes</b> section present, pointing at v1; v1 to be marked SUPERSEDED in the index</li>
+    <li><span class="pass">&#10003;</span> Required sections: Intent / Scope / Approach / Phases / Constraints + Unknowns + When To Revisit (Rule 6)</li>
+    <li><span class="pass">&#10003;</span> Phases are named, rough-pointed boards in two arcs (contract-on-ce, fold-into-de), dependency-true sequencing stated</li>
+    <li><span class="pass">&#10003;</span> Folds this session's work: .pi library, the Catalog (+ FC full-court-press findings), DoR/DoD, decoder/translator/Cold-host; v1 P4/P5/P6 collapsed into A2</li>
+    <li><span class="pass">&#10003;</span> Constraint checklist carried; a-d-d proposals (Nameplate, PRACTICES #13) flagged operator-owned</li>
+    <li><span class="pass">&#10003;</span> Status banner: Plan &mdash; Awaiting Approval; trade-secret header + pubdate top-right</li>
+    <li><span class="warn">&#9702;</span> Index updated + pushed &mdash; PENDING (follows this run)</li>
+  </ul>
+</div>
+
+</div>
+<footer>v0 &middot; r18 &middot; 2026-07-10 &middot; parity v2 &middot; .pi + Catalog contract &middot; ce-first &rarr; de-fold &middot; ~178 pts / 17 boards</footer>
+</body>
+</html>
