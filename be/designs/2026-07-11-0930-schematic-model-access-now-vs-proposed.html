@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schematic Diff — Model Access: NOW vs PROPOSED</title>
+<style>
+  :root{ --bg:#111; --surface:#1A1A1A; --accent:#6FC3DF; --muted:#888; --line:#2a3a40;
+         --ok:#4caf50; --warn:#f59e0b; --bad:#ef5350; }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:#ddd;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;margin:0;line-height:1.5}
+  nav{position:sticky;top:0;background:#000;border-bottom:2px solid var(--accent);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+  nav .brand{color:var(--accent);font-weight:bold;letter-spacing:1px}
+  nav .pub{color:var(--muted);font-size:12px}
+  .wrap{max-width:800px;margin:0 auto;padding:24px 18px 60px}
+  h1{color:var(--accent);font-weight:600;font-size:24px;margin:.2em 0}
+  h2{font-weight:500;font-size:15px;letter-spacing:.5px;text-transform:uppercase;margin:32px 0 6px;border-bottom:1px solid var(--line);padding-bottom:4px}
+  h2.now{color:var(--warn)} h2.prop{color:var(--ok)} h2.blue{color:var(--accent)}
+  .sub{color:var(--muted);font-size:13px;margin-top:0}
+  pre{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+      overflow-x:auto;font-size:12px;line-height:1.35;color:#cfe3ea;
+      font-family:Consolas,Monaco,'Courier New',monospace;margin:10px 0}
+  pre.now{border-color:#4a3520}
+  pre.prop{border-color:#1f4a26}
+  .bad{color:var(--bad);font-weight:bold}
+  .warnc{color:var(--warn)}
+  .ok{color:var(--ok);font-weight:bold}
+  .blue{color:var(--accent)}
+  .dim{color:#6a7a80}
+  .cap{font-size:12px;color:var(--muted);margin:4px 2px 0}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  td.n{color:#e8b98a} td.p{color:#9fd8a4}
+  td.why{color:var(--muted);font-size:12px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:8px 0}
+  .legend .bad,.legend .ok{font-weight:bold}
+  .note{background:#0e1417;border:1px dashed var(--line);border-radius:6px;padding:8px 12px;font-size:12px;color:#9ab;margin:8px 0}
+  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:36px;padding-top:12px}
+</style>
+</head>
+<body>
+<nav><span class="brand">Be · metal-desktop</span><span class="pub">Published 2026-07-11 09:30 PT</span></nav>
+<div class="wrap">
+
+<h1>Model Access — NOW vs PROPOSED</h1>
+<p class="sub">Schematic diff. NOW = metal-de <code style="color:#6FC3DF">serve.c</code> local fan-out, keys on the box.
+PROPOSED = nous.api mesh front door, keys in the mesh vault only.
+Ground truth: <span style="color:#9ab">~i 2026-07-11-0918-inspect-nous-api</span> · <span style="color:#9ab">~d 2026-07-11-0918-design-mesh-nous-api</span>.</p>
+
+<div class="legend">
+  <span><span class="bad">⚠ red/amber</span> = keys resident on operator hardware</span>
+  <span><span class="ok">✓ green</span> = keys only in the mesh vault</span>
+</div>
+
+<h2 class="now">NOW — every operator's box calls providers directly, keys on disk</h2>
+<pre class="now">
+ ┌────────────────────────────────────────────────────────────┐
+ │  OPERATOR'S BOX             every edition · every operator │
+ │────────────────────────────────────────────────────────────│
+ │                                                            │
+ │   cockpit (browser)                                        │
+ │      │  ws verb "task"                                     │
+ │      ▼                                                     │
+ │   serve.c LOCAL FANOUT                     5,568 lines C99 │
+ │   handle_task / handle_judge / handle_summarize            │
+ │   g_defaults[] — 38 providers · 5 wire formats             │
+ │      │                                                     │
+ │      ▼                                                     │
+ │   resolve_key()                                serve.c:358 │
+ │  <span class="bad">⚠ 1) users.dat        — per-user keys ON DISK</span>             │
+ │  <span class="bad">⚠ 2) env vars         — keys IN THE OPERATOR'S OS</span>         │
+ │  <span class="bad">⚠ 3) keys_builtin.h   — keys COMPILED INTO THE BINARY</span>     │
+ │                                                            │
+ └─────┬────────────┬────────────┬────────────┬───────────────┘
+       │            │            │            │
+ <span class="warnc">HTTPS</span> │      <span class="warnc">HTTPS</span> │      <span class="warnc">HTTPS</span> │      <span class="warnc">HTTPS</span> │     <span class="dim">direct calls —</span>
+       ▼            ▼            ▼            ▼     <span class="dim">no shared front door,</span>
+ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ <span class="dim">no placement control</span>
+ │   api.   │ │generative│ │   api.   │ │   api.   │
+ │ anthropic│ │ language.│ │ deepseek │ │ mistral  │   <span class="dim">… × 38</span>
+ │   .com   │ │googleapis│ │   .com   │ │   .ai    │
+ └──────────┘ └──────────┘ └──────────┘ └──────────┘
+</pre>
+<p class="cap"><span class="bad">⚠ Key custody:</span> every operator's machine holds live provider keys —
+on disk, in env, and baked into the shipped binary (<code style="color:#6FC3DF">keys_builtin.h</code>).
+Ship the binary to anyone but Joey and the secrets ship with it. N boxes = N copies of the leak.</p>
+
+<h2 class="prop">PROPOSED — one mesh front door, primes beside the model datacenters</h2>
+<pre class="prop">
+ ┌───────────────────────────────┐
+ │  OPERATOR'S BOX               │
+ │  cockpit (metal-de)           │
+ │  <span class="ok">✓ NO keys on disk</span>            │
+ │  <span class="ok">✓ NO keys in env</span>             │
+ │  <span class="ok">✓ NO keys in the binary</span>      │
+ └───────────────┬───────────────┘
+                 │  <span class="blue">wire verb: ask</span>          0xCA AES-256-GCM triples
+                 │  + BYOK KeyOverride[]    <span class="dim">RAM-only · never persisted</span>
+                 ▼
+ ┌───────────────────────────────┐
+ │  RELAY    relay.3-metal.net   │
+ │  blind forwarder — cannot     │
+ │  decrypt the triples          │
+ └───────────────┬───────────────┘
+                 │
+        ┌────────┴──────┬───────────────┐
+        │               │               │        <span class="dim">route to the prime nearest</span>
+        ▼               ▼               ▼        <span class="dim">the target provider's DC</span>
+ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+ │ PRIME       │ │ PRIME       │ │ PRIME       │
+ │ nous.api    │ │ nous.api    │ │ nous.api    │
+ │ api_dispatch│ │ api_dispatch│ │ api_dispatch│
+ │ <span class="ok">✓ MESH VAULT</span>│ │ <span class="ok">✓ MESH VAULT</span>│ │ <span class="ok">✓ MESH VAULT</span>│
+ │ BYOK→use it │ │ blank→intern│ │ blank→intern│
+ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+        │ <span class="blue">HTTPS</span>         │ <span class="blue">HTTPS</span>         │ <span class="blue">HTTPS</span>   <span class="dim">— meters away,</span>
+        ▼               ▼               ▼         <span class="dim">not continents</span>
+ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+ │ ANTHROPIC DC│ │ GOOGLE DC   │ │ MISTRAL DC  │
+ │ Ashburn VA  │ │ us-central1 │ │ eu-west     │   <span class="dim">… × 38 models</span>
+ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+        │               │               │
+        └───────────────┴───────────────┘
+                        │
+       <span class="blue">response triples ▲ prime → relay → cockpit</span>
+</pre>
+<p class="cap"><span class="ok">✓ Key custody:</span> one sealed vault on the prime fleet.
+BYOK rides the encrypted wire per-request, RAM-only; <b>blank = internal key</b> is the specified
+fallthrough — free tier with zero setup. Rotate a key once, in one place.</p>
+<div class="note"><b>Placement honesty:</b> v1 runs on the existing primes (Ashburn / Las Vegas / Singapore / Hong Kong).
+Provider-adjacent placement — a prime beside each model DC, as drawn — is the deferred ops play; the router
+gains a provider→prime affinity map when those nodes exist. The custody move does not wait for it.</div>
+
+<h2 class="blue">The Diff</h2>
+<table>
+  <tr><th style="width:17%">Axis</th><th style="width:29%">NOW</th><th style="width:29%">PROPOSED</th><th>Why it matters</th></tr>
+  <tr>
+    <td><b>Key custody</b></td>
+    <td class="n">⚠ On every box — users.dat, env, keys_builtin.h compiled into the binary (serve.c:358)</td>
+    <td class="p">✓ Mesh vault only; BYOK per-request on the wire, RAM-only; blank = internal</td>
+    <td class="why">The whole security thesis. Ship the binary without shipping the secrets.</td>
+  </tr>
+  <tr>
+    <td><b>Transport</b></td>
+    <td class="n">Direct HTTPS from the operator's box to each provider API</td>
+    <td class="p">Wire over the mesh — 0xCA AES-256-GCM triples, cockpit → relay → prime</td>
+    <td class="why">Wire protocol only into the substrate — never HTTP. Relay is blind by design.</td>
+  </tr>
+  <tr>
+    <td><b>Front door</b></td>
+    <td class="n">Per-edition fan-out — every serve.c re-solves provider access</td>
+    <td class="p">One nous.api — four verbs (ask / judge / summarize / reconsider), api_dispatch on the prime</td>
+    <td class="why">One place to meter, rotate, and fix — or N copies of the same problem.</td>
+  </tr>
+  <tr>
+    <td><b>Placement</b></td>
+    <td class="n">Wherever the operator happens to sit — no control</td>
+    <td class="p">Prime beside each model DC (Anthropic/Ashburn, Google/us-central, …)</td>
+    <td class="why">Latency by geography — the last HTTPS hop is meters, so the mesh hop costs less than it saves.</td>
+  </tr>
+  <tr>
+    <td><b>Failure / offline</b></td>
+    <td class="n">N/A — the local path IS the only path</td>
+    <td class="p">Local fan-out demoted to offline/bridge fallback; relay unreachable → local keys still work</td>
+    <td class="why">The mesh is the default, not a hostage-taker.</td>
+  </tr>
+  <tr>
+    <td><b>Cost to get there</b></td>
+    <td class="n">Zero — it runs today</td>
+    <td class="p">5 extraction boards N1–N5 · ~113 pts · ~2.5–3 wks</td>
+    <td class="why">Extraction, not invention — "fanout is handle_task minus the WebSocket I/O." The donor code exists.</td>
+  </tr>
+</table>
+
+<footer>Be — schematic diff · v0 · Generated 2026-07-11 09:30 ·
+sources: be/plans/2026-07-11-0918-inspect-nous-api.html · be/designs/2026-07-11-0918-design-mesh-nous-api.html</footer>
+</div>
+</body>
+</html>
