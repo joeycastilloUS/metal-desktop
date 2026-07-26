@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>~i metal DE vs api.3-nous.net — is the cockpit on the gateway?</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111111; color: #ddd; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.6; }
+  nav { position: sticky; top: 0; background: #000; border-bottom: 2px solid #6FC3DF; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+  nav .brand { color: #6FC3DF; font-weight: bold; font-size: 18px; }
+  nav .pub { color: #777; font-size: 12px; }
+  main { max-width: 800px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { color: #6FC3DF; font-size: 26px; margin: 24px 0 8px; }
+  h2 { color: #6FC3DF; font-size: 19px; margin: 36px 0 12px; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; }
+  h3 { color: #aad9ea; font-size: 15px; margin: 20px 0 8px; }
+  p { margin: 10px 0; }
+  .sub { color: #888; font-size: 14px; }
+  .card { background: #1A1A1A; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin: 14px 0; }
+  .verdict { border-left: 4px solid #6FC3DF; }
+  .split { border-left: 4px solid #e0c07a; }
+  .stop { border-left: 4px solid #e07a7a; }
+  code { background: #1A1A1A; color: #9fd8ec; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: Consolas, Monaco, monospace; }
+  pre { background: #1A1A1A; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px; overflow-x: auto; font-size: 12.5px; margin: 12px 0; font-family: Consolas, Monaco, monospace; color: #bce4f2; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
+  th { text-align: left; color: #6FC3DF; border-bottom: 1px solid #2a2a2a; padding: 6px 8px; }
+  td { border-bottom: 1px solid #222; padding: 6px 8px; vertical-align: top; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 5px 0; }
+  .ok { color: #7ee08a; } .bad { color: #e07a7a; } .warn { color: #e0c07a; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 10px; border: 1px solid; margin-left: 6px; vertical-align: middle; }
+  .b-real { color: #7ee08a; border-color: #7ee08a; } .b-spec { color: #e0c07a; border-color: #e0c07a; } .b-none { color: #e07a7a; border-color: #e07a7a; }
+  footer { border-top: 1px solid #2a2a2a; margin-top: 48px; padding-top: 16px; color: #666; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Be</span>
+  <span class="pub">Published 2026-07-26 13:37 PDT</span>
+</nav>
+<main>
+
+<h1>~i — metal DE vs. api.3-nous.net</h1>
+<p class="sub">Is the metal Desktop Edition cockpit using the nous.api multi-model gateway? Ground truth from files on disk plus live probes, driver (Opus) and navigator (Fable) run concurrent and reconciled per Kernel Rule 1.</p>
+
+<h2 id="verdict">Verdict</h2>
+<div class="card verdict">
+<p><strong>NO — metal DE does not use <code>api.3-nous.net</code>.</strong> Zero references anywhere in <code>C:\metal-desktop</code> — source, wwwroot, config, tests, or <code>be/</code> records. It calls seven vendor APIs directly over HTTPS with keys resolved <strong>on the operator's box</strong>.</p>
+<p><strong>metal CE already does use it.</strong> <code>C:\metal\src\ask\nous-ask.c:22</code> defaults to <code>https://api.3-nous.net/v1/chat/completions</code>. So this is a DE-only gap, and the two editions have diverged on model access.</p>
+<p><strong>DE's own architecture already says it is wrong.</strong> <code>a-d-d/ARCHITECTURE.md:8</code> — <em>"It is a <strong>consumer</strong> of nous.api, not the home of its logic."</em> The code has not followed the spec. Under Rule 12 (flow up before down) that is drift, and the spec is the side that is already correct — no architecture change is needed to justify the cutover.</p>
+</div>
+
+<h2 id="what-it-is">What It Is</h2>
+<p><code>api.3-nous.net</code> is the <strong>nous.api multi-model gateway</strong> — one OpenAI-compatible front door that fronts every model vendor, so a consumer holds one token instead of seven vendor keys. Probed live from this box on 2026-07-26 (port 443, not a blocked high port, so no Rule 14 vantage caveat applies to these results):</p>
+<table>
+<tr><th>Probe</th><th>Result</th></tr>
+<tr><td><code>GET /</code></td><td><span class="ok">200</span> — HTML titled <em>"nous.api console"</em>, tagline <em>"api.3-nous.net &middot; multi-model gateway"</em>, Be-styled</td></tr>
+<tr><td><code>GET /v1/models</code></td><td><span class="ok">200</span> JSON — 25+ rows <code>{id, vendor, model, caps, free}</code> across google / google-vertex / anthropic / openai / deepseek / mistral</td></tr>
+<tr><td><code>POST /v1/chat/completions</code></td><td><span class="warn">401</span> <code>{"error":"unauthorized"}</code> — needs a Bearer token</td></tr>
+<tr><td>DNS</td><td>Cloudflare (104.21.34.149, 172.67.162.19, + IPv6); <code>x-cloud-trace-context</code> header &rArr; GCP-backed behind the CDN</td></tr>
+<tr><td>CORS</td><td><code>Access-Control-Allow-Origin: *</code>; allows <code>Authorization, Content-Type, x-api-key</code>; <code>GET, POST, OPTIONS</code></td></tr>
+</table>
+<p>The console page names its own value proposition: <em>"Blank = the mesh key. Your keys are sent only to nous.api over HTTPS, never stored server-side."</em> It also mirrors the Vertex Model Garden and notes that amber models need a one-time terms acceptance in the caller's own GCP project before they appear.</p>
+<p>The canonical spec is in metal console: <code>C:\metal\be\designs\2026-07-10-2017-design-nous-api-ask-judge-summarize.html</code> — <em>"Live (HTTP 200) OpenAI-compatible model gateway. Auth: Bearer <code>nous-api-token</code> (acmedev Secret Manager)."</em></p>
+
+<h2 id="structure">Structure — what DE actually calls today</h2>
+
+<h3>1. Model traffic: direct to vendors, keys on the box <span class="badge b-none">the gap</span></h3>
+<p><code>src/serve.c:351-376</code> — <code>g_defaults[]</code>, a 22-row provider table. Every row carries a hardcoded vendor endpoint:</p>
+<pre>generativelanguage.googleapis.com   (gemini x4, native "gemini" wire format)
+api.deepseek.com                    (deepseek x2, "openai" format)
+api.mistral.ai                      (mistral x3, "openai" format)
+api.anthropic.com                   (claude x3, native "anthropic" format)
+api.openai.com                      (gpt/o3/o4 x5, "openai" format)
+api.x.ai                            (grok x2, "openai" format)
+api.perplexity.ai                   (perplexity x3, "openai" format)</pre>
+<p>Keys resolve locally through <code>resolve_key()</code> — a 4-layer chain <strong>user &gt; env &gt; builtin &gt; NULL</strong> (<code>src/nous_userkeys.c</code>, <code>src/nous_keys_builtin.h.example</code>). Free-tier rows carry compiled-in <code>NOUS_KEY_*</code> builtins; paid rows read <code>ANTHROPIC_API_KEY</code>, <code>OPENAI_API_KEY</code>, etc. DE's own schematic states it plainly: <em>"38 models (direct HTTPS)&hellip; No mesh hop"</em> (<code>be/designs/2026-06-13-0338-schematic-nous-api-mesh.html:86</code>).</p>
+
+<h3>2. Substrate traffic: wire to the relay <span class="badge b-real">separate plane</span></h3>
+<p><code>src/config.c:180-181</code> defaults <code>relay_host = relay.3-nous.net</code>, <code>relay_port = 8080</code> (overridable via <code>desktop.conf</code>; the example file points at <code>localhost:8081</code>). <code>src/relay_client.c</code> speaks raw TCP <code>wire_connect</code>, NTRP0001 WireTriples, <code>0xCA</code> AES-256-GCM PSK envelope — <strong>not HTTP</strong>. Used by auth / register / store / intelligence handlers at <code>serve.c:718, 756, 867, 1000, 1120, 1232, 1329, 2032</code>.</p>
+<p>This is the correct wire plane per canon. <strong>It is not the thing that is wrong, and the cutover must not touch it.</strong></p>
+
+<h3>3. Auth gate: bypassed</h3>
+<p><code>wwwroot/desktop.js:13-30</code> — <code>initAuthGate()</code> short-circuited (Board 7, 2026-05-11) because prime + relay were believed dead; the old logic is preserved as <code>initAuthGate_OFF()</code> for a one-line revert.</p>
+
+<h2 id="stack">Stack</h2>
+<table>
+<tr><th>Layer</th><th>What</th><th>Where</th></tr>
+<tr><td>Cockpit server</td><td>Pure C99 HTTP + WebSocket on <code>localhost:5050</code></td><td><code>src/main.c:17</code>, <code>src/serve.c</code></td></tr>
+<tr><td>Verb dispatch</td><td><code>route_ws_message</code> &rarr; <code>handle_task</code> / <code>handle_judge</code> / <code>handle_summarize</code>; reconsider = TODO</td><td><code>src/serve.c</code></td></tr>
+<tr><td>Model access</td><td>Thread-per-provider parallel fan-out, direct vendor HTTPS</td><td><code>src/serve.c:351-376</code> + <code>handle_task</code></td></tr>
+<tr><td>Key custody</td><td>On the operator's box, 4-layer resolve</td><td><code>src/nous_userkeys.c</code></td></tr>
+<tr><td>Substrate</td><td>Wire / NTRP0001 / 0xCA to relay</td><td><code>src/relay_client.c</code>, <code>sdk/wire.c</code></td></tr>
+<tr><td>UI</td><td>Vanilla HTML/CSS/JS, xterm.js vendored</td><td><code>wwwroot/</code></td></tr>
+</table>
+
+<h2 id="patterns">Patterns Found</h2>
+<ol>
+<li><strong>Spec-ahead-of-code drift, and the spec is right.</strong> <code>a-d-d/CLAUDE.md:42</code> — <em>"These handlers carry the AI logic AND the WebSocket framing in one place. That is the thing to undo."</em> The intended end state is already written: <code>serve.c</code> keeps HTTP + WS framing, and a thin <code>route_ws_message</code> <strong>calls nous.api</strong>. The work is subtraction, not invention.</li>
+<li><strong>CE is the working precedent.</strong> <code>nous-ask.c</code> is C99 hitting the gateway over HTTPS with <code>NOUS_API_URL</code> / <code>NOUS_API_TOKEN</code> env overrides — the exact shape DE needs, already proven in the sibling edition. A C# jacket also exists for the bridge (<code>NousGatewayClient.cs</code>, metal <code>be/board.md:314</code>, CODE-COMPLETE).</li>
+<li><strong>The gateway serves the Mission directly.</strong> <code>/v1/models</code> flags gemini / deepseek / mistral rows <code>free:true</code>. Routing DE through the gateway puts the free tier one config change away — Zero Cost Intelligence, not a rewrite.</li>
+<li><strong>Two prior verdicts in this repo are now stale and should not be trusted by the next session.</strong> See below — both were called on evidence that no longer holds.</li>
+</ol>
+
+<h2 id="stale">Stale prior verdicts — corrected</h2>
+<div class="card stop">
+<p><strong>(a) "nous.api is spec-only, nothing deployed."</strong> &mdash; <code>be/plans/2026-07-11-0918-inspect-nous-api.html</code>, 15 days ago. <span class="bad">False today.</span> The gateway is deployed and serving <code>/v1/models</code> at HTTP 200. That inspect deliberately avoided curls from this box; the deployment landed after it was written.</p>
+<p><strong>(b) "<code>relay.3-nous.net:8080</code> is dead (HTTP 000)."</strong> &mdash; <code>be/builds/2026-05-11-2255-inspect-fqdn-rollback.html:46,119</code>, echoed into the Board 6 shelve rationale. <span class="bad">Not supported.</span> A TCP connect to <code>relay.3-nous.net:8080</code> from this box on 2026-07-26 returned <strong>OPEN</strong>. The original "HTTP 000" was a curl against a <strong>wire</strong> port — a protocol mismatch, which is exactly the Rule 14 failure mode. Open TCP is not proof of a healthy relay either; a same-plane wire handshake is still needed before anyone calls it up. But "dead" is retired as a finding, and Board 6's shelve rationale rests partly on it.</p>
+</div>
+
+<h2 id="gap">The gap — what changes to put DE on the gateway</h2>
+<table>
+<tr><th>#</th><th>Change</th><th>Where</th></tr>
+<tr><td>1</td><td>Replace 7 vendor endpoints with one gateway URL; collapse every row to <code>format = "openai"</code>. The native <code>anthropic</code> and <code>gemini</code> request/response paths become dead code.</td><td><code>src/serve.c:351-376</code> + format branches</td></tr>
+<tr><td>2</td><td>Remap model ids to gateway ids from <code>/v1/models</code> (<code>claude-opus</code>, <code>gpt-pro</code>, <code>vertex-claude</code>&hellip;). Ids must be ENABLED in the Model Garden or POST returns not-found.</td><td>provider table</td></tr>
+<tr><td>3</td><td>One <code>Bearer</code> token replaces N vendor keys + compiled-in <code>NOUS_KEY_*</code> builtins. BYOK via <code>nous_userkeys.c</code> demotes to optional passthrough (the gateway accepts caller keys).</td><td><code>src/nous_userkeys.c</code>, <code>resolve_key()</code></td></tr>
+<tr><td>4</td><td>Config surface for <code>NOUS_API_URL</code> / <code>NOUS_API_TOKEN</code>, matching CE's shape.</td><td><code>src/config.c</code>, <code>desktop.conf.example</code></td></tr>
+<tr><td>5</td><td>Keep the local fan-out as an offline bridge behind a reachability check — the lifeboat the mesh plan already specified. No flag-day.</td><td><code>handle_task</code></td></tr>
+<tr><td>&mdash;</td><td><strong>Untouched:</strong> <code>relay_client.c</code>, auth gate, store, intelligence loop. Different plane.</td><td>&mdash;</td></tr>
+</table>
+
+<h2 id="reconcile">Pair reconcile — Rule 1</h2>
+<p>Driver (Opus) and navigator (Fable) ran concurrent independent passes. <strong>Navigator owns the verdict.</strong> Agreement on the core finding was total: same NO, same <code>serve.c</code> line range, same relay/wire separation, same live-gateway probe results.</p>
+<h3>Splits — surfaced, not resolved silently</h3>
+<div class="card split">
+<p><strong>S1 &mdash; Relay liveness.</strong> Navigator: <em>"relay.3-nous.net:8080 wire status NOT probed &mdash; unknown."</em> Driver probed it: TCP <strong>OPEN</strong>. Not a contradiction &mdash; a gap the driver filled. Consequence is real: the "dead relay" premise under Board 6's shelve is retired.</p>
+<p><strong>S2 &mdash; Canon reading.</strong> Driver raised the wire-protocol rule as an open tension. Navigator resolved it with better evidence and a sharper cut: the wire rule governs talking to <strong>Purcius/the substrate</strong>; <code>api.3-nous.net</code> is a foreign-model gateway fronting vendor HTTPS, so model traffic over HTTPS is <span class="ok">no conflict</span> &mdash; and the 2026-07-10 design sanctions it explicitly. <strong>But</strong>: if anyone proposes the gateway as a <em>substitute for the relay/prime</em> for auth / store / loop, that <span class="bad">would</span> violate canon. Navigator's read is adopted.</p>
+<p><strong>S3 &mdash; Sanctioned consumer.</strong> Navigator flags that the 2026-07-10 design names the <strong>C# gcp-bridge jacket</strong> as the gateway's consumer, not a C99 client &mdash; a Language Boundary question for DE. Driver's counter-evidence: CE's <code>nous-ask.c</code> is already C99 straight to the gateway. Reading forward: the C# jacket rule covers <em>third-party manufacturer</em> APIs; the gateway is ours, and it is the thing that removes third-party HTTPS from our C99. <strong>Unresolved &mdash; operator's call</strong> (open question OQ2).</p>
+<p><strong>S4 &mdash; Provider count.</strong> Navigator cites "38 models" from the schematic; driver counted <strong>22</strong> live rows in <code>g_defaults[]</code>. Doc drift, minor, but the schematic overstates current reality.</p>
+</div>
+
+<h2 id="open">Open Questions</h2>
+<ol>
+<li><strong>OQ1 &mdash; Token. Hard blocker.</strong> <code>NOUS_API_TOKEN</code> is <strong>unset in both User and Machine environments</strong> on this box. <code>POST /v1/chat/completions</code> returns 401 without it. Nothing downstream &mdash; not a build, not a test, not a production verification under Rule 10 &mdash; can complete until the operator pastes one (Rule 5: he pastes, Be installs). CE's own <code>nous-ask</code> cannot run here today either.</li>
+<li><strong>OQ2 &mdash; C99 direct, or through a jacket?</strong> Does DE call the gateway straight from C99 (CE's precedent) or must it route via the C# <code>NousGatewayClient</code>? This changes the shape of the whole cutover.</li>
+<li><strong>OQ3 &mdash; Feature parity unproven.</strong> Whether the OpenAI-compat shape carries everything DE's 22 rows need &mdash; streaming, Anthropic-specific fields, per-model cost accounting for the cost receipt &mdash; could not be tested without the token.</li>
+<li><strong>OQ4 &mdash; Model Garden enablement.</strong> Which of DE's 22 model ids exist and are ENABLED on the gateway. <code>/v1/models</code> lists 25+ but the id sets do not map one-to-one (e.g. DE carries <code>o3</code>, <code>o4-mini</code>, <code>grok*</code>, <code>perplexity*</code>; the gateway list surfaces vertex rows DE has never had).</li>
+<li><strong>OQ5 &mdash; Does the free tier survive?</strong> DE ships compiled-in free keys today. The gateway flags rows <code>free:true</code> behind one token. Which path is cheaper and more honest to the Mission is a design decision, not an implementation detail.</li>
+</ol>
+
+<h2 id="dod">Definition of Done</h2>
+<ul>
+<li><span class="ok">&#10003;</span> 1 A-D-D verified &mdash; <code>a-d-d/ARCHITECTURE.md</code> + <code>a-d-d/CLAUDE.md</code> read first; drift found and named, spec is correct side, no spec edit proposed</li>
+<li><span class="ok">&#10003;</span> 2 Code committed</li>
+<li><span class="ok">&#10003;</span> 3 Hash in telemetry</li>
+<li><span class="ok">&#10003;</span> 4 Board updated &mdash; inspect findings queued as a new board</li>
+<li><span class="ok">&#10003;</span> 5 HTML report saved &mdash; this file</li>
+<li><span class="ok">&#10003;</span> 6 Index updated</li>
+<li><span class="ok">&#10003;</span> 7 Pushed to remote</li>
+<li><span class="ok">&#10003;</span> 8 No prior damage &mdash; read-only inspect, no source touched</li>
+<li><span class="ok">&#10003;</span> 9 Production verified &mdash; cap-URL live, HTTP 200</li>
+<li><span class="ok">&#10003;</span> 10 Data round-trips &mdash; N/A, read-only artifact</li>
+<li><span class="ok">&#10003;</span> 11 Catalog current &mdash; N/A, nothing reusable created</li>
+</ul>
+
+<footer>
+Generated 2026-07-26 13:37 &middot; v0 &middot; r24 &middot; 75 pts &middot; metal Desktop Edition<br>
+Pair: Opus (driver) + Fable (navigator), concurrent then reconciled &middot; Kernel Rule 1
+</footer>
+
+</main>
+</body>
+</html>

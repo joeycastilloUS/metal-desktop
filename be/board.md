@@ -39,6 +39,58 @@ Quick path: short-circuit the desktop's auth gate so the cockpit is visible imme
 
 ---
 
+## Board 8 — Put DE on the nous.api gateway (? pts) ⛔ blocked
+
+Source: be/plans/2026-07-26-1337-inspect-de-vs-nous-api-gateway.html
+
+`~i` verdict: metal DE does **not** use `api.3-nous.net` — 22-row direct-vendor
+fan-out with keys on the operator's box (`src/serve.c:351-376`), while
+`a-d-d/ARCHITECTURE.md:8` already declares DE "a **consumer** of nous.api."
+Rule 12 drift; the spec is the correct side. metal CE already consumes the
+gateway (`C:\metal\src\ask\nous-ask.c:22`).
+
+**⛔ Blocked on two operator decisions — do not pull until both clear:**
+1. `NOUS_API_TOKEN` is unset (User + Machine). Gateway returns 401 without it.
+   Nothing here can be built, tested, or production-verified until it lands.
+2. OQ2 — does DE call the gateway direct from C99 (CE precedent) or through
+   the C# `NousGatewayClient` jacket? Changes the shape of every item below.
+
+Sizing comes from `~e` after `~d`/`~p`. Triples below are the inspect's gap
+list, not yet estimated.
+
+### Backlog
+- {22-row vendor table, update with, one api.3-nous.net gateway endpoint (src/serve.c:351-376)} · ? · ~u~t
+- {model ids, update with, gateway ids from /v1/models + Model Garden enablement check} · ? · ~u~t
+- {native anthropic + gemini wire formats, removed from, serve.c (collapse to openai format)} · ? · ~f~t
+- {NOUS_API_URL + NOUS_API_TOKEN config surface, add to, src/config.c + desktop.conf.example} · ? · ~a~t
+- {resolve_key 4-layer chain, update with, one Bearer token + optional BYOK passthrough} · ? · ~u~t
+- {local fan-out offline bridge behind reachability check, add to, handle_task} · ? · ~a~t
+
+### Ready
+
+### In Progress
+
+### Done
+
+---
+
+## Board K — Kaizen
+
+Continuous-improvement items from `~i` / `~retro` / `~demo`. Never auto-pulled
+by bare `~b`; opt-in via `~b kaizen`.
+
+### Ready
+- {stale "nous.api is spec-only" verdict, fix in, be/plans/2026-07-11-0918-inspect-nous-api.html} · ? · ~f · source:2026-07-26-1337-inspect-de-vs-nous-api-gateway.html · gateway is deployed + serving /v1/models 200 as of 2026-07-26
+- {stale "relay.3-nous.net:8080 is dead" verdict, fix in, be/builds/2026-05-11-2255-inspect-fqdn-rollback.html} · ? · ~f · source:2026-07-26-1337-inspect-de-vs-nous-api-gateway.html · TCP 8080 returned OPEN 2026-07-26; original HTTP 000 was a curl at a wire port (Rule 14). Board 6 shelve rationale partly rests on this
+- {Board 6 shelve rationale, update with, corrected relay liveness evidence} · ? · ~u · source:2026-07-26-1337-inspect-de-vs-nous-api-gateway.html · known-issue
+- {"38 models" claim, update with, actual 22-row count} · ? · ~u · source:2026-07-26-1337-inspect-de-vs-nous-api-gateway.html · be/designs/2026-06-13-0338-schematic-nous-api-mesh.html:86 overstates current reality
+
+### In Progress
+
+### Done
+
+---
+
 # Archive — Completed Boards (from nous-desktop)
 
 ## Board 1 — Free Keys Foundation (18 pts) ✅
